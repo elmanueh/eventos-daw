@@ -10,6 +10,21 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate()
 
+  const handleLoginInvitado = () => {
+    console.log('Iniciar sesión como invitado');
+
+    const invitado = {
+      token: null,
+      idUsuario: 'd9428888-122b-4cbb-bcb9-33a3ee6b9e9b',
+      nombreUsuario: 'admin',
+      rolesUsuario: 'GESTOR_EVENTOS,PROPIETARIO_ESPACIOS,USUARIO',
+    };
+  
+    localStorage.setItem('usuario', JSON.stringify(invitado));
+
+    navigate('/');
+  }
+
   const handleLogin = async () => {
     console.log(username, password)
     if (!username) {
@@ -59,8 +74,8 @@ function Login() {
   return (
     <div className="login">
       <h2>Iniciar sesión</h2>
-      <Form>
-        <Form.Group className="mb-3" controlId="formUsername">
+      <Form className="d-grid gap-3">
+        <Form.Group controlId="formUsername">
           <Form.Label>Nombre de usuario</Form.Label>
           <Form.Control
             type="text"
@@ -70,7 +85,7 @@ function Login() {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formPassword">
+        <Form.Group controlId="formPassword">
           <Form.Label>Contraseña</Form.Label>
           <Form.Control
             type="password"
@@ -82,20 +97,18 @@ function Login() {
 
         {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
-        <Button variant="primary" onClick={handleLogin} block>
+        <Button variant="primary" onClick={handleLogin} >
           Iniciar sesión
         </Button>
+        
+        <Button variant="secondary" onClick={handleGithubLogin} >
+          <FaGithub className="me-2" />
+          Iniciar sesión con GitHub
+        </Button>
 
-        <div className="d-flex justify-content-center mt-3">
-          <Button
-            variant="secondary"
-            onClick={handleGithubLogin}
-            className="w-100"
-          >
-            <FaGithub className="me-2" />
-            Iniciar sesión con GitHub
-          </Button>
-        </div>
+        <Button variant="primary" onClick={handleLoginInvitado} >
+          Iniciar sesión como invitado
+        </Button>
       </Form>
     </div>
   )
