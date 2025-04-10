@@ -1,0 +1,9 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.removeUnusedImports": "explicit"
+  },
+  "material-icon-theme.activeIconPack": "react",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "prettier.printWidth": 80
+}
