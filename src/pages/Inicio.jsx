@@ -1,39 +1,122 @@
-import { useState } from 'react'
-import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
+import React, { useEffect, useState } from "react";
+import { Container } from "react-bootstrap";
+import EspacioCard from "../components/EspacioCard";
+import EventoCard from "../components/EventoCard";
+import { espaciosEstaticos, eventosEstaticos } from "../data/estaticos";
 
-function Inicio() {
-  const [show, setShow] = useState(false)
-  const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
+const Inicio = () => {
+  const [eventos, setEventos] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Cargar los datos dinámicamente usando fetch
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const params = new URLSearchParams({
+          mes: 6,
+          año: 2025,
+        });
+        
+        const response = await fetch(`http://localhost:8080/api/eventos?${params.toString()}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
+        
+
+        if (!eventosResponse.ok) {
+          throw new Error("Error al obtener los datos");
+        }
+
+        const data = await response.json();
+        console.log(data);
+
+        setEventos(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
-    <>
-      <Button variant="primary" onClick={handleShow}>
-        Hazme click!
-      </Button>
+    <Container className="py-4 d-flex flex-column gap-4">
+      <h1 className="text-center">Bienvenido</h1>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Bienvenido julian</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Ya lo tienes todo preparado para comenzar la aventura en este pedazo de proyecto.
-          <br />
-          <br />
-          Si deseas continuar agarrado a mi mano, por favor, acepta las condiciones de uso de <b>ElManueh</b> o <b>ElCutillas</b>.
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Aceptar condiciones de ElManueh
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Aceptar condiciones de ElCutillas
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  )
-}
+      <section className="d-flex flex-column gap-4">
+        <h2>Espacios físicos (Estáticos)</h2>
 
-export default Inicio
+        <div className="row g-4">
+          {espaciosEstaticos.slice(0, 4).map((espacio) => (
+            <div key={espacio.id} className="col-12 col-md-6 col-lg-4 col-xl-3">
+              <EspacioCard espacio={espacio} />
+            </div>
+          ))}
+        </div>
+
+        <div className="text-end">
+          <a href="/espacios" className="btn btn-outline-primary">
+            Ver más
+          </a>
+        </div>
+      </section>
+
+
+      
+      <section className="d-flex flex-column gap-4">
+        <h2>Eventos próximos (Estáticos)</h2>
+
+        <div className="row g-4">
+          {eventosEstaticos.slice(0, 4).map((evento) => (
+            <div key={evento.id} className="col-12 col-md-6 col-lg-4 col-xl-3">
+              <EventoCard evento={evento} />
+            </div>
+          ))}
+        </div>
+
+        <div className="text-end">
+          <a href="/eventos" className="btn btn-outline-primary">
+            Ver más
+          </a>
+        </div>
+      </section>
+
+      <section className="d-flex flex-column gap-4">
+        <h2>Eventos próximos</h2>
+
+        <div className="row g-4">
+          {loading ? (
+            <p>Cargando eventos...</p>
+          ) : error ? (
+            <p className="text-danger">Error al cargar los eventos.</p>
+          ) : eventos.length === 0 ? (
+            <p>No hay eventos disponibles.</p>
+          ) : (
+            <>
+              {eventos.map((evento) => (
+                <div key={evento.id} className="col-12 col-md-6 col-lg-4 col-xl-3">
+                  <EventoCard evento={evento} />
+                </div>
+              ))}
+              {/* Botón Ver más solo se muestra cuando hay eventos */}
+              <div className="text-end">
+                <a href="/eventos" className="btn btn-outline-primary">
+                  Ver más
+                </a>
+              </div>
+            </>
+          )}
+        </div>
+      </section>
+
+    </Container>
+  );
+};
+
+export default Inicio;

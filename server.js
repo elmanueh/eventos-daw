@@ -1,7 +1,6 @@
 import express from 'express';
-import path from 'path';
+import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -9,7 +8,7 @@ const __dirname = dirname(__filename);
 const app = express();
 const port = 3000;
 
-app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Configuración de Handlebars
 app.set('views', path.join(__dirname, 'views')); // Carpeta con las vistas de HBS

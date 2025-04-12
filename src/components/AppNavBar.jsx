@@ -1,6 +1,7 @@
-import { Navbar, Container, Button, Nav } from 'react-bootstrap';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Button, Container, Dropdown, Nav, Navbar } from 'react-bootstrap';
+import { FaUserCircle } from 'react-icons/fa';
+import { useLocation, useNavigate } from 'react-router-dom';
 import logo from '/logo.png';
 
 function AppNavbar() {
@@ -8,32 +9,25 @@ function AppNavbar() {
   const location = useLocation();
   const [usuario, setUsuario] = useState(null);
 
-  // Ocultar el navbar si estás en login
-  if (location.pathname === '/login') return null;
-
   useEffect(() => {
-    const userData = localStorage.getItem('usuario');
-    if (userData) {
-      try {
-        const parsedUser = JSON.parse(userData);
-        setUsuario(parsedUser);
-      } catch (err) {
-        console.error('Error al parsear usuario', err);
-        localStorage.removeItem('usuario');
-      }
-    }
+    const roles = localStorage.getItem('rol');
+    const nombre = localStorage.getItem('nombre');
+
+    setUsuario({ roles, nombre });
   }, []);
 
-  const handleLogin = () => navigate('/login');
-
   const handleLogout = () => {
+    localStorage.removeItem('nombre');
     localStorage.removeItem('usuario');
-    setUsuario(null);
+    localStorage.removeItem('rol');
+    localStorage.removeItem('token');
+
     navigate('/login');
   };
 
   // Detectar roles
-  const roles = usuario?.rolesUsuario?.split(',') || [];
+  const roles = usuario?.roles?.split(',') || [];
+  const nombre = usuario?.nombre || 'NADA';
 
   return (
     <Navbar bg="dark" variant="dark" fixed="top" expand="lg" className="px-3">
@@ -44,40 +38,69 @@ function AppNavbar() {
             alt="Logo de la Web"
             width="40"
             height="40"
-            className="d-inline-block align-top"
+            className="d-inline-block align-top me-2"
           />
+          Eventy
         </Navbar.Brand>
-        <Navbar.Brand href="#">Eventy</Navbar.Brand>
 
-        <Nav className="ms-auto d-flex align-items-center gap-2">
-          {roles.includes('USUARIO') && (
-            <Button variant="outline-light" onClick={() => navigate('/mis-eventos')}>
-              Mis Eventos
-            </Button>
-          )}
+        {location.pathname === '/login' 
+        ? null 
+        : (
+          <Nav className="ms-auto d-flex align-items-center gap-2">
 
-          {roles.includes('GESTOR_EVENTOS') && (
-            <Button variant="outline-light" onClick={() => navigate('/gestor-eventos')}>
-                Gestor de Eventos
-            </Button>
-          )}
+            {roles.includes('USUARIO') && (
+              <Button variant="outline-light" onClick={() => navigate('/mis-reservas')}>
+                Mis Reservas
+              </Button>
+            )}
 
-          {roles.includes('PROPIETARIO_ESPACIOS') && (
-            <Button variant="outline-light" onClick={() => navigate('/propietario-espacios')}>
-                Propietario de Espacios
-            </Button>
-          )}
+            {roles.includes('GESTOR_EVENTOS') && (
+              <Button variant="outline-light" onClick={() => navigate('/mis-eventos')}>
+                  Mis Eventos
+              </Button>
+            )}
 
-          {usuario ? (
+            {roles.includes('PROPIETARIO_ESPACIOS') && (
+              <Button variant="outline-light" onClick={() => navigate('/mis-espacios')}>
+                  Mis Espacios
+              </Button>
+            )} 
+
+            <Dropdown align="end">
+              <Dropdown.Toggle variant="outline-light" id="dropdown-profile" className="d-flex align-items-center">
+                <FaUserCircle size={24} className="me-2" />
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu className="p-3" style={{ minWidth: '200px' }}>
+                <Dropdown.ItemText>
+                  <div className="text-muted mb-3" style={{ fontSize: '0.9rem' }}>
+                  <strong>Nombre: </strong>
+                    {nombre}
+                  </div>
+
+                  <div className="text-muted mb-3" style={{ fontSize: '0.9rem' }}>
+                    <strong>Roles:</strong>
+                    <div className="d-flex flex-wrap gap-2 mt-2">
+                      {roles.map((role, index) => (
+                        <span key={index} className="badge bg-secondary">{role}</span>
+                      ))}
+                    </div>
+                  </div>
+                </Dropdown.ItemText>
+
+                <Dropdown.Divider />
+
+                <Dropdown.Item onClick={handleLogout} className="text-danger">
+                  <strong>Cerrar sesión</strong>
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown> 
+
             <Button variant="danger" onClick={handleLogout}>
               Cerrar sesión
             </Button>
-          ) : (
-            <Button variant="primary" onClick={handleLogin}>
-              Iniciar sesión
-            </Button>
-          )}
-        </Nav>
+          </Nav>
+        )}
       </Container>
     </Navbar>
   );

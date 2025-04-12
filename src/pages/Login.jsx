@@ -1,75 +1,64 @@
-import { useState } from 'react'
-import { Alert, Button, Form } from 'react-bootstrap'
-import { FaGithub } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
-import '../css/Login.css'
+import { useState } from 'react';
+import { Alert, Button, Form } from 'react-bootstrap';
+import { FaGithub } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import '../css/Login.css';
 
 function Login() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
-  const navigate = useNavigate()
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
-  const handleLoginInvitado = () => {
-    console.log('Iniciar sesión como invitado');
-
-    const invitado = {
-      token: null,
-      idUsuario: 'd9428888-122b-4cbb-bcb9-33a3ee6b9e9b',
-      nombreUsuario: 'admin',
-      rolesUsuario: 'GESTOR_EVENTOS,PROPIETARIO_ESPACIOS,USUARIO',
-    };
-  
-    localStorage.setItem('usuario', JSON.stringify(invitado));
-
-    navigate('/');
-  }
-
-  const handleLogin = async () => {
-    console.log(username, password)
-    if (!username) {
-      setErrorMessage('Nombre de usuario es obligatorio')
-    } else if (!password) {
-      setErrorMessage('Contraseña es obligatoria')
+  const handleLogin = async (usuario = username, contraseña = password) => {
+    console.log(usuario, contraseña);
+    if (!usuario) {
+      setErrorMessage('Nombre de usuario es obligatorio');
+    } else if (!contraseña) {
+      setErrorMessage('Contraseña es obligatoria');
     } else {
       try {
         const response = await fetch('http://localhost:8080/api/auth/login', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: new URLSearchParams({
-            usuario: username,
-            contraseña: password
-          }).toString()
-        })
+            usuario: usuario,
+            contraseña: contraseña,
+          }).toString(),
+          credentials: 'include',
+        });
 
         if (!response.ok) {
-          setErrorMessage('Credenciales incorrectas o error en el servidor.')
-          return
+          if (response.status === 401) {
+            setErrorMessage('Credenciales incorrectas. Inténtalo nuevamente.');
+            return;
+          } 
+          setErrorMessage('Error en el servidor.');
+          return;
         }
 
-        const data = await response.json()
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('nombre', data.nombreUsuario)
-        localStorage.setItem('usuario', data.idUsuario)
-        localStorage.setItem('rol', data.rolesUsuario)
-        navigate('/')
+        const data = await response.json();
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('nombre', data.nombreUsuario);
+        localStorage.setItem('usuario', data.idUsuario);
+        localStorage.setItem('rol', data.rolesUsuario);
+        navigate('/home');
       } catch (error) {
-        setErrorMessage(
-          'Hubo un problema al intentar iniciar sesión. Inténtalo nuevamente.'
-        )
-        console.error('Error:', error)
+        setErrorMessage('Hubo un problema al intentar iniciar sesión. Inténtalo nuevamente.');
+        console.error('Error:', error);
       }
     }
-  }
+  };
 
+  //TODO: Ver como hacerlo
   const handleGithubLogin = () => {
-    console.log('Iniciar sesión con GitHub')
+    console.log('Iniciar sesión con GitHub');
 
-    window.location.href =
-      'http://localhost:8080/api/oauth2/authorization/github'
-  }
+    window.location.href = 'http://localhost:8080/api/oauth2/authorization/github';
+  };
 
   return (
     <div className="login">
@@ -97,21 +86,21 @@ function Login() {
 
         {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
-        <Button variant="primary" onClick={handleLogin} >
+        <Button variant="primary" onClick={() => handleLogin()}>
           Iniciar sesión
         </Button>
-        
-        <Button variant="secondary" onClick={handleGithubLogin} >
+
+        <Button variant="secondary" onClick={handleGithubLogin}>
           <FaGithub className="me-2" />
           Iniciar sesión con GitHub
         </Button>
 
-        <Button variant="primary" onClick={handleLoginInvitado} >
-          Iniciar sesión como invitado
+        <Button variant="warning" onClick={() => handleLogin('admin', 'admin123')}>
+          Acceder como Admin
         </Button>
       </Form>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

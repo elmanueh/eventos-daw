@@ -1,0 +1,199 @@
+// Estáticos
+export const espaciosEstaticos = [
+  {
+    id: "1",
+    nombre: "Auditorio Central",
+    descripcion: "Espacio amplio con sistema de sonido y proyector HD, ideal para conferencias y eventos académicos.",
+    propietario: "admin",
+    capacidad: 200,
+    direccion: "Av. Universidad 123",
+    estado: "ACTIVO",
+  },
+  {
+    id: "2",
+    nombre: "Sala Creativa",
+    descripcion: "Ideal para sesiones de brainstorming, equipada con pizarras y mobiliario flexible.",
+    propietario: "admin",
+    capacidad: 20,
+    direccion: "Edificio B, segundo piso",
+    estado: "CERRADO_TEMPORALMENTE",
+  },
+  {
+    id: "3",
+    nombre: "Espacio de Coworking",
+    descripcion: "Ambiente colaborativo para freelancers y emprendedores con Wi-Fi de alta velocidad.",
+    propietario: "admin",
+    capacidad: 30,
+    direccion: "Sector Innovación, planta baja",
+    estado: "ACTIVO",
+  },
+  {
+    id: "4",
+    nombre: "Laboratorio de Fabricación Digital",
+    descripcion: "Equipado con impresoras 3D, cortadoras láser y estaciones de soldadura. Ideal para prototipado rápido.",
+    propietario: "Universidad Central",
+    capacidad: 15,
+    direccion: "Edificio C, tercer piso",
+    estado: "ACTIVO",
+  },
+  {
+    id: "5",
+    nombre: "Sala de Videoconferencias",
+    descripcion: "Espacio con cámaras HD, micrófonos direccionales y pantallas para videollamadas profesionales.",
+    propietario: "Universidad Central",
+    capacidad: 8,
+    direccion: "Edificio A, oficina 210",
+    estado: "CERRADO_TEMPORALMENTE",
+  },
+  {
+    id: "6",
+    nombre: "Terraza Verde",
+    descripcion: "Área al aire libre con vegetación y zonas de descanso, ideal para reuniones informales y pausas activas.",
+    propietario: "Universidad Central",
+    capacidad: 25,
+    direccion: "Azotea del edificio B",
+    estado: "ACTIVO",
+  },
+  {
+    id: "7",
+    nombre: "Mini Auditorio",
+    descripcion: "Espacio con butacas plegables y equipo audiovisual, ideal para charlas y presentaciones pequeñas.",
+    propietario: "Universidad Central",
+    capacidad: 50,
+    direccion: "Edificio D, subsuelo",
+    estado: "CERRADO_TEMPORALMENTE",
+  }
+];
+
+export const eventosEstaticos = [
+  {
+    id: "e1",
+    nombre: "Charla de Innovación",
+    descripcion: "Descubre cómo aplicar metodologías ágiles en proyectos tecnológicos modernos.",
+    organizador: "Centro de Innovación",
+    numPlazas: 100,
+    cancelado: false,
+    categoria: "CHARLA",
+    ocupacion: {
+      fecha: "2025-04-20",
+      lugar: "Auditorio Central"
+    }
+  },
+  {
+    id: "e2",
+    nombre: "Taller de Prototipado Rápido",
+    descripcion: "Aprende a usar impresoras 3D y herramientas digitales para construir tus ideas.",
+    organizador: "Fablab Universitario",
+    numPlazas: 25,
+    cancelado: false,
+    categoria: "TALLER",
+    ocupacion: {
+      fecha: "2025-05-02",
+      lugar: "Laboratorio de Fabricación Digital"
+    }
+  },
+  {
+    id: "e3",
+    nombre: "Hackathon de IA",
+    descripcion: "48 horas para desarrollar soluciones innovadoras con inteligencia artificial.",
+    organizador: "Departamento de Computación",
+    numPlazas: 80,
+    cancelado: false,
+    categoria: "HACKATHON",
+    ocupacion: {
+      fecha: "2025-05-10",
+      lugar: "Coworking Space"
+    }
+  },
+  {
+    id: "e4",
+    nombre: "Conferencia de Ciberseguridad",
+    descripcion: "Expertos internacionales hablarán sobre los desafíos de la seguridad digital en 2025.",
+    organizador: "Red de Seguridad Informática",
+    numPlazas: 150,
+    cancelado: true,
+    categoria: "CONFERENCIA",
+    ocupacion: {
+      fecha: "2025-04-30",
+      lugar: "Mini Auditorio"
+    }
+  },
+  {
+    id: "e5",
+    nombre: "Seminario de Marketing Digital",
+    descripcion: "Las mejores estrategias de marketing para el año 2025. Aprende de expertos en la industria.",
+    organizador: "Marketing Solutions",
+    numPlazas: 200,
+    cancelado: false,
+    categoria: "SEMINARIO",
+    ocupacion: {
+      fecha: "2025-06-05",
+      lugar: "Sala Creativa"
+    }
+  },
+  {
+    id: "e6",
+    nombre: "Workshop de UX/UI Design",
+    descripcion: "Aprende a crear interfaces de usuario increíbles y centradas en la experiencia.",
+    organizador: "Design Studio",
+    numPlazas: 50,
+    cancelado: false,
+    categoria: "WORKSHOP",
+    ocupacion: {
+      fecha: "2025-06-12",
+      lugar: "Espacio de Coworking"
+    }
+  },
+  {
+    id: "e7",
+    nombre: "Competencia de Robótica",
+    descripcion: "Equipos de todo el mundo competirán en desafíos de robótica de última tecnología.",
+    organizador: "Tech Robotics",
+    numPlazas: 30,
+    cancelado: false,
+    categoria: "COMPETENCIA",
+    ocupacion: {
+      fecha: "2025-07-15",
+      lugar: "Laboratorio de Robótica"
+    }
+  },
+  {
+    id: "e8",
+    nombre: "Feria de Empleo y Networking",
+    descripcion: "Conoce a las empresas más innovadoras en el mercado y encuentra tu próximo empleo.",
+    organizador: "Red de Empleadores",
+    numPlazas: 500,
+    cancelado: false,
+    categoria: "FERIA",
+    ocupacion: {
+      fecha: "2025-08-10",
+      lugar: "Auditorio Principal"
+    }
+  },
+  {
+    id: "e9",
+    nombre: "Ciclo de Cine Digital",
+    descripcion: "Un festival con lo mejor del cine independiente y digital. ¡No te lo puedes perder!",
+    organizador: "Cine Digital",
+    numPlazas: 150,
+    cancelado: false,
+    categoria: "CINE",
+    ocupacion: {
+      fecha: "2025-06-25",
+      lugar: "Sala de Cine"
+    }
+  },
+  {
+    id: "e10",
+    nombre: "Encuentro de Innovación y Tecnología",
+    descripcion: "Una jornada de intercambio de ideas y proyectos tecnológicos entre líderes de la industria.",
+    organizador: "Tech Leaders",
+    numPlazas: 300,
+    cancelado: false,
+    categoria: "ENCUENTRO",
+    ocupacion: {
+      fecha: "2025-07-20",
+      lugar: "Espacio de Coworking"
+    }
+  }
+];
