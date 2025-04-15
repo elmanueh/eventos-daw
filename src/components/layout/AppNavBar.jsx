@@ -30,15 +30,15 @@ function AppNavbar() {
   const nombre = usuario?.nombre || 'NADA';
 
   return (
-    <Navbar bg="dark" variant="dark" fixed="top" expand="lg" className="px-3">
+    <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="/">
+        <Navbar.Brand className="d-flex align-items-center" href="/">
           <img
             src={logo}
             alt="Logo de la Web"
             width="40"
             height="40"
-            className="d-inline-block align-top me-2"
+            className="me-2"
           />
           Eventy
         </Navbar.Brand>
@@ -87,12 +87,6 @@ function AppNavbar() {
                     </div>
                   </div>
                 </Dropdown.ItemText>
-
-                <Dropdown.Divider />
-
-                <Dropdown.Item onClick={handleLogout} className="text-danger">
-                  <strong>Cerrar sesión</strong>
-                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown> 
 

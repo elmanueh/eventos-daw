@@ -6,7 +6,7 @@ const EspacioCard = ({ espacio }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/espacio/${espacio.id}`);
+    navigate(`/espacios/${espacio.id}`);
   };
 
   return (
@@ -54,10 +54,16 @@ const EspacioCard = ({ espacio }) => {
           </span>
         )}
 
-        <ul className="list-unstyled small text-muted" style={{ marginTop: "1rem" }}>
-          <li>📍 {espacio.direccion}</li>
-          <li>👥 Capacidad: {espacio.capacidad}</li>
-        </ul>
+        <div className="small text-muted" style={{ marginTop: "1rem" }}>
+          <div>
+            <span>📍</span>
+            <span className="ms-3">{espacio.direccion}</span>
+          </div>
+          <div>
+            <span>👥</span>
+            <span className="ms-2">Capacidad: {espacio.capacidad}</span>
+          </div>
+        </div>
       </Card.Body>
     </Card>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
-import EspacioCard from '../components/EspacioCard';
-import { espaciosEstaticos } from "../data/estaticos";
+import EspacioCard from '../../components/cards/EspacioCard';
+import { espaciosEstaticos } from "../../data/estaticos";
 
 const MisEspacios = () => {
   const [misEspacios, setMisEspacios] = useState(() => 
@@ -70,23 +70,25 @@ const MisEspacios = () => {
   const espaciosCerrados = misEspacios.filter(espacio => espacio.estado === 'CERRADO_TEMPORALMENTE');
 
   return (
-    <Container className="py-4 d-flex flex-column gap-4">
-      <h2 className="text-center">Mis Espacios</h2>
+    <Container className="py-4 d-flex flex-column gap-2">
+      <h1 className="text-center">Mis Espacios</h1>
 
       <Button variant="primary" onClick={handleAddEspacio} className="ms-auto">
         Crear Espacio
       </Button>
 
       <h4>Activos</h4>
-      <Row className="pb-5">
+      <Row className="pb-3">
         {espaciosActivos.length > 0 ? (
           espaciosActivos.map((espacio) => (
-            <Col key={espacio.id} xs={12} sm={6} md={4} lg={3} xl={3}>
-              <EspacioCard espacio={espacio} />
-              <Button variant="warning" onClick={() => handleEditEspacio(espacio)} className="mt-2">Editar</Button>
-              <Button variant="danger" onClick={() => handleChangeEstado(espacio.id)} className="mt-2 ms-2">
-                Cerrar Temporalmente
-              </Button>
+            <Col key={espacio.id} xs={12} sm={6} md={4} lg={3} xl={3} className="mb-4">
+              <div>
+                <EspacioCard espacio={espacio} />
+                <Button variant="warning" onClick={() => handleEditEspacio(espacio)} className="mt-2">Editar</Button>
+                <Button variant="danger" onClick={() => handleChangeEstado(espacio.id)} className="mt-2 ms-2">
+                  Cerrar Temporalmente
+                </Button>
+              </div>
             </Col>
           ))
         ) : (
@@ -111,7 +113,6 @@ const MisEspacios = () => {
         )}
       </Row>
 
-      {/* Modal para crear o editar espacio */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>{editando ? 'Editar Espacio' : 'Añadir Nuevo Espacio'}</Modal.Title>

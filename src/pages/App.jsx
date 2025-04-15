@@ -1,12 +1,16 @@
 import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import AppNavbar from '../components/AppNavbar';
-import Footer from '../components/Footer';
-import Espacios from './Espacios';
-import Eventos from './Eventos';
-import Inicio from './Inicio';
-import Login from './Login';
-import MisEspacios from './MisEspacios';
+import AppNavbar from '../components/layout/AppNavbar';
+import Footer from '../components/layout/Footer';
+import Login from './auth/Login';
+import EspacioDetalle from './espacios/EspacioDetalle';
+import Espacios from './espacios/Espacios';
+import MisEspacios from './espacios/MisEspacios';
+import EventoDetalle from './eventos/EventoDetalle';
+import Eventos from './eventos/Eventos';
+import MisEventos from './eventos/MisEventos';
+import Home from './home/Home';
+import MisReservas from './reservas/MisReservas';
 
 function App() {
   return (
@@ -17,12 +21,18 @@ function App() {
           <Route path="/" element={<PrivateRouteLogin element={<RedirectToMainApp />} />} />
           <Route path="/login" element={<PrivateRouteLogin element={<Login />} />} />
 
-          <Route path="/home" element={<PrivateRouteProtected element={<Inicio />} />} />
+          <Route path="/home" element={<PrivateRouteProtected element={<Home />} />} />
 
           <Route path="/espacios" element={<PrivateRouteProtected element={<Espacios />}  />} />
+          <Route path="/espacios/:id" element={<EspacioDetalle />} />
+
           <Route path="/eventos" element={<PrivateRouteProtected element={<Eventos />} />} />
+          <Route path="/eventos/:id" element={<EventoDetalle />} />
 
           <Route path="/mis-espacios" element={<PrivateRouteProtected element={<MisEspacios />} />} />
+          <Route path='/mis-eventos' element={<PrivateRouteProtected element={<MisEventos />} />} />
+
+          <Route path="/mis-reservas" element={<PrivateRouteProtected element={<MisReservas />} />} />
           
           <Route path="*" element={<PrivateRouteProtected element={<Navigate to="/home" />} />} />
         </Routes>

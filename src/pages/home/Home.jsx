@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
-import EspacioCard from "../components/EspacioCard";
-import EventoCard from "../components/EventoCard";
-import { espaciosEstaticos, eventosEstaticos } from "../data/estaticos";
+import EspacioCard from "../../components/cards/EspacioCard";
+import EventoCard from "../../components/cards/EventoCard";
+import { espaciosEstaticos, eventosEstaticos } from "../../data/estaticos";
 
-const Inicio = () => {
+const Home = () => {
   const [eventos, setEventos] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -119,4 +119,4 @@ const Inicio = () => {
   );
 };
 
-export default Inicio;
+export default Home;

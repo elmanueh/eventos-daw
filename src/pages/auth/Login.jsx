@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap';
 import { FaGithub } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import '../css/Login.css';
+import '../../css/Login.css';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -45,6 +45,9 @@ function Login() {
         localStorage.setItem('nombre', data.nombreUsuario);
         localStorage.setItem('usuario', data.idUsuario);
         localStorage.setItem('rol', data.rolesUsuario);
+        
+        //TODO: Al navegar a home, no se recarga NavBar (Quizas usar un Provider)
+
         navigate('/home');
       } catch (error) {
         setErrorMessage('Hubo un problema al intentar iniciar sesión. Inténtalo nuevamente.');

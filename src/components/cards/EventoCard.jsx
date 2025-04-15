@@ -6,7 +6,7 @@ const EventoCard = ({ evento }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/evento/${evento.id}`);
+    navigate(`/eventos/${evento.id}`);
   };
 
   return (
@@ -32,12 +32,6 @@ const EventoCard = ({ evento }) => {
             ? evento.nombre.substring(0, 20) + "..."
             : evento.nombre}
         </Card.Title>
-
-        <Card.Subtitle className="mb-2 text-muted" style={{ fontSize: "1rem" }}>
-          {evento.organizador.length > 30
-            ? evento.organizador.substring(0, 30) + "..."
-            : evento.organizador}
-        </Card.Subtitle>
 
         <Card.Text className="text-muted fs-6">
           {evento.descripcion.length > 60
@@ -69,12 +63,25 @@ const EventoCard = ({ evento }) => {
           </span>
         )}
 
-        <ul className="list-unstyled small text-muted" style={{ marginTop: "1rem" }}>
-          <li>📅 {evento.ocupacion.fecha}</li>
-          <li>📍 {evento.ocupacion.lugar}</li>
-          <li>👥 Plazas: {evento.numPlazas}</li>
-          <li>🏷️ {evento.categoria}</li>
-        </ul>
+        <div className="small text-muted" style={{ marginTop: "1rem" }}>
+          <div>
+            <span>📍</span>
+            <span className="ms-3">{evento.ocupacion.espacioFisico}</span>
+          </div>
+          <div>
+            <span>📅</span>
+            <span className="ms-2">Fecha: {evento.ocupacion.fechaInicio}</span>
+          </div>
+          <div>
+            <span>👥</span>
+            <span className="ms-2">Plazas: {evento.numPlazas}</span>
+          </div>
+          <div>
+            <span>🏷️</span>
+            <span className="ms-2">Categoría: {evento.categoria}</span>
+          </div>
+        </div>
+
       </Card.Body>
     </Card>
   );
