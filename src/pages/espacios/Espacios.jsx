@@ -29,22 +29,26 @@ const Espacios = () => {
       <h1 className="mb-5 text-center">Espacios Físicos disponibles</h1>
 
       {getCurrentPageEspacios().length === 0 ? (
-        <p className="text-center">No hay espacios disponibles.</p>
+        <div style={{ marginBottom: '100px' }}>
+          <p>No hay espacios disponibles.</p>
+        </div>
       ) : (
-        <Row className="g-4">
-          {getCurrentPageEspacios().map((espacio) => (
-            <Col key={espacio.id} xs={12} sm={6} md={4} lg={3} xl={3}>
-              <EspacioCard espacio={espacio} />
-            </Col>
-          ))}
-        </Row>
-      )}
+        <>
+          <Row className="g-4">
+            {getCurrentPageEspacios().map((espacio) => (
+              <Col key={espacio.id} xs={12} sm={6} md={4} lg={3} xl={3}>
+                <EspacioCard espacio={espacio} />
+              </Col>
+            ))}
+          </Row>
 
-      <Paginacion
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+          <Paginacion
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          />
+        </>    
+      )}
     </Container>
   );
 };

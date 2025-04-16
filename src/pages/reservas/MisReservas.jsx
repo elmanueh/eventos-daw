@@ -67,42 +67,48 @@ const MisReservas = () => {
       </Button>
 
       <h3>Activas</h3>
-      <Row>
-        {getPaginatedActivos().length > 0 ? (
-          getPaginatedActivos().map(reserva => (
-            <Col key={reserva.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
-              <ReservaCard reserva={reserva} />
-            </Col>
-          ))
-        ) : (
+      {getPaginatedActivos().length > 0 ? (
+        <>
+          <Row>
+            {getPaginatedActivos().map(reserva => (
+              <Col key={reserva.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+                <ReservaCard reserva={reserva} />
+              </Col>
+            ))}
+          </Row>
+          <Paginacion
+            totalPages={totalPagesActivos}
+            currentPage={currentPageActivos}
+            setCurrentPage={setCurrentPageActivos}
+          />
+        </>
+      ) : (
+        <div style={{ marginBottom: '100px' }}>
           <p>No hay reservas activas.</p>
-        )}
-      </Row>
-
-      <Paginacion
-        totalPages={totalPagesActivos}
-        currentPage={currentPageActivos}
-        setCurrentPage={setCurrentPageActivos}
-      />
+        </div>
+      )}
 
       <h3>Canceladas</h3>
-      <Row>
-        {getPaginatedCerrados().length > 0 ? (
-          getPaginatedCerrados().map(reserva => (
-            <Col key={reserva.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
-              <ReservaCard reserva={reserva} />
-            </Col>
-          ))
-        ) : (
-          <p>No hay reservas canceladas.</p>
-        )}
-      </Row>
-
-      <Paginacion
+      {getPaginatedCerrados().length > 0 ? (
+        <>
+          <Row>
+            {getPaginatedCerrados().map(reserva => (
+              <Col key={reserva.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+                <ReservaCard reserva={reserva} />
+              </Col>
+            ))}
+          </Row>
+          <Paginacion
         totalPages={totalPagesCerrados}
         currentPage={currentPageCerrados}
         setCurrentPage={setCurrentPageCerrados}
       />
+        </>
+      ) : (
+        <div style={{ marginBottom: '100px' }}>
+          <p>No hay reservas canceladas.</p>
+        </div>
+      )}
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>

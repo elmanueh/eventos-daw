@@ -29,8 +29,11 @@ const Espacios = () => {
       <h1 className="mb-5 text-center">Eventos disponibles</h1>
 
       {getCurrentPageEventos().length === 0 ? (
-        <p className="text-center">No hay eventos disponibles.</p>
+        <div style={{ marginBottom: '100px' }}>
+          <p>No hay eventos disponibles.</p>
+        </div>
       ) : (
+        <>
         <Row className="g-4">
           {getCurrentPageEventos().map((evento) => (
             <Col key={evento.id} xs={12} sm={6} md={4} lg={3} xl={3}>
@@ -38,13 +41,13 @@ const Espacios = () => {
             </Col>
           ))}
         </Row>
+        <Paginacion
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </>
       )}
-
-      <Paginacion
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
     </Container>
   );
 };

@@ -2,8 +2,6 @@
 
 - Al paginar, que salte arriba de la sección
 
-- Arreglar paginación cuando está vacío
-
 - Crear cards desde 0, sin usar componentes ya creados
 
 - Desde evento, al mostrar el nombre del espacio, poder clickear a ver el espacio

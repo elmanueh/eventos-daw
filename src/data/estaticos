@@ -1,3 +1,15 @@
+/*export const espaciosEstaticos = [
+
+];
+
+export const eventosEstaticos = [
+
+];
+
+export const reservasEstaticas = [
+
+];*/
+
 export const espaciosEstaticos = [
   {
     id: "1",

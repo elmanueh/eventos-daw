@@ -101,47 +101,57 @@ const MisEventos = () => {
       </Button>
 
       <h3>Activos</h3>
-      <Row>
-        {getPaginatedActivos().length > 0 ? (
-          getPaginatedActivos().map(evento => (
-            <Col key={evento.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
-              <EventoCard evento={evento} />
-              <Button variant="warning" onClick={() => handleEditEvento(evento)} className="mt-2">Editar</Button>
-              <Button variant="danger" onClick={() => handleChangeEstado(evento.id)} className="mt-2 ms-2">
-                Cancelar
-              </Button>
-            </Col>
-          ))
-        ) : (
+      {getPaginatedActivos().length > 0 ? (
+        <>
+          <Row>
+            {getPaginatedActivos().map(evento => (
+              <Col key={evento.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+                <EventoCard evento={evento} />
+                <Button variant="warning" onClick={() => handleEditEvento(evento)} className="mt-2">
+                  Editar
+                </Button>
+                <Button variant="danger" onClick={() => handleChangeEstado(evento.id)} className="mt-2 ms-2">
+                  Cancelar
+                </Button>
+              </Col>
+            ))}
+          </Row>
+          <Paginacion
+            currentPage={currentPageActivos}
+            totalPages={totalPagesActivos}
+            onPageChange={(page) => setCurrentPageActivos(page)}
+          />
+        </>
+      ) : (
+        <div style={{ marginBottom: '100px' }}>
           <p>No hay eventos activos.</p>
-        )}
-      </Row>
-
-      <Paginacion
-        currentPage={currentPageActivos}
-        totalPages={totalPagesActivos}
-        onPageChange={(page) => setCurrentPageActivos(page)}
-      />
+        </div>
+      )}
 
       <h3>Cancelados</h3>
-      <Row>
-        {getPaginatedCerrados().length > 0 ? (
-          getPaginatedCerrados().map(evento => (
-            <Col key={evento.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
-              <EventoCard evento={evento} />
-              <Button variant="warning" onClick={() => handleEditEvento(evento)} className="mt-2">Editar</Button>
-            </Col>
-          ))
-        ) : (
+      {getPaginatedCerrados().length > 0 ? (
+        <>
+          <Row>
+            {getPaginatedCerrados().map(evento => (
+              <Col key={evento.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+                <EventoCard evento={evento} />
+                <Button variant="warning" onClick={() => handleEditEvento(evento)} className="mt-2">
+                  Editar
+                </Button>
+              </Col>
+            ))}
+          </Row>
+          <Paginacion
+            currentPage={currentPageCerrados}
+            totalPages={totalPagesCerrados}
+            onPageChange={(page) => setCurrentPageCerrados(page)}
+          />
+        </>
+      ) : (
+        <div style={{ marginBottom: '100px' }}>
           <p>No hay eventos cancelados.</p>
-        )}
-      </Row>
-
-      <Paginacion
-        currentPage={currentPageCerrados}
-        totalPages={totalPagesCerrados}
-        onPageChange={(page) => setCurrentPageCerrados(page)}
-      />
+        </div>
+      )}
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
