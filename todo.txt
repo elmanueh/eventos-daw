@@ -1,14 +1,14 @@
 - Hacer que funcione el fetch de home, e ir quitando todo lo estático
 
-- En MisReserva/MisEspacios/MisEventos poner paginacion
+- Al paginar, que salte arriba de la sección
+
+- Arreglar paginación cuando está vacío
+
+- Crear cards desde 0, sin usar componentes ya creados
 
 - Desde evento, al mostrar el nombre del espacio, poder clickear a ver el espacio
 
 - En los getAll, faltaría permitir los filtros
-
-- Crear cards desde 0, sin usar componentes ya creados
-
-- Al iniciar sesión, al navegar a home, no se recarga NavBar (Hay que hacer f5) (Quizas usar un Provider)
 
 - Los modal de MisReserva/MisEspacios/MisEventos por hacer (tanto crear como editar)
 

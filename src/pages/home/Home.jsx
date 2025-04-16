@@ -104,7 +104,7 @@ const Home = () => {
                   <EventoCard evento={evento} />
                 </div>
               ))}
-              {/* Botón Ver más solo se muestra cuando hay eventos */}
+              
               <div className="text-end">
                 <a href="/eventos" className="btn btn-outline-primary">
                   Ver más

@@ -3,10 +3,13 @@ import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
 import EspacioCard from '../../components/cards/EspacioCard';
 import Paginacion from '../../components/ui/Paginacion';
 import { espaciosEstaticos } from "../../data/estaticos";
+import { useAuth } from '../../context/AuthProvider';
 
 const MisEspacios = () => {
+  const { usuario } = useAuth();
+
   const [misEspacios, setMisEspacios] = useState(() => 
-    espaciosEstaticos.filter(espacio => espacio.propietario === localStorage.getItem('nombre'))
+    espaciosEstaticos.filter(espacio => espacio.propietario === usuario.nombre)
   );
 
   const [currentPageActivos, setCurrentPageActivos] = useState(1);
@@ -17,7 +20,7 @@ const MisEspacios = () => {
   const [nuevoEspacio, setNuevoEspacio] = useState({
     id: '',
     nombre: '',
-    propietario: localStorage.getItem('nombre'),
+    propietario: usuario.nombre,
     capacidad: 0,
     direccion: '',
     longitud: 0,
@@ -45,7 +48,7 @@ const MisEspacios = () => {
     setNuevoEspacio({
       id: '',
       nombre: '',
-      propietario: localStorage.getItem('nombre'),
+      propietario: usuario.nombre,
       capacidad: 0,
       direccion: '',
       longitud: 0,

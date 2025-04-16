@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
 import ReservaCard from '../../components/cards/ReservaCard';
 import Paginacion from '../../components/ui/Paginacion';
+import { useAuth } from '../../context/AuthProvider';
 import { reservasEstaticas } from '../../data/estaticos';
 
 const MisReservas = () => {
-  const usuario = localStorage.getItem('nombre');
+  const { usuario } = useAuth();
+
   const [reservas, setReservas] = useState(
-    reservasEstaticas.filter(res => res.idUsuario === usuario)
+    reservasEstaticas.filter(res => res.idUsuario === usuario.idUsuario)
   );
 
   const [currentPageActivos, setCurrentPageActivos] = useState(1);
@@ -17,7 +19,7 @@ const MisReservas = () => {
   const [showModal, setShowModal] = useState(false);
   const [nuevaReserva, setNuevaReserva] = useState({
     id: '',
-    idUsuario: usuario,
+    idUsuario: usuario.idUsuario,
     plazasReservadas: 1,
     cancelada: false,
     evento: { nombre: '' }
@@ -64,10 +66,10 @@ const MisReservas = () => {
         Crear Reserva
       </Button>
 
-      <h4>Activas</h4>
+      <h3>Activas</h3>
       <Row>
-        {reservasActivas.length > 0 ? (
-          reservasActivas.map(reserva => (
+        {getPaginatedActivos().length > 0 ? (
+          getPaginatedActivos().map(reserva => (
             <Col key={reserva.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
               <ReservaCard reserva={reserva} />
             </Col>
@@ -83,10 +85,10 @@ const MisReservas = () => {
         setCurrentPage={setCurrentPageActivos}
       />
 
-      <h4>Canceladas</h4>
+      <h3>Canceladas</h3>
       <Row>
-        {reservasCanceladas.length > 0 ? (
-          reservasCanceladas.map(reserva => (
+        {getPaginatedCerrados().length > 0 ? (
+          getPaginatedCerrados().map(reserva => (
             <Col key={reserva.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
               <ReservaCard reserva={reserva} />
             </Col>

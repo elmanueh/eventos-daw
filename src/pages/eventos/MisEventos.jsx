@@ -3,10 +3,13 @@ import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
 import EventoCard from '../../components/cards/EventoCard';
 import Paginacion from '../../components/ui/Paginacion';
 import { espaciosEstaticos, eventosEstaticos } from '../../data/estaticos';
+import { useAuth } from '../../context/AuthProvider';
 
 const MisEventos = () => {
+  const { usuario } = useAuth();
+
   const [misEventos, setMisEventos] = useState(() =>
-    eventosEstaticos.filter(evento => evento.organizador === localStorage.getItem('nombre'))
+    eventosEstaticos.filter(evento => evento.organizador === usuario.nombre)
   );
 
   const [currentPageActivos, setCurrentPageActivos] = useState(1);
@@ -18,7 +21,7 @@ const MisEventos = () => {
     id: '',
     nombre: '',
     descripcion: '',
-    organizador: localStorage.getItem('nombre'),
+    organizador: usuario.nombre,
     categoria: '',
     numPlazas: 1,
     fechaInicio: '',
@@ -44,7 +47,7 @@ const MisEventos = () => {
       id: '',
       nombre: '',
       descripcion: '',
-      organizador: localStorage.getItem('nombre'),
+      organizador: usuario.nombre,
       categoria: '',
       numPlazas: 1,
       fechaInicio: '',
@@ -97,7 +100,7 @@ const MisEventos = () => {
         Crear Evento
       </Button>
 
-      <h4>Activos</h4>
+      <h3>Activos</h3>
       <Row>
         {getPaginatedActivos().length > 0 ? (
           getPaginatedActivos().map(evento => (
@@ -120,7 +123,7 @@ const MisEventos = () => {
         onPageChange={(page) => setCurrentPageActivos(page)}
       />
 
-      <h4>Cancelados</h4>
+      <h3>Cancelados</h3>
       <Row>
         {getPaginatedCerrados().length > 0 ? (
           getPaginatedCerrados().map(evento => (
