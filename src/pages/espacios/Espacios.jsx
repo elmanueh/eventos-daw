@@ -7,13 +7,17 @@ import { espaciosEstaticos } from "../../data/estaticos";
 const Espacios = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(8);
+
+  const [espaciosActivos, setMisEspacios] = useState(() => 
+    espaciosEstaticos.filter(espacio => espacio.estado === 'ACTIVO')
+  );
   
-  const totalPages = Math.ceil(espaciosEstaticos.length / pageSize);
+  const totalPages = Math.ceil(espaciosActivos.length / pageSize);
 
   const getCurrentPageEspacios = () => {
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
-    return espaciosEstaticos.slice(startIndex, endIndex);
+    return espaciosActivos.slice(startIndex, endIndex);
   };
 
   const handlePageChange = (pageNumber) => {
@@ -22,7 +26,7 @@ const Espacios = () => {
 
   return (
     <Container className="py-4">
-      <h1 className="mb-5 text-center">Espacios Físicos</h1>
+      <h1 className="mb-5 text-center">Espacios Físicos disponibles</h1>
 
       {getCurrentPageEspacios().length === 0 ? (
         <p className="text-center">No hay espacios disponibles.</p>

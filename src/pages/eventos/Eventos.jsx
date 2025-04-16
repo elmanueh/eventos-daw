@@ -8,12 +8,16 @@ const Espacios = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(8);
 
-  const totalPages = Math.ceil(eventosEstaticos.length / pageSize);
+  const [eventosActivos, setMisEspacios] = useState(() => 
+    eventosEstaticos.filter(evento => evento.cancelado === false)
+  );
+
+  const totalPages = Math.ceil(eventosActivos.length / pageSize);
 
   const getCurrentPageEventos = () => {
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
-    return eventosEstaticos.slice(startIndex, endIndex);
+    return eventosActivos.slice(startIndex, endIndex);
   };
 
   const handlePageChange = (pageNumber) => {
@@ -22,7 +26,7 @@ const Espacios = () => {
 
   return (
     <Container className="py-4">
-      <h1 className="mb-4 text-center">Eventos</h1>
+      <h1 className="mb-5 text-center">Eventos disponibles</h1>
 
       {getCurrentPageEventos().length === 0 ? (
         <p className="text-center">No hay eventos disponibles.</p>

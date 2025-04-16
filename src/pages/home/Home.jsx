@@ -53,7 +53,7 @@ const Home = () => {
         <h2>Espacios físicos (Estáticos)</h2>
 
         <div className="row g-4">
-          {espaciosEstaticos.slice(0, 4).map((espacio) => (
+          {espaciosEstaticos.filter(espacio => espacio.estado === 'ACTIVO').slice(0, 4).map((espacio) => (
             <div key={espacio.id} className="col-12 col-md-6 col-lg-4 col-xl-3">
               <EspacioCard espacio={espacio} />
             </div>
@@ -73,7 +73,7 @@ const Home = () => {
         <h2>Eventos próximos (Estáticos)</h2>
 
         <div className="row g-4">
-          {eventosEstaticos.slice(0, 4).map((evento) => (
+          {eventosEstaticos.filter(evento => evento.cancelado === false).slice(0, 4).map((evento) => (
             <div key={evento.id} className="col-12 col-md-6 col-lg-4 col-xl-3">
               <EventoCard evento={evento} />
             </div>
