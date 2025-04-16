@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
 import EspacioCard from '../../components/cards/EspacioCard';
+import Paginacion from '../../components/ui/Paginacion';
 import { espaciosEstaticos } from "../../data/estaticos";
 
 const MisEspacios = () => {
   const [misEspacios, setMisEspacios] = useState(() => 
     espaciosEstaticos.filter(espacio => espacio.propietario === localStorage.getItem('nombre'))
   );
+
+  const [currentPageActivos, setCurrentPageActivos] = useState(1);
+  const [currentPageCerrados, setCurrentPageCerrados] = useState(1);
+  const [pageSize] = useState(8);
   
   const [showModal, setShowModal] = useState(false);
   const [nuevoEspacio, setNuevoEspacio] = useState({
@@ -69,6 +74,19 @@ const MisEspacios = () => {
   const espaciosActivos = misEspacios.filter(espacio => espacio.estado === 'ACTIVO');
   const espaciosCerrados = misEspacios.filter(espacio => espacio.estado === 'CERRADO_TEMPORALMENTE');
 
+  const totalPagesActivos = Math.ceil(espaciosActivos.length / pageSize);
+  const totalPagesCerrados = Math.ceil(espaciosCerrados.length / pageSize);
+
+  const getPaginatedActivos = () => {
+    const start = (currentPageActivos - 1) * pageSize;
+    return espaciosActivos.slice(start, start + pageSize);
+  };
+
+  const getPaginatedCerrados = () => {
+    const start = (currentPageCerrados - 1) * pageSize;
+    return espaciosCerrados.slice(start, start + pageSize);
+  };
+
   return (
     <Container className="py-4 d-flex flex-column gap-2">
       <h1 className="text-center">Mis Espacios</h1>
@@ -77,10 +95,10 @@ const MisEspacios = () => {
         Crear Espacio
       </Button>
 
-      <h4>Activos</h4>
-      <Row className="pb-3">
-        {espaciosActivos.length > 0 ? (
-          espaciosActivos.map((espacio) => (
+      <h3>Activos</h3>
+      <Row>
+        {getPaginatedActivos().length > 0 ? (
+          getPaginatedActivos().map((espacio) => (
             <Col key={espacio.id} xs={12} sm={6} md={4} lg={3} xl={3} className="mb-4">
               <div>
                 <EspacioCard espacio={espacio} />
@@ -96,22 +114,36 @@ const MisEspacios = () => {
         )}
       </Row>
 
-      <h4>Cerrados Temporalmente</h4>
-      <Row className="pb-5">
-        {espaciosCerrados.length > 0 ? (
-          espaciosCerrados.map((espacio) => (
-            <Col key={espacio.id} xs={12} sm={6} md={4} lg={3} xl={3}>
-              <EspacioCard espacio={espacio} />
-              <Button variant="warning" onClick={() => handleEditEspacio(espacio)} className="mt-2">Editar</Button>
-              <Button variant="success" onClick={() => handleChangeEstado(espacio.id)} className="mt-2 ms-2">
-                Activar
-              </Button>
+      <Paginacion
+        currentPage={currentPageActivos}
+        totalPages={totalPagesActivos}
+        onPageChange={(page) => setCurrentPageActivos(page)}
+      />
+
+      <h3>Cerrados Temporalmente</h3>
+      <Row>
+        {getPaginatedCerrados().length > 0 ? (
+          getPaginatedCerrados().map((espacio) => (
+            <Col key={espacio.id} xs={12} sm={6} md={4} lg={3} xl={3} className="mb-4">
+              <div>
+                <EspacioCard espacio={espacio} />
+                <Button variant="warning" onClick={() => handleEditEspacio(espacio)} className="mt-2">Editar</Button>
+                <Button variant="success" onClick={() => handleChangeEstado(espacio.id)} className="mt-2 ms-2">
+                  Activar
+                </Button>
+              </div>
             </Col>
           ))
         ) : (
           <p>No hay espacios cerrados temporalmente.</p>
         )}
       </Row>
+
+      <Paginacion
+        currentPage={currentPageCerrados}
+        totalPages={totalPagesCerrados}
+        onPageChange={(page) => setCurrentPageCerrados(page)}
+      />
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>

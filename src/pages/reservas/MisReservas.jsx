@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
 import ReservaCard from '../../components/cards/ReservaCard';
+import Paginacion from '../../components/ui/Paginacion';
 import { reservasEstaticas } from '../../data/estaticos';
 
 const MisReservas = () => {
@@ -8,6 +9,10 @@ const MisReservas = () => {
   const [reservas, setReservas] = useState(
     reservasEstaticas.filter(res => res.idUsuario === usuario)
   );
+
+  const [currentPageActivos, setCurrentPageActivos] = useState(1);
+  const [currentPageCerrados, setCurrentPageCerrados] = useState(1);
+  const [pageSize] = useState(8);
 
   const [showModal, setShowModal] = useState(false);
   const [nuevaReserva, setNuevaReserva] = useState({
@@ -38,6 +43,19 @@ const MisReservas = () => {
   const reservasActivas = reservas.filter(r => !r.cancelada);
   const reservasCanceladas = reservas.filter(r => r.cancelada);
 
+  const totalPagesActivos = Math.ceil(reservasActivas.length / pageSize);
+  const totalPagesCerrados = Math.ceil(reservasCanceladas.length / pageSize);
+
+  const getPaginatedActivos = () => {
+    const start = (currentPageActivos - 1) * pageSize;
+    return reservasActivas.slice(start, start + pageSize);
+  };
+
+  const getPaginatedCerrados = () => {
+    const start = (currentPageCerrados - 1) * pageSize;
+    return reservasCanceladas.slice(start, start + pageSize);
+  };
+
   return (
     <Container className="py-4 d-flex flex-column gap-2">
       <h1 className="text-center">Mis Reservas</h1>
@@ -47,7 +65,7 @@ const MisReservas = () => {
       </Button>
 
       <h4>Activas</h4>
-      <Row className="pb-3">
+      <Row>
         {reservasActivas.length > 0 ? (
           reservasActivas.map(reserva => (
             <Col key={reserva.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
@@ -59,8 +77,14 @@ const MisReservas = () => {
         )}
       </Row>
 
+      <Paginacion
+        totalPages={totalPagesActivos}
+        currentPage={currentPageActivos}
+        setCurrentPage={setCurrentPageActivos}
+      />
+
       <h4>Canceladas</h4>
-      <Row className="pb-5">
+      <Row>
         {reservasCanceladas.length > 0 ? (
           reservasCanceladas.map(reserva => (
             <Col key={reserva.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
@@ -71,6 +95,12 @@ const MisReservas = () => {
           <p>No hay reservas canceladas.</p>
         )}
       </Row>
+
+      <Paginacion
+        totalPages={totalPagesCerrados}
+        currentPage={currentPageCerrados}
+        setCurrentPage={setCurrentPageCerrados}
+      />
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>

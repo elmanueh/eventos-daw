@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
 import EventoCard from '../../components/cards/EventoCard';
+import Paginacion from '../../components/ui/Paginacion';
 import { espaciosEstaticos, eventosEstaticos } from '../../data/estaticos';
 
 const MisEventos = () => {
   const [misEventos, setMisEventos] = useState(() =>
     eventosEstaticos.filter(evento => evento.organizador === localStorage.getItem('nombre'))
   );
+
+  const [currentPageActivos, setCurrentPageActivos] = useState(1);
+  const [currentPageCerrados, setCurrentPageCerrados] = useState(1);
+  const [pageSize] = useState(8);
 
   const [showModal, setShowModal] = useState(false);
   const [nuevoEvento, setNuevoEvento] = useState({
@@ -71,6 +76,19 @@ const MisEventos = () => {
   const eventosActivos = misEventos.filter(e => e.cancelado === false);
   const eventosCancelados = misEventos.filter(e => e.cancelado === true);
 
+  const totalPagesActivos = Math.ceil(eventosActivos.length / pageSize);
+  const totalPagesCerrados = Math.ceil(eventosCancelados.length / pageSize);
+
+  const getPaginatedActivos = () => {
+    const start = (currentPageActivos - 1) * pageSize;
+    return eventosActivos.slice(start, start + pageSize);
+  };
+
+  const getPaginatedCerrados = () => {
+    const start = (currentPageCerrados - 1) * pageSize;
+    return eventosCancelados.slice(start, start + pageSize);
+  };
+
   return (
     <Container className="py-4 d-flex flex-column gap-2">
       <h1 className="text-center">Mis Eventos</h1>
@@ -80,9 +98,9 @@ const MisEventos = () => {
       </Button>
 
       <h4>Activos</h4>
-      <Row className="pb-3">
-        {eventosActivos.length > 0 ? (
-          eventosActivos.map(evento => (
+      <Row>
+        {getPaginatedActivos().length > 0 ? (
+          getPaginatedActivos().map(evento => (
             <Col key={evento.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
               <EventoCard evento={evento} />
               <Button variant="warning" onClick={() => handleEditEvento(evento)} className="mt-2">Editar</Button>
@@ -96,10 +114,16 @@ const MisEventos = () => {
         )}
       </Row>
 
+      <Paginacion
+        currentPage={currentPageActivos}
+        totalPages={totalPagesActivos}
+        onPageChange={(page) => setCurrentPageActivos(page)}
+      />
+
       <h4>Cancelados</h4>
-      <Row className="pb-5">
-        {eventosCancelados.length > 0 ? (
-          eventosCancelados.map(evento => (
+      <Row>
+        {getPaginatedCerrados().length > 0 ? (
+          getPaginatedCerrados().map(evento => (
             <Col key={evento.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
               <EventoCard evento={evento} />
               <Button variant="warning" onClick={() => handleEditEvento(evento)} className="mt-2">Editar</Button>
@@ -109,6 +133,12 @@ const MisEventos = () => {
           <p>No hay eventos cancelados.</p>
         )}
       </Row>
+
+      <Paginacion
+        currentPage={currentPageCerrados}
+        totalPages={totalPagesCerrados}
+        onPageChange={(page) => setCurrentPageCerrados(page)}
+      />
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>

@@ -29,7 +29,7 @@ const Paginacion = ({ currentPage, totalPages, onPageChange }) => {
   };
 
   return (
-    <div className="d-flex justify-content-center mt-5 mb-3">
+    <div className="d-flex justify-content-center mt-4 mb-4">
       <Pagination>
         <Pagination.First
           onClick={() => onPageChange(1)}
