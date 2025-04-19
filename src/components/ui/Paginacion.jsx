@@ -1,16 +1,15 @@
-import React from "react";
-import { Pagination } from "react-bootstrap";
+import { Pagination } from 'react-bootstrap'
 
 const Paginacion = ({ currentPage, totalPages, onPageChange }) => {
   const renderPaginationItems = () => {
-    const maxPageItems = 5;
-    const items = [];
+    const maxPageItems = 5
+    const items = []
 
-    let start = Math.max(currentPage - Math.floor(maxPageItems / 2), 1);
-    let end = Math.min(start + maxPageItems - 1, totalPages);
+    let start = Math.max(currentPage - Math.floor(maxPageItems / 2), 1)
+    let end = Math.min(start + maxPageItems - 1, totalPages)
 
     if (end - start < maxPageItems - 1) {
-      start = Math.max(end - maxPageItems + 1, 1);
+      start = Math.max(end - maxPageItems + 1, 1)
     }
 
     for (let i = start; i <= end; i++) {
@@ -22,11 +21,11 @@ const Paginacion = ({ currentPage, totalPages, onPageChange }) => {
         >
           {i}
         </Pagination.Item>
-      );
+      )
     }
 
-    return items;
-  };
+    return items
+  }
 
   return (
     <div className="d-flex justify-content-center mt-4 mb-4">
@@ -50,7 +49,7 @@ const Paginacion = ({ currentPage, totalPages, onPageChange }) => {
         />
       </Pagination>
     </div>
-  );
-};
+  )
+}
 
-export default Paginacion;
+export default Paginacion

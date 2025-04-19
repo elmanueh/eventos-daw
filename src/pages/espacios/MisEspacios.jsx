@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
-import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
-import EspacioCard from '../../components/cards/EspacioCard';
-import Paginacion from '../../components/ui/Paginacion';
-import { espaciosEstaticos } from "../../data/estaticos";
-import { useAuth } from '../../context/AuthProvider';
+import { useState } from 'react'
+import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
+import EspacioCard from '../../components/cards/EspacioCard'
+import Paginacion from '../../components/ui/Paginacion'
+import { useAuth } from '../../context/AuthProvider'
+import { espaciosEstaticos } from '../../data/estaticos'
 
 const MisEspacios = () => {
-  const { usuario } = useAuth();
+  const { usuario } = useAuth()
 
-  const [misEspacios, setMisEspacios] = useState(() => 
-    espaciosEstaticos.filter(espacio => espacio.propietario === usuario.nombre)
-  );
+  const [misEspacios, setMisEspacios] = useState(() =>
+    espaciosEstaticos.filter(
+      (espacio) => espacio.propietario === usuario.nombre
+    )
+  )
 
-  const [currentPageActivos, setCurrentPageActivos] = useState(1);
-  const [currentPageCerrados, setCurrentPageCerrados] = useState(1);
-  const [pageSize] = useState(8);
-  
-  const [showModal, setShowModal] = useState(false);
+  const [currentPageActivos, setCurrentPageActivos] = useState(1)
+  const [currentPageCerrados, setCurrentPageCerrados] = useState(1)
+  const [pageSize] = useState(8)
+
+  const [showModal, setShowModal] = useState(false)
   const [nuevoEspacio, setNuevoEspacio] = useState({
     id: '',
     nombre: '',
@@ -26,25 +28,26 @@ const MisEspacios = () => {
     longitud: 0,
     latitud: 0,
     descripcion: ''
-  });
-  
-  const [editando, setEditando] = useState(false);
+  })
+
+  const [editando, setEditando] = useState(false)
 
   const handleChangeEstado = (id) => {
-    const updatedEspacios = misEspacios.map(espacio => {
+    const updatedEspacios = misEspacios.map((espacio) => {
       if (espacio.id === id) {
-        return { 
-          ...espacio, 
-          estado: espacio.estado === 'ACTIVO' ? 'CERRADO_TEMPORALMENTE' : 'ACTIVO' 
-        };
+        return {
+          ...espacio,
+          estado:
+            espacio.estado === 'ACTIVO' ? 'CERRADO_TEMPORALMENTE' : 'ACTIVO'
+        }
       }
-      return espacio;
-    });
-    setMisEspacios(updatedEspacios);
-  };
+      return espacio
+    })
+    setMisEspacios(updatedEspacios)
+  }
 
   const handleAddEspacio = () => {
-    setShowModal(true);
+    setShowModal(true)
     setNuevoEspacio({
       id: '',
       nombre: '',
@@ -54,41 +57,52 @@ const MisEspacios = () => {
       longitud: 0,
       latitud: 0,
       descripcion: ''
-    });
-    setEditando(false);
-  };
+    })
+    setEditando(false)
+  }
 
   const handleEditEspacio = (espacio) => {
-    setShowModal(true);
-    setNuevoEspacio(espacio);
-    setEditando(true);
-  };
+    setShowModal(true)
+    setNuevoEspacio(espacio)
+    setEditando(true)
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (editando) {
-      setMisEspacios(misEspacios.map(espacio => espacio.id === nuevoEspacio.id ? nuevoEspacio : espacio));
+      setMisEspacios(
+        misEspacios.map((espacio) =>
+          espacio.id === nuevoEspacio.id ? nuevoEspacio : espacio
+        )
+      )
     } else {
-      setMisEspacios([...misEspacios, { ...nuevoEspacio, id: Date.now().toString() }]);
+      setMisEspacios([
+        ...misEspacios,
+        { ...nuevoEspacio, id: Date.now().toString() }
+      ])
     }
-    setShowModal(false);
-  };
+    setShowModal(false)
+  }
 
-  const espaciosActivos = misEspacios.filter(espacio => espacio.estado === 'ACTIVO');
-  const espaciosCerrados = misEspacios.filter(espacio => espacio.estado === 'CERRADO_TEMPORALMENTE');
+  const espaciosActivos = misEspacios.filter(
+    (espacio) => espacio.estado === 'ACTIVO'
+  )
+  const espaciosCerrados = misEspacios.filter(
+    (espacio) => espacio.estado === 'CERRADO_TEMPORALMENTE'
+  )
 
-  const totalPagesActivos = Math.ceil(espaciosActivos.length / pageSize);
-  const totalPagesCerrados = Math.ceil(espaciosCerrados.length / pageSize);
+  const totalPagesActivos = Math.ceil(espaciosActivos.length / pageSize)
+  const totalPagesCerrados = Math.ceil(espaciosCerrados.length / pageSize)
 
   const getPaginatedActivos = () => {
-    const start = (currentPageActivos - 1) * pageSize;
-    return espaciosActivos.slice(start, start + pageSize);
-  };
+    const start = (currentPageActivos - 1) * pageSize
+    return espaciosActivos.slice(start, start + pageSize)
+  }
 
   const getPaginatedCerrados = () => {
-    const start = (currentPageCerrados - 1) * pageSize;
-    return espaciosCerrados.slice(start, start + pageSize);
-  };
+    const start = (currentPageCerrados - 1) * pageSize
+    return espaciosCerrados.slice(start, start + pageSize)
+  }
 
   return (
     <Container className="py-4 d-flex flex-column gap-2">
@@ -103,11 +117,29 @@ const MisEspacios = () => {
         <>
           <Row>
             {getPaginatedActivos().map((espacio) => (
-              <Col key={espacio.id} xs={12} sm={6} md={4} lg={3} xl={3} className="mb-4">
+              <Col
+                key={espacio.id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                xl={3}
+                className="mb-4"
+              >
                 <div>
                   <EspacioCard espacio={espacio} />
-                  <Button variant="warning" onClick={() => handleEditEspacio(espacio)} className="mt-2">Editar</Button>
-                  <Button variant="danger" onClick={() => handleChangeEstado(espacio.id)} className="mt-2 ms-2">
+                  <Button
+                    variant="warning"
+                    onClick={() => handleEditEspacio(espacio)}
+                    className="mt-2"
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleChangeEstado(espacio.id)}
+                    className="mt-2 ms-2"
+                  >
                     Cerrar Temporalmente
                   </Button>
                 </div>
@@ -131,11 +163,29 @@ const MisEspacios = () => {
         <>
           <Row>
             {getPaginatedCerrados().map((espacio) => (
-              <Col key={espacio.id} xs={12} sm={6} md={4} lg={3} xl={3} className="mb-4">
+              <Col
+                key={espacio.id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                xl={3}
+                className="mb-4"
+              >
                 <div>
                   <EspacioCard espacio={espacio} />
-                  <Button variant="warning" onClick={() => handleEditEspacio(espacio)} className="mt-2">Editar</Button>
-                  <Button variant="success" onClick={() => handleChangeEstado(espacio.id)} className="mt-2 ms-2">
+                  <Button
+                    variant="warning"
+                    onClick={() => handleEditEspacio(espacio)}
+                    className="mt-2"
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    variant="success"
+                    onClick={() => handleChangeEstado(espacio.id)}
+                    className="mt-2 ms-2"
+                  >
                     Activar
                   </Button>
                 </div>
@@ -154,10 +204,11 @@ const MisEspacios = () => {
         </div>
       )}
 
-
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>{editando ? 'Editar Espacio' : 'Añadir Nuevo Espacio'}</Modal.Title>
+          <Modal.Title>
+            {editando ? 'Editar Espacio' : 'Añadir Nuevo Espacio'}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -166,7 +217,9 @@ const MisEspacios = () => {
               <Form.Control
                 type="text"
                 value={nuevoEspacio.nombre}
-                onChange={(e) => setNuevoEspacio({ ...nuevoEspacio, nombre: e.target.value })}
+                onChange={(e) =>
+                  setNuevoEspacio({ ...nuevoEspacio, nombre: e.target.value })
+                }
                 required
               />
             </Form.Group>
@@ -176,7 +229,12 @@ const MisEspacios = () => {
               <Form.Control
                 type="number"
                 value={nuevoEspacio.capacidad}
-                onChange={(e) => setNuevoEspacio({ ...nuevoEspacio, capacidad: e.target.value })}
+                onChange={(e) =>
+                  setNuevoEspacio({
+                    ...nuevoEspacio,
+                    capacidad: e.target.value
+                  })
+                }
                 required
               />
             </Form.Group>
@@ -186,7 +244,12 @@ const MisEspacios = () => {
               <Form.Control
                 as="textarea"
                 value={nuevoEspacio.descripcion}
-                onChange={(e) => setNuevoEspacio({ ...nuevoEspacio, descripcion: e.target.value })}
+                onChange={(e) =>
+                  setNuevoEspacio({
+                    ...nuevoEspacio,
+                    descripcion: e.target.value
+                  })
+                }
                 rows={3}
                 required
               />
@@ -199,7 +262,12 @@ const MisEspacios = () => {
                   <Form.Control
                     type="text"
                     value={nuevoEspacio.direccion}
-                    onChange={(e) => setNuevoEspacio({ ...nuevoEspacio, direccion: e.target.value })}
+                    onChange={(e) =>
+                      setNuevoEspacio({
+                        ...nuevoEspacio,
+                        direccion: e.target.value
+                      })
+                    }
                     required
                   />
                 </Form.Group>
@@ -210,7 +278,12 @@ const MisEspacios = () => {
                     type="number"
                     step="any"
                     value={nuevoEspacio.longitud}
-                    onChange={(e) => setNuevoEspacio({ ...nuevoEspacio, longitud: parseFloat(e.target.value) })}
+                    onChange={(e) =>
+                      setNuevoEspacio({
+                        ...nuevoEspacio,
+                        longitud: parseFloat(e.target.value)
+                      })
+                    }
                     required
                   />
                 </Form.Group>
@@ -221,7 +294,12 @@ const MisEspacios = () => {
                     type="number"
                     step="any"
                     value={nuevoEspacio.latitud}
-                    onChange={(e) => setNuevoEspacio({ ...nuevoEspacio, latitud: parseFloat(e.target.value) })}
+                    onChange={(e) =>
+                      setNuevoEspacio({
+                        ...nuevoEspacio,
+                        latitud: parseFloat(e.target.value)
+                      })
+                    }
                     required
                   />
                 </Form.Group>
@@ -235,7 +313,7 @@ const MisEspacios = () => {
         </Modal.Body>
       </Modal>
     </Container>
-  );
-};
+  )
+}
 
-export default MisEspacios;
+export default MisEspacios

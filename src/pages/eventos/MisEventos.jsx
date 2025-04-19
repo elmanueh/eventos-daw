@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
-import EventoCard from '../../components/cards/EventoCard';
-import Paginacion from '../../components/ui/Paginacion';
-import { espaciosEstaticos, eventosEstaticos } from '../../data/estaticos';
-import { useAuth } from '../../context/AuthProvider';
+import { useState } from 'react'
+import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
+import EventoCard from '../../components/cards/EventoCard'
+import Paginacion from '../../components/ui/Paginacion'
+import { useAuth } from '../../context/AuthProvider'
+import { espaciosEstaticos, eventosEstaticos } from '../../data/estaticos'
 
 const MisEventos = () => {
-  const { usuario } = useAuth();
+  const { usuario } = useAuth()
 
   const [misEventos, setMisEventos] = useState(() =>
-    eventosEstaticos.filter(evento => evento.organizador === usuario.nombre)
-  );
+    eventosEstaticos.filter((evento) => evento.organizador === usuario.nombre)
+  )
 
-  const [currentPageActivos, setCurrentPageActivos] = useState(1);
-  const [currentPageCerrados, setCurrentPageCerrados] = useState(1);
-  const [pageSize] = useState(8);
+  const [currentPageActivos, setCurrentPageActivos] = useState(1)
+  const [currentPageCerrados, setCurrentPageCerrados] = useState(1)
+  const [pageSize] = useState(8)
 
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
   const [nuevoEvento, setNuevoEvento] = useState({
     id: '',
     nombre: '',
@@ -28,21 +28,19 @@ const MisEventos = () => {
     fechaFin: '',
     espacioFisico: '',
     cancelado: false
-  });
+  })
 
-  const [editando, setEditando] = useState(false);
+  const [editando, setEditando] = useState(false)
 
   const handleChangeEstado = (id) => {
-    const actualizados = misEventos.map(evento =>
-      evento.id === id
-        ? { ...evento, cancelado: !evento.cancelado }
-        : evento
-    );
-    setMisEventos(actualizados);
-  };
+    const actualizados = misEventos.map((evento) =>
+      evento.id === id ? { ...evento, cancelado: !evento.cancelado } : evento
+    )
+    setMisEventos(actualizados)
+  }
 
   const handleAddEvento = () => {
-    setShowModal(true);
+    setShowModal(true)
     setNuevoEvento({
       id: '',
       nombre: '',
@@ -54,18 +52,18 @@ const MisEventos = () => {
       fechaFin: '',
       espacioFisico: '',
       cancelado: false
-    });
-    setEditando(false);
-  };
+    })
+    setEditando(false)
+  }
 
   const handleEditEvento = (evento) => {
-    setShowModal(true);
-    setNuevoEvento(evento);
-    setEditando(true);
-  };
+    setShowModal(true)
+    setNuevoEvento(evento)
+    setEditando(true)
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     /*
     if (editando) {
       setMisEventos(misEventos.map(evento => evento.id === nuevoEvento.id ? nuevoEvento : evento));
@@ -73,24 +71,24 @@ const MisEventos = () => {
       setMisEventos([...misEventos, { ...nuevoEvento, id: Date.now().toString() }]);
     }
     */
-    setShowModal(false);
-  };
+    setShowModal(false)
+  }
 
-  const eventosActivos = misEventos.filter(e => e.cancelado === false);
-  const eventosCancelados = misEventos.filter(e => e.cancelado === true);
+  const eventosActivos = misEventos.filter((e) => e.cancelado === false)
+  const eventosCancelados = misEventos.filter((e) => e.cancelado === true)
 
-  const totalPagesActivos = Math.ceil(eventosActivos.length / pageSize);
-  const totalPagesCerrados = Math.ceil(eventosCancelados.length / pageSize);
+  const totalPagesActivos = Math.ceil(eventosActivos.length / pageSize)
+  const totalPagesCerrados = Math.ceil(eventosCancelados.length / pageSize)
 
   const getPaginatedActivos = () => {
-    const start = (currentPageActivos - 1) * pageSize;
-    return eventosActivos.slice(start, start + pageSize);
-  };
+    const start = (currentPageActivos - 1) * pageSize
+    return eventosActivos.slice(start, start + pageSize)
+  }
 
   const getPaginatedCerrados = () => {
-    const start = (currentPageCerrados - 1) * pageSize;
-    return eventosCancelados.slice(start, start + pageSize);
-  };
+    const start = (currentPageCerrados - 1) * pageSize
+    return eventosCancelados.slice(start, start + pageSize)
+  }
 
   return (
     <Container className="py-4 d-flex flex-column gap-2">
@@ -104,13 +102,28 @@ const MisEventos = () => {
       {getPaginatedActivos().length > 0 ? (
         <>
           <Row>
-            {getPaginatedActivos().map(evento => (
-              <Col key={evento.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+            {getPaginatedActivos().map((evento) => (
+              <Col
+                key={evento.id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                className="mb-4"
+              >
                 <EventoCard evento={evento} />
-                <Button variant="warning" onClick={() => handleEditEvento(evento)} className="mt-2">
+                <Button
+                  variant="warning"
+                  onClick={() => handleEditEvento(evento)}
+                  className="mt-2"
+                >
                   Editar
                 </Button>
-                <Button variant="danger" onClick={() => handleChangeEstado(evento.id)} className="mt-2 ms-2">
+                <Button
+                  variant="danger"
+                  onClick={() => handleChangeEstado(evento.id)}
+                  className="mt-2 ms-2"
+                >
                   Cancelar
                 </Button>
               </Col>
@@ -132,10 +145,21 @@ const MisEventos = () => {
       {getPaginatedCerrados().length > 0 ? (
         <>
           <Row>
-            {getPaginatedCerrados().map(evento => (
-              <Col key={evento.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+            {getPaginatedCerrados().map((evento) => (
+              <Col
+                key={evento.id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                className="mb-4"
+              >
                 <EventoCard evento={evento} />
-                <Button variant="warning" onClick={() => handleEditEvento(evento)} className="mt-2">
+                <Button
+                  variant="warning"
+                  onClick={() => handleEditEvento(evento)}
+                  className="mt-2"
+                >
                   Editar
                 </Button>
               </Col>
@@ -155,20 +179,24 @@ const MisEventos = () => {
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>{editando ? 'Editar Evento' : 'Crear Nuevo Evento'}</Modal.Title>
+          <Modal.Title>
+            {editando ? 'Editar Evento' : 'Crear Nuevo Evento'}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             {!editando && (
-                <Form.Group controlId="nombre">
+              <Form.Group controlId="nombre">
                 <Form.Label>Nombre</Form.Label>
                 <Form.Control
-                    type="text"
-                    value={nuevoEvento.nombre}
-                    onChange={(e) => setNuevoEvento({ ...nuevoEvento, nombre: e.target.value })}
-                    required
+                  type="text"
+                  value={nuevoEvento.nombre}
+                  onChange={(e) =>
+                    setNuevoEvento({ ...nuevoEvento, nombre: e.target.value })
+                  }
+                  required
                 />
-                </Form.Group>
+              </Form.Group>
             )}
 
             <Form.Group controlId="descripcion" className="mt-3">
@@ -177,27 +205,37 @@ const MisEventos = () => {
                 as="textarea"
                 rows={3}
                 value={nuevoEvento.descripcion}
-                onChange={(e) => setNuevoEvento({ ...nuevoEvento, descripcion: e.target.value })}
+                onChange={(e) =>
+                  setNuevoEvento({
+                    ...nuevoEvento,
+                    descripcion: e.target.value
+                  })
+                }
                 required
               />
             </Form.Group>
 
             {!editando && (
-                <Form.Group controlId="categoria" className="mt-3">
+              <Form.Group controlId="categoria" className="mt-3">
                 <Form.Label>Categoría</Form.Label>
                 <Form.Select
-                    value={nuevoEvento.categoria}
-                    onChange={(e) => setNuevoEvento({ ...nuevoEvento, categoria: e.target.value })}
-                    required
+                  value={nuevoEvento.categoria}
+                  onChange={(e) =>
+                    setNuevoEvento({
+                      ...nuevoEvento,
+                      categoria: e.target.value
+                    })
+                  }
+                  required
                 >
-                    <option value="">Selecciona una categoría</option>
-                    <option value="ACADEMICOS">Académicos</option>
-                    <option value="CULTURALES">Culturales</option>
-                    <option value="ENTRETENIMIENTO">Entretenimiento</option>
-                    <option value="DEPORTES">Deportes</option>
-                    <option value="OTROS">Otros</option>
+                  <option value="">Selecciona una categoría</option>
+                  <option value="ACADEMICOS">Académicos</option>
+                  <option value="CULTURALES">Culturales</option>
+                  <option value="ENTRETENIMIENTO">Entretenimiento</option>
+                  <option value="DEPORTES">Deportes</option>
+                  <option value="OTROS">Otros</option>
                 </Form.Select>
-                </Form.Group>
+              </Form.Group>
             )}
 
             <Form.Group controlId="numPlazas" className="mt-3">
@@ -206,7 +244,12 @@ const MisEventos = () => {
                 type="number"
                 min={1}
                 value={nuevoEvento.numPlazas}
-                onChange={(e) => setNuevoEvento({ ...nuevoEvento, numPlazas: parseInt(e.target.value) })}
+                onChange={(e) =>
+                  setNuevoEvento({
+                    ...nuevoEvento,
+                    numPlazas: parseInt(e.target.value)
+                  })
+                }
                 required
               />
             </Form.Group>
@@ -216,7 +259,12 @@ const MisEventos = () => {
               <Form.Control
                 type="datetime-local"
                 value={nuevoEvento.fechaInicio}
-                onChange={(e) => setNuevoEvento({ ...nuevoEvento, fechaInicio: e.target.value })}
+                onChange={(e) =>
+                  setNuevoEvento({
+                    ...nuevoEvento,
+                    fechaInicio: e.target.value
+                  })
+                }
                 required
               />
             </Form.Group>
@@ -226,7 +274,9 @@ const MisEventos = () => {
               <Form.Control
                 type="datetime-local"
                 value={nuevoEvento.fechaFin}
-                onChange={(e) => setNuevoEvento({ ...nuevoEvento, fechaFin: e.target.value })}
+                onChange={(e) =>
+                  setNuevoEvento({ ...nuevoEvento, fechaFin: e.target.value })
+                }
                 required
               />
             </Form.Group>
@@ -235,7 +285,12 @@ const MisEventos = () => {
               <Form.Label>Espacio Físico</Form.Label>
               <Form.Select
                 value={nuevoEvento.espacioFisico}
-                onChange={(e) => setNuevoEvento({ ...nuevoEvento, espacioFisico: e.target.value })}
+                onChange={(e) =>
+                  setNuevoEvento({
+                    ...nuevoEvento,
+                    espacioFisico: e.target.value
+                  })
+                }
                 required
               >
                 <option value="">Selecciona un espacio</option>
@@ -254,7 +309,7 @@ const MisEventos = () => {
         </Modal.Body>
       </Modal>
     </Container>
-  );
-};
+  )
+}
 
-export default MisEventos;
+export default MisEventos

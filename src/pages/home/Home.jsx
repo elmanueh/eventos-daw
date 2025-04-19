@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
-import EspacioCard from "../../components/cards/EspacioCard";
-import EventoCard from "../../components/cards/EventoCard";
-import { espaciosEstaticos, eventosEstaticos } from "../../data/estaticos";
+import { useEffect, useState } from 'react'
+import { Container } from 'react-bootstrap'
+import EspacioCard from '../../components/cards/EspacioCard'
+import EventoCard from '../../components/cards/EventoCard'
+import { espaciosEstaticos, eventosEstaticos } from '../../data/estaticos'
 
 const Home = () => {
-  const [eventos, setEventos] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [eventos, setEventos] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   // Cargar los datos dinámicamente usando fetch
   useEffect(() => {
@@ -15,35 +15,37 @@ const Home = () => {
       try {
         const params = new URLSearchParams({
           mes: 6,
-          año: 2025,
-        });
-        
-        const response = await fetch(`http://localhost:8080/api/eventos?${params.toString()}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
-        
+          año: 2025
+        })
+
+        const response = await fetch(
+          `http://localhost:8080/api/eventos?${params.toString()}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+          }
+        )
 
         if (!eventosResponse.ok) {
-          throw new Error("Error al obtener los datos");
+          throw new Error('Error al obtener los datos')
         }
 
-        const data = await response.json();
-        console.log(data);
+        const data = await response.json()
+        console.log(data)
 
-        setEventos(data);
+        setEventos(data)
       } catch (error) {
-        setError(error.message);
+        setError(error.message)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   return (
     <Container className="py-4 d-flex flex-column gap-4">
@@ -53,11 +55,17 @@ const Home = () => {
         <h2>Espacios físicos (Estáticos)</h2>
 
         <div className="row g-4">
-          {espaciosEstaticos.filter(espacio => espacio.estado === 'ACTIVO').slice(0, 4).map((espacio) => (
-            <div key={espacio.id} className="col-12 col-md-6 col-lg-4 col-xl-3">
-              <EspacioCard espacio={espacio} />
-            </div>
-          ))}
+          {espaciosEstaticos
+            .filter((espacio) => espacio.estado === 'ACTIVO')
+            .slice(0, 4)
+            .map((espacio) => (
+              <div
+                key={espacio.id}
+                className="col-12 col-md-6 col-lg-4 col-xl-3"
+              >
+                <EspacioCard espacio={espacio} />
+              </div>
+            ))}
         </div>
 
         <div className="text-end">
@@ -67,17 +75,21 @@ const Home = () => {
         </div>
       </section>
 
-
-      
       <section className="d-flex flex-column gap-4">
         <h2>Eventos próximos (Estáticos)</h2>
 
         <div className="row g-4">
-          {eventosEstaticos.filter(evento => evento.cancelado === false).slice(0, 4).map((evento) => (
-            <div key={evento.id} className="col-12 col-md-6 col-lg-4 col-xl-3">
-              <EventoCard evento={evento} />
-            </div>
-          ))}
+          {eventosEstaticos
+            .filter((evento) => evento.cancelado === false)
+            .slice(0, 4)
+            .map((evento) => (
+              <div
+                key={evento.id}
+                className="col-12 col-md-6 col-lg-4 col-xl-3"
+              >
+                <EventoCard evento={evento} />
+              </div>
+            ))}
         </div>
 
         <div className="text-end">
@@ -100,11 +112,14 @@ const Home = () => {
           ) : (
             <>
               {eventos.map((evento) => (
-                <div key={evento.id} className="col-12 col-md-6 col-lg-4 col-xl-3">
+                <div
+                  key={evento.id}
+                  className="col-12 col-md-6 col-lg-4 col-xl-3"
+                >
                   <EventoCard evento={evento} />
                 </div>
               ))}
-              
+
               <div className="text-end">
                 <a href="/eventos" className="btn btn-outline-primary">
                   Ver más
@@ -114,9 +129,8 @@ const Home = () => {
           )}
         </div>
       </section>
-
     </Container>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

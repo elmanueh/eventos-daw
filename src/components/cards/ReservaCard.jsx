@@ -1,5 +1,4 @@
-import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap'
 
 const ReservaCard = ({ reserva }) => {
   return (
@@ -18,7 +17,7 @@ const ReservaCard = ({ reserva }) => {
               style={{
                 fontSize: '0.85rem',
                 padding: '0.2rem 0.6rem',
-                textTransform: 'uppercase',
+                textTransform: 'uppercase'
               }}
             >
               Cancelada
@@ -29,7 +28,7 @@ const ReservaCard = ({ reserva }) => {
               style={{
                 fontSize: '0.85rem',
                 padding: '0.2rem 0.6rem',
-                textTransform: 'uppercase',
+                textTransform: 'uppercase'
               }}
             >
               Activa
@@ -45,7 +44,7 @@ const ReservaCard = ({ reserva }) => {
         </div>
       </Card.Body>
     </Card>
-  );
-};
+  )
+}
 
-export default ReservaCard;
+export default ReservaCard

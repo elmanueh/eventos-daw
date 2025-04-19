@@ -1,29 +1,28 @@
-import React from "react";
-import { Card } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Card } from "react-bootstrap"
+import { useNavigate } from "react-router"
 
 const EspacioCard = ({ espacio }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleClick = () => {
-    navigate(`/espacios/${espacio.id}`);
-  };
+    navigate(`/espacios/${espacio.id}`)
+  }
 
   return (
     <Card
       className="h-100 shadow-sm rounded-4"
       style={{
         cursor: "pointer",
-        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        transition: "transform 0.3s ease, box-shadow 0.3s ease"
       }}
       onClick={handleClick}
       onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "scale(1.05)";
-        e.currentTarget.style.boxShadow = "0px 8px 15px rgba(0, 0, 0, 0.1)";
+        e.currentTarget.style.transform = "scale(1.05)"
+        e.currentTarget.style.boxShadow = "0px 8px 15px rgba(0, 0, 0, 0.1)"
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "scale(1)";
-        e.currentTarget.style.boxShadow = "none";
+        e.currentTarget.style.transform = "scale(1)"
+        e.currentTarget.style.boxShadow = "none"
       }}
     >
       <Card.Body>
@@ -47,7 +46,7 @@ const EspacioCard = ({ espacio }) => {
             style={{
               fontSize: "0.85rem",
               padding: "0.2rem 0.6rem",
-              textTransform: "uppercase",
+              textTransform: "uppercase"
             }}
           >
             {espacio.estado}
@@ -66,7 +65,7 @@ const EspacioCard = ({ espacio }) => {
         </div>
       </Card.Body>
     </Card>
-  );
-};
+  )
+}
 
-export default EspacioCard;
+export default EspacioCard

@@ -1,28 +1,28 @@
-import React, { useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import EspacioCard from "../../components/cards/EspacioCard";
-import Paginacion from "../../components/ui/Paginacion";
-import { espaciosEstaticos } from "../../data/estaticos";
+import { useState } from 'react'
+import { Col, Container, Row } from 'react-bootstrap'
+import EspacioCard from '../../components/cards/EspacioCard'
+import Paginacion from '../../components/ui/Paginacion'
+import { espaciosEstaticos } from '../../data/estaticos'
 
 const Espacios = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize] = useState(8)
 
-  const [espaciosActivos, setMisEspacios] = useState(() => 
-    espaciosEstaticos.filter(espacio => espacio.estado === 'ACTIVO')
-  );
-  
-  const totalPages = Math.ceil(espaciosActivos.length / pageSize);
+  const [espaciosActivos, setMisEspacios] = useState(() =>
+    espaciosEstaticos.filter((espacio) => espacio.estado === 'ACTIVO')
+  )
+
+  const totalPages = Math.ceil(espaciosActivos.length / pageSize)
 
   const getCurrentPageEspacios = () => {
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    return espaciosActivos.slice(startIndex, endIndex);
-  };
+    const startIndex = (currentPage - 1) * pageSize
+    const endIndex = startIndex + pageSize
+    return espaciosActivos.slice(startIndex, endIndex)
+  }
 
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+    setCurrentPage(pageNumber)
+  }
 
   return (
     <Container className="py-4">
@@ -43,14 +43,14 @@ const Espacios = () => {
           </Row>
 
           <Paginacion
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
           />
-        </>    
+        </>
       )}
     </Container>
-  );
-};
+  )
+}
 
-export default Espacios;
+export default Espacios

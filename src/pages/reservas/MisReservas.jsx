@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
-import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
-import ReservaCard from '../../components/cards/ReservaCard';
-import Paginacion from '../../components/ui/Paginacion';
-import { useAuth } from '../../context/AuthProvider';
-import { reservasEstaticas } from '../../data/estaticos';
+import { useState } from 'react'
+import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
+import ReservaCard from '../../components/cards/ReservaCard'
+import Paginacion from '../../components/ui/Paginacion'
+import { useAuth } from '../../context/AuthProvider'
+import { reservasEstaticas } from '../../data/estaticos'
 
 const MisReservas = () => {
-  const { usuario } = useAuth();
+  const { usuario } = useAuth()
 
   const [reservas, setReservas] = useState(
-    reservasEstaticas.filter(res => res.idUsuario === usuario.idUsuario)
-  );
+    reservasEstaticas.filter((res) => res.idUsuario === usuario.idUsuario)
+  )
 
-  const [currentPageActivos, setCurrentPageActivos] = useState(1);
-  const [currentPageCerrados, setCurrentPageCerrados] = useState(1);
-  const [pageSize] = useState(8);
+  const [currentPageActivos, setCurrentPageActivos] = useState(1)
+  const [currentPageCerrados, setCurrentPageCerrados] = useState(1)
+  const [pageSize] = useState(8)
 
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
   const [nuevaReserva, setNuevaReserva] = useState({
     id: '',
     idUsuario: usuario.idUsuario,
     plazasReservadas: 1,
     cancelada: false,
     evento: { nombre: '' }
-  });
+  })
 
   const handleOpenModal = () => {
     setNuevaReserva({
@@ -32,31 +32,31 @@ const MisReservas = () => {
       plazasReservadas: 1,
       cancelada: false,
       evento: { nombre: '' }
-    });
-    setShowModal(true);
-  };
+    })
+    setShowModal(true)
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    setShowModal(false);
-  };
+    setShowModal(false)
+  }
 
-  const reservasActivas = reservas.filter(r => !r.cancelada);
-  const reservasCanceladas = reservas.filter(r => r.cancelada);
+  const reservasActivas = reservas.filter((r) => !r.cancelada)
+  const reservasCanceladas = reservas.filter((r) => r.cancelada)
 
-  const totalPagesActivos = Math.ceil(reservasActivas.length / pageSize);
-  const totalPagesCerrados = Math.ceil(reservasCanceladas.length / pageSize);
+  const totalPagesActivos = Math.ceil(reservasActivas.length / pageSize)
+  const totalPagesCerrados = Math.ceil(reservasCanceladas.length / pageSize)
 
   const getPaginatedActivos = () => {
-    const start = (currentPageActivos - 1) * pageSize;
-    return reservasActivas.slice(start, start + pageSize);
-  };
+    const start = (currentPageActivos - 1) * pageSize
+    return reservasActivas.slice(start, start + pageSize)
+  }
 
   const getPaginatedCerrados = () => {
-    const start = (currentPageCerrados - 1) * pageSize;
-    return reservasCanceladas.slice(start, start + pageSize);
-  };
+    const start = (currentPageCerrados - 1) * pageSize
+    return reservasCanceladas.slice(start, start + pageSize)
+  }
 
   return (
     <Container className="py-4 d-flex flex-column gap-2">
@@ -70,8 +70,15 @@ const MisReservas = () => {
       {getPaginatedActivos().length > 0 ? (
         <>
           <Row>
-            {getPaginatedActivos().map(reserva => (
-              <Col key={reserva.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+            {getPaginatedActivos().map((reserva) => (
+              <Col
+                key={reserva.id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                className="mb-4"
+              >
                 <ReservaCard reserva={reserva} />
               </Col>
             ))}
@@ -92,17 +99,24 @@ const MisReservas = () => {
       {getPaginatedCerrados().length > 0 ? (
         <>
           <Row>
-            {getPaginatedCerrados().map(reserva => (
-              <Col key={reserva.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+            {getPaginatedCerrados().map((reserva) => (
+              <Col
+                key={reserva.id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                className="mb-4"
+              >
                 <ReservaCard reserva={reserva} />
               </Col>
             ))}
           </Row>
           <Paginacion
-        totalPages={totalPagesCerrados}
-        currentPage={currentPageCerrados}
-        setCurrentPage={setCurrentPageCerrados}
-      />
+            totalPages={totalPagesCerrados}
+            currentPage={currentPageCerrados}
+            setCurrentPage={setCurrentPageCerrados}
+          />
         </>
       ) : (
         <div style={{ marginBottom: '100px' }}>
@@ -154,7 +168,7 @@ const MisReservas = () => {
         </Modal.Body>
       </Modal>
     </Container>
-  );
-};
+  )
+}
 
-export default MisReservas;
+export default MisReservas
