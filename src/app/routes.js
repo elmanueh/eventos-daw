@@ -18,42 +18,51 @@ const appRouter = createBrowserRouter([
     children: [
       { index: true, Component: HomeMain },
       {
-        path: 'login',
-        Component: Login
-      },
-      {
         path: 'home',
         Component: Home
       },
       {
         path: 'espacios',
-        Component: Espacios
-      },
-      {
-        path: 'espacios/:id',
-        Component: EspacioDetalle
+        children: [
+          { index: true, Component: Espacios },
+          {
+            path: ':id',
+            Component: EspacioDetalle
+          }
+        ]
       },
       {
         path: 'eventos',
-        Component: Eventos
+        children: [
+          { index: true, Component: Eventos },
+          {
+            path: ':id',
+            Component: EventoDetalle
+          }
+        ]
       },
       {
-        path: 'eventos/:id',
-        Component: EventoDetalle
-      },
-      {
-        path: 'mis-espacios',
-        Component: MisEspacios
-      },
-      {
-        path: 'mis-eventos',
-        Component: MisEventos
-      },
-      {
-        path: 'mis-reservas',
-        Component: MisReservas
+        path: 'dashboard',
+        children: [
+          {
+            path: 'espacios',
+            Component: MisEspacios
+          },
+          {
+            path: 'eventos',
+            Component: MisEventos
+          },
+          {
+            path: 'reservas',
+            Component: MisReservas
+          }
+        ]
       }
     ]
+  },
+  {
+    path: '/login',
+    Component: Login
   }
 ])
 
