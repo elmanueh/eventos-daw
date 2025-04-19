@@ -3,8 +3,11 @@
     "source.organizeImports": "explicit",
     "source.removeUnusedImports": "explicit"
   },
-  "material-icon-theme.activeIconPack": "react",
+  "editor.tabSize": 2,
   "javascript.preferences.importModuleSpecifier": "non-relative",
+  "material-icon-theme.activeIconPack": "react",
   "prettier.printWidth": 80,
-  "prettier.singleQuote": true
+  "prettier.singleQuote": true,
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false
 }
