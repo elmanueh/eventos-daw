@@ -1,16 +1,15 @@
+import appRouter from '@/routes'
 import { AuthProvider } from '@context/AuthProvider'
-import App from '@pages/App'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router'
+import ReactDOM from 'react-dom/client'
+import { RouterProvider } from 'react-router'
 
-createRoot(document.getElementById('root')).render(
+const root = document.getElementById('root')
+ReactDOM.createRoot(root).render(
   <StrictMode>
     <AuthProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <RouterProvider router={appRouter} />
     </AuthProvider>
   </StrictMode>
 )
