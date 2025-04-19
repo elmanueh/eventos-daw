@@ -1,12 +1,31 @@
-# React + Vite
+# Eventos DAW
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Proyecto dedicado a la gestión de eventos para el curso de Desarrollo de Aplicaciones Web (DAW). Esta plataforma permite crear, visualizar y administrar eventos de manera sencilla y eficiente. Está diseñada para ser utilizada por organizadores de eventos, asistentes y administradores.
 
-Currently, two official plugins are available:
+## 1.1. Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Gestión de eventos: creación, edición y eliminación
+- Sistema de registro para asistentes
+- Panel de administración
 
-## Expanding the ESLint configuration
+## 1.2. Tecnologías utilizadas
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Frontend: HTML5, CSS, JavaScript, React
+- Backend: Node.js, Express
+- Autenticación: JWT, Cookie
+
+## 1.3. Instalación
+
+```bash
+# Clonar el repositorio
+git clone https://github.com/tuusuario/eventos-daw.git
+
+# Acceder al directorio
+cd eventos-daw
+
+# Instalar dependencias
+npm install
+
+# Iniciar el servidor
+npm start
+```
