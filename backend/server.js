@@ -8,7 +8,7 @@ const __dirname = dirname(__filename)
 const app = express()
 const port = 3000
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, '../public')))
 
 // Configuración de Handlebars
 app.set('views', path.join(__dirname, 'views')) // Carpeta con las vistas de HBS

@@ -1,4 +1,4 @@
-import appRouter from '@/routes'
+import appRouter from '@/app/routes'
 import { AuthProvider } from '@context/AuthProvider'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { StrictMode } from 'react'

@@ -1,5 +1,5 @@
-import HomeMain from '@/HomeMain'
-import Layout from '@/Layout'
+import HomeMain from '@pages/HomeMain'
+import Layout from '@pages/Layout'
 import Login from '@pages/auth/Login'
 import EspacioDetalle from '@pages/espacios/EspacioDetalle'
 import Espacios from '@pages/espacios/Espacios'

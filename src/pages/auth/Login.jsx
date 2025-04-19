@@ -1,5 +1,5 @@
 import { useAuth } from '@context/AuthProvider'
-import 'css/login.css'
+import '@pages/auth/login.css'
 import { useState } from 'react'
 import { Alert, Button, Form } from 'react-bootstrap'
 import { FaGithub } from 'react-icons/fa'
