@@ -1,9 +1,9 @@
+import { useAuth } from '@context/AuthProvider'
+import 'css/login.css'
 import { useState } from 'react'
 import { Alert, Button, Form } from 'react-bootstrap'
 import { FaGithub } from 'react-icons/fa'
 import { useNavigate } from 'react-router'
-import { useAuth } from '../../context/AuthProvider'
-import '../../css/Login.css'
 
 function Login() {
   const [username, setUsername] = useState('')

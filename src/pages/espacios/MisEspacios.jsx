@@ -1,9 +1,9 @@
+import { espaciosEstaticos } from '@/data/estaticos'
+import EspacioCard from '@components/cards/EspacioCard'
+import Paginacion from '@components/ui/Paginacion'
+import { useAuth } from '@context/AuthProvider'
 import { useState } from 'react'
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
-import EspacioCard from '../../components/cards/EspacioCard'
-import Paginacion from '../../components/ui/Paginacion'
-import { useAuth } from '../../context/AuthProvider'
-import { espaciosEstaticos } from '../../data/estaticos'
 
 const MisEspacios = () => {
   const { usuario } = useAuth()

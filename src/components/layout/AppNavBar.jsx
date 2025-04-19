@@ -1,7 +1,7 @@
+import { useAuth } from '@context/AuthProvider'
 import { Button, Container, Dropdown, Nav, Navbar } from 'react-bootstrap'
 import { FaUserCircle } from 'react-icons/fa'
 import { useLocation, useNavigate } from 'react-router'
-import { useAuth } from '../../context/AuthProvider'
 import logo from '/logo.png'
 
 function AppNavbar() {

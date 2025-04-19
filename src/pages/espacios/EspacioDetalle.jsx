@@ -1,7 +1,7 @@
+import { espaciosEstaticos } from '@/data/estaticos'
+import EspacioCard from '@components/cards/EspacioCard'
 import { Badge, Card, Col, Container, ListGroup, Row } from 'react-bootstrap'
 import { useParams } from 'react-router'
-import EspacioCard from '../../components/cards/EspacioCard'
-import { espaciosEstaticos } from '../../data/estaticos'
 
 const EspacioDetalle = () => {
   const { id } = useParams()

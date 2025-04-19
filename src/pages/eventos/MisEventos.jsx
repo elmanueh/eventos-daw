@@ -1,9 +1,9 @@
+import { espaciosEstaticos, eventosEstaticos } from '@/data/estaticos'
+import EventoCard from '@components/cards/EventoCard'
+import Paginacion from '@components/ui/Paginacion'
+import { useAuth } from '@context/AuthProvider'
 import { useState } from 'react'
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
-import EventoCard from '../../components/cards/EventoCard'
-import Paginacion from '../../components/ui/Paginacion'
-import { useAuth } from '../../context/AuthProvider'
-import { espaciosEstaticos, eventosEstaticos } from '../../data/estaticos'
 
 const MisEventos = () => {
   const { usuario } = useAuth()

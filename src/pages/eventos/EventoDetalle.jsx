@@ -1,7 +1,7 @@
+import { eventosEstaticos } from '@/data/estaticos'
+import EventoCard from '@components/cards/EventoCard'
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
 import { useParams } from 'react-router'
-import EventoCard from '../../components/cards/EventoCard'
-import { eventosEstaticos } from '../../data/estaticos'
 
 const EventoDetalle = () => {
   const { id } = useParams()

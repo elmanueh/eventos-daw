@@ -1,10 +1,10 @@
+import { eventosEstaticos } from '@/data/estaticos'
+import EventoCard from '@components/cards/EventoCard'
+import Paginacion from '@components/ui/Paginacion'
 import { useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import EventoCard from '../../components/cards/EventoCard'
-import Paginacion from '../../components/ui/Paginacion'
-import { eventosEstaticos } from '../../data/estaticos'
 
-const Espacios = () => {
+const Eventos = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize] = useState(8)
 
@@ -52,4 +52,4 @@ const Espacios = () => {
   )
 }
 
-export default Espacios
+export default Eventos

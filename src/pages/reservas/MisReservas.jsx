@@ -1,9 +1,9 @@
+import { reservasEstaticas } from '@/data/estaticos'
+import ReservaCard from '@components/cards/ReservaCard'
+import Paginacion from '@components/ui/Paginacion'
+import { useAuth } from '@context/AuthProvider'
 import { useState } from 'react'
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
-import ReservaCard from '../../components/cards/ReservaCard'
-import Paginacion from '../../components/ui/Paginacion'
-import { useAuth } from '../../context/AuthProvider'
-import { reservasEstaticas } from '../../data/estaticos'
 
 const MisReservas = () => {
   const { usuario } = useAuth()
