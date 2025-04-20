@@ -1,3 +1,5 @@
+import { authLoader } from '@/app/authLoader'
+import { routes, urls } from '@/configs/constant'
 import HomeMain from '@pages/HomeMain'
 import Layout from '@pages/Layout'
 import Login from '@pages/auth/Login'
@@ -9,12 +11,35 @@ import Eventos from '@pages/eventos/Eventos'
 import MisEventos from '@pages/eventos/MisEventos'
 import Home from '@pages/home/Home'
 import MisReservas from '@pages/reservas/MisReservas'
-import { createBrowserRouter } from 'react-router'
+import { createBrowserRouter, redirect } from 'react-router'
+
+function redirectLogin() {
+  const user = localStorage.getItem('user')
+  if (!user && location.pathname !== routes.LOGIN) {
+    return redirect(routes.LOGIN)
+  }
+
+  return null
+}
+
+function redirectApp() {
+  const user = localStorage.getItem('user')
+  if (user && location.pathname === routes.LOGIN) {
+    return redirect(routes.HOME)
+  }
+  return null
+}
 
 const appRouter = createBrowserRouter([
   {
+    path: '/login',
+    Component: Login,
+    loader: redirectApp
+  },
+  {
     path: '/',
     Component: Layout,
+    loader: redirectLogin,
     children: [
       { index: true, Component: HomeMain },
       {
@@ -24,20 +49,30 @@ const appRouter = createBrowserRouter([
       {
         path: 'espacios',
         children: [
-          { index: true, Component: Espacios },
+          {
+            index: true,
+            Component: Espacios,
+            loader: () => authLoader(urls.ESPACIOS)
+          },
           {
             path: ':id',
-            Component: EspacioDetalle
+            Component: EspacioDetalle,
+            loader: ({ params }) => authLoader(urls.ESPACIOS_DET(params.id))
           }
         ]
       },
       {
         path: 'eventos',
         children: [
-          { index: true, Component: Eventos },
+          {
+            index: true,
+            Component: Eventos,
+            loader: () => authLoader(urls.EVENTOS)
+          },
           {
             path: ':id',
-            Component: EventoDetalle
+            Component: EventoDetalle,
+            loader: ({ params }) => authLoader(urls.EVENTOS_DET(params.id))
           }
         ]
       },
@@ -46,23 +81,22 @@ const appRouter = createBrowserRouter([
         children: [
           {
             path: 'espacios',
-            Component: MisEspacios
+            Component: MisEspacios,
+            loader: () => authLoader(urls.ESPACIOS_PRIVADOS)
           },
           {
             path: 'eventos',
-            Component: MisEventos
+            Component: MisEventos,
+            loader: () => authLoader(urls.EVENTOS_PRIVADOS)
           },
           {
             path: 'reservas',
-            Component: MisReservas
+            Component: MisReservas,
+            loader: () => authLoader(urls.RESERVAS_PRIVADAS)
           }
         ]
       }
     ]
-  },
-  {
-    path: '/login',
-    Component: Login
   }
 ])
 

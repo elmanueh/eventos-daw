@@ -1,52 +1,56 @@
-import { useAuth } from '@context/AuthProvider'
+import { routes, urls } from '@/configs/constant'
+import { AuthContext } from '@context/AuthProvider'
 import '@pages/auth/login.css'
-import { useState } from 'react'
-import { Alert, Button, Form } from 'react-bootstrap'
-import { FaGithub } from 'react-icons/fa'
-import { useNavigate } from 'react-router'
+import { useContext } from 'react'
 
-function Login() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
-  const navigate = useNavigate()
-  const { login } = useAuth()
+function showMessageError(message) {
+  const element = document.getElementById('errorMessage')
+  element.innerHTML = message
+  element.classList.remove('d-none')
+}
 
-  const handleLogin = async (usuario = username, contraseña = password) => {
-    if (!usuario) return setErrorMessage('Nombre de usuario es obligatorio')
-    if (!contraseña) return setErrorMessage('Contraseña es obligatoria')
+export default function Login() {
+  const { login } = useContext(AuthContext)
+
+  const handleLogin = async () => {
+    const username = document.getElementById('username').value
+    const password = document.getElementById('password').value
+
+    if (!username) {
+      return showMessageError('El nombre de usuario es obligatorio.')
+    }
+
+    if (!password) {
+      return showMessageError('La contraseña es obligatoria.')
+    }
 
     try {
-      const response = await fetch('http://localhost:8080/api/auth/login', {
+      const response = await fetch(urls.LOGIN, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ usuario, contraseña }),
+        body: new URLSearchParams({ usuario: username, contraseña: password }),
         credentials: 'include'
       })
 
       if (!response.ok) {
-        return setErrorMessage(
+        const errorMessage =
           response.status === 401
             ? 'Credenciales incorrectas.'
             : 'Error en el servidor.'
-        )
+        return showMessageError(errorMessage)
       }
 
-      const data = await response.json()
-      login(data)
-      navigate('/home')
-    } catch (error) {
-      setErrorMessage('Error de conexión. Intenta más tarde.')
-      console.error('Login error:', error)
+      const userData = await response.json()
+      login(userData)
+      window.location.replace(routes.HOME)
+    } catch {
+      showMessageError('Error de conexión. Intenta más tarde.')
     }
   }
 
-  //TODO: Ver como hacerlo
   const handleGithubLogin = () => {
     console.log('Iniciar sesión con GitHub')
-
-    window.location.href =
-      'http://localhost:8080/api/oauth2/authorization/github'
+    window.location.href = urls.GITHUB
 
     // Poner información en el localStorage
     // login(data);
@@ -55,43 +59,31 @@ function Login() {
   return (
     <div className="login">
       <h2>Iniciar sesión</h2>
-      <Form className="d-grid gap-3">
-        <Form.Group controlId="formUsername">
-          <Form.Label>Nombre de usuario</Form.Label>
-          <Form.Control
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </Form.Group>
 
-        <Form.Group controlId="formPassword">
-          <Form.Label>Contraseña</Form.Label>
-          <Form.Control
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
+      <form className="d-grid gap-3">
+        <div className="form-group" id="formUsername">
+          <label htmlFor="username">Nombre de usuario</label>
+          <input type="text" id="username" className="form-control" />
+        </div>
 
-        {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+        <div className="form-group" id="formPassword">
+          <label htmlFor="password">Contraseña</label>
+          <input type="password" id="password" className="form-control" />
+        </div>
 
-        <Button variant="primary" onClick={() => handleLogin()}>
+        <div id="errorMessage" className="alert alert-danger d-none" />
+
+        <button type="button" className="btn btn-primary" onClick={handleLogin}>
           Iniciar sesión
-        </Button>
-        <Button variant="secondary" onClick={handleGithubLogin}>
-          <FaGithub className="me-2" />
-          Iniciar sesión con GitHub
-        </Button>
-        <Button
-          variant="warning"
-          onClick={() => handleLogin('admin', 'admin123')}
+        </button>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={handleGithubLogin}
         >
-          Acceder como Admin
-        </Button>
-      </Form>
+          Iniciar sesión con GitHub
+        </button>
+      </form>
     </div>
   )
 }
-
-export default Login

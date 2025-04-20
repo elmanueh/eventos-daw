@@ -1,5 +1,6 @@
 import { roles, routes } from '@/configs/constant'
-import { useAuth } from '@context/AuthProvider'
+import { AuthContext } from '@context/AuthProvider'
+import { useContext } from 'react'
 import { Button, Container, Dropdown, Nav, Navbar } from 'react-bootstrap'
 import { FaUserCircle } from 'react-icons/fa'
 import { useNavigate } from 'react-router'
@@ -8,9 +9,9 @@ import logo from '/logo.png'
 export default function AppNavbar() {
   const navigate = useNavigate()
 
-  const { usuario, logout } = useAuth()
-  const rolesUsuario = usuario?.roles?.split(',') || []
-  const nombre = usuario?.nombre || ''
+  const { user, logout } = useContext(AuthContext)
+  const rolesUsuario = user?.roles?.split(',') || []
+  const nombre = user?.nombre || ''
 
   const handleLogout = () => {
     logout()

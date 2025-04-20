@@ -1,15 +1,15 @@
 import { reservasEstaticas } from '@/data/estaticos'
 import ReservaCard from '@components/cards/ReservaCard'
 import Paginacion from '@components/ui/Paginacion'
-import { useAuth } from '@context/AuthProvider'
-import { useState } from 'react'
+import { AuthContext } from '@context/AuthProvider'
+import { useContext, useState } from 'react'
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
 
 const MisReservas = () => {
-  const { usuario } = useAuth()
+  const { user } = useContext(AuthContext)
 
   const [reservas, setReservas] = useState(
-    reservasEstaticas.filter((res) => res.idUsuario === usuario.idUsuario)
+    reservasEstaticas.filter((res) => res.idUsuario === user.idUsuario)
   )
 
   const [currentPageActivos, setCurrentPageActivos] = useState(1)
@@ -19,7 +19,7 @@ const MisReservas = () => {
   const [showModal, setShowModal] = useState(false)
   const [nuevaReserva, setNuevaReserva] = useState({
     id: '',
-    idUsuario: usuario.idUsuario,
+    idUsuario: user.idUsuario,
     plazasReservadas: 1,
     cancelada: false,
     evento: { nombre: '' }
@@ -28,7 +28,7 @@ const MisReservas = () => {
   const handleOpenModal = () => {
     setNuevaReserva({
       id: '',
-      idUsuario: usuario,
+      idUsuario: user,
       plazasReservadas: 1,
       cancelada: false,
       evento: { nombre: '' }

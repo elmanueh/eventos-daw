@@ -1,17 +1,15 @@
 import { espaciosEstaticos } from '@/data/estaticos'
 import EspacioCard from '@components/cards/EspacioCard'
 import Paginacion from '@components/ui/Paginacion'
-import { useAuth } from '@context/AuthProvider'
-import { useState } from 'react'
+import { AuthContext } from '@context/AuthProvider'
+import { useContext, useState } from 'react'
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
 
 const MisEspacios = () => {
-  const { usuario } = useAuth()
+  const { user } = useContext(AuthContext)
 
   const [misEspacios, setMisEspacios] = useState(() =>
-    espaciosEstaticos.filter(
-      (espacio) => espacio.propietario === usuario.nombre
-    )
+    espaciosEstaticos.filter((espacio) => espacio.propietario === user.nombre)
   )
 
   const [currentPageActivos, setCurrentPageActivos] = useState(1)
@@ -22,7 +20,7 @@ const MisEspacios = () => {
   const [nuevoEspacio, setNuevoEspacio] = useState({
     id: '',
     nombre: '',
-    propietario: usuario.nombre,
+    propietario: user.nombre,
     capacidad: 0,
     direccion: '',
     longitud: 0,
@@ -51,7 +49,7 @@ const MisEspacios = () => {
     setNuevoEspacio({
       id: '',
       nombre: '',
-      propietario: usuario.nombre,
+      propietario: user.nombre,
       capacidad: 0,
       direccion: '',
       longitud: 0,

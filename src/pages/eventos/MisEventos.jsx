@@ -1,15 +1,15 @@
 import { espaciosEstaticos, eventosEstaticos } from '@/data/estaticos'
 import EventoCard from '@components/cards/EventoCard'
 import Paginacion from '@components/ui/Paginacion'
-import { useAuth } from '@context/AuthProvider'
-import { useState } from 'react'
+import { AuthContext } from '@context/AuthProvider'
+import { useContext, useState } from 'react'
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
 
 const MisEventos = () => {
-  const { usuario } = useAuth()
+  const { user } = useContext(AuthContext)
 
   const [misEventos, setMisEventos] = useState(() =>
-    eventosEstaticos.filter((evento) => evento.organizador === usuario.nombre)
+    eventosEstaticos.filter((evento) => evento.organizador === user.nombre)
   )
 
   const [currentPageActivos, setCurrentPageActivos] = useState(1)
@@ -21,7 +21,7 @@ const MisEventos = () => {
     id: '',
     nombre: '',
     descripcion: '',
-    organizador: usuario.nombre,
+    organizador: user.nombre,
     categoria: '',
     numPlazas: 1,
     fechaInicio: '',
@@ -45,7 +45,7 @@ const MisEventos = () => {
       id: '',
       nombre: '',
       descripcion: '',
-      organizador: usuario.nombre,
+      organizador: user.nombre,
       categoria: '',
       numPlazas: 1,
       fechaInicio: '',
