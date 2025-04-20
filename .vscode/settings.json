@@ -9,5 +9,7 @@
   "prettier.printWidth": 80,
   "prettier.singleQuote": true,
   "prettier.tabWidth": 2,
-  "prettier.useTabs": false
+  "prettier.useTabs": false,
+  "prettier.semi": false,
+  "prettier.trailingComma": "none"
 }
