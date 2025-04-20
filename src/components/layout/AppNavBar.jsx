@@ -18,7 +18,7 @@ export default function AppNavbar() {
   }
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
       <Container fluid>
         <Navbar.Brand className="d-flex align-items-center" href="/">
           <img src={logo} alt="Logo" width="40" height="40" className="me-2" />
