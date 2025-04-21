@@ -1,11 +1,16 @@
-// Sobrescribir las variables de Bootstrap para cambiar los colores
-$primary: #0963eb; // Color primario
-$secondary: #6c757d; // Color secundario
-$success: #28a745; // Color de éxito
-$info: #17a2b8; // Color de información
-$warning: #ffc107; // Color de advertencia
-$danger: #dc3545; // Color de peligro
-$light: #f8f9fa; // Color claro
-$dark: #343a40; // Color oscuro
+$primary: #e6b31a;
+$secondary: #6c757d;
+$success: #28a745;
+$info: #17a2b8;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #f8f9fa;
+$dark: #1e2022;
+
+$body-bg: $dark;
+$body-color: $light;
+
+$font-family-base: 'Roboto', sans-serif;
+$headings-font-family: 'Montserrat', sans-serif;
 
 @import 'bootstrap/scss/bootstrap';
