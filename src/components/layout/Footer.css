@@ -1,0 +1,22 @@
+.footer {
+  background-color: var(--bs-dark);
+  color: var(--bs-light);
+  padding: 4rem;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.footer-content a {
+  color: var(--bs-light);
+  text-decoration: none;
+}
+
+.footer-content a:hover {
+  color: var(--bs-info);
+  text-decoration: none;
+}

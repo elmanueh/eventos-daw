@@ -1,43 +1,28 @@
-import { Card } from 'react-bootstrap'
-import { useNavigate } from 'react-router'
+import './Card.css'
 
 const EventoCard = ({ evento }) => {
-  const navigate = useNavigate()
-
-  const handleClick = () => {
-    navigate(`/eventos/${evento.id}`)
-  }
+  const status = evento.cancelado ? 'CERRADO' : 'ACTIVO'
+  const descripcion = evento.descripcion.split(' ').slice(0, 60).join(' ')
 
   return (
-    <Card
-      key={evento.id}
-      style={{
-        cursor: 'pointer',
-        transition: 'transform 0.3s ease, box-shadow 0.3s ease'
-      }}
-      onClick={handleClick}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'scale(1.05)'
-        e.currentTarget.style.boxShadow = '0px 8px 15px rgba(0, 0, 0, 0.1)'
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'scale(1)'
-        e.currentTarget.style.boxShadow = 'none'
-      }}
+    <div
+      className="espacio-card"
+      onClick={() => (window.location.href = `/eventos/${evento.id}`)}
     >
-      <Card.Body>
-        <Card.Title style={{ fontSize: '1.2rem' }}>
-          {evento.nombre.length > 20
-            ? evento.nombre.substring(0, 20) + '...'
-            : evento.nombre}
-        </Card.Title>
-        <Card.Text className="text-muted fs-6">
-          {evento.descripcion.length > 60
-            ? evento.descripcion.substring(0, 60) + '...'
-            : evento.descripcion}
-        </Card.Text>
-      </Card.Body>
-    </Card>
+      <div className="card-header">
+        <h3 className="card-title">{evento.nombre}</h3>
+        <span className={`status-badge ${status.toLocaleLowerCase()}`}>
+          {status}
+        </span>
+      </div>
+
+      <p className="card-description">{descripcion}</p>
+
+      <div className="capacity-info">
+        <span>👥</span>
+        <span>{evento.numPlazas} personas</span>
+      </div>
+    </div>
   )
 }
 
