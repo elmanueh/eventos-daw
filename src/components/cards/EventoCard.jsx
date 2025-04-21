@@ -1,29 +1,28 @@
-import './Card.css'
+import { routes } from '@/configs/constant'
+import './card.css'
 
-const EventoCard = ({ evento }) => {
+export default function EventoCard({ evento }) {
   const status = evento.cancelado ? 'CERRADO' : 'ACTIVO'
-  const descripcion = evento.descripcion.split(' ').slice(0, 60).join(' ')
 
   return (
     <div
-      className="espacio-card"
-      onClick={() => (window.location.href = `/eventos/${evento.id}`)}
+      className="my-card"
+      onClick={() => (window.location.href = routes.EVENTOS(evento.id))}
     >
-      <div className="card-header">
-        <h3 className="card-title">{evento.nombre}</h3>
-        <span className={`status-badge ${status.toLocaleLowerCase()}`}>
+      <div className="my-card-header">
+        <h2>{evento.nombre}</h2>
+        <span className={`my-card-status ${status.toLocaleLowerCase()}`}>
           {status}
         </span>
       </div>
 
-      <p className="card-description">{descripcion}</p>
+      <p className="card-description">{evento.descripcion}</p>
 
-      <div className="capacity-info">
-        <span>👥</span>
-        <span>{evento.numPlazas} personas</span>
+      <div className="my-card-capacity">
+        <span>
+          <i class="bi bi-people-fill" /> {evento.numPlazas} personas
+        </span>
       </div>
     </div>
   )
 }
-
-export default EventoCard

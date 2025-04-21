@@ -1,27 +1,26 @@
-import './Card.css'
+import { routes } from '@/configs/constant'
+import './card.css'
 
-function EspacioCard({ espacio }) {
+export default function EspacioCard({ espacio }) {
   const status = espacio.estado === 'ACTIVO' ? 'ACTIVO' : 'CERRADO'
-  const descripcion = espacio.descripcion.split(' ').slice(0, 60).join(' ')
 
   return (
     <div
-      className="espacio-card"
-      onClick={() => (window.location.href = `/espacios/${espacio.id}`)}
+      className="my-card"
+      onClick={() => (window.location.href = routes.ESPACIOS(espacio.id))}
     >
-      <div className="card-header">
-        <h3 className="card-title">{espacio.nombre}</h3>
-        <span className={`status-badge ${status.toLowerCase()}`}>{status}</span>
+      <div className="my-card-header">
+        <h2>{espacio.nombre}</h2>
+        <span className={`my-card-status ${status.toLowerCase()}`}>
+          {status}
+        </span>
       </div>
 
-      <p className="card-description">{descripcion}</p>
-
-      <div className="capacity-info">
-        <span>👥</span>
-        <span>{espacio.capacidad} personas</span>
+      <div className="my-card-capacity">
+        <span>
+          <i class="bi bi-people-fill" /> {espacio.capacidad} personas
+        </span>
       </div>
     </div>
   )
 }
-
-export default EspacioCard

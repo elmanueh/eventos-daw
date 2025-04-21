@@ -1,0 +1,50 @@
+export default function UserInfoCard({ user }) {
+  return (
+    <div
+      className="bg-dark rounded p-4 d-flex flex-column align-items-center gap-3 shadow-sm border"
+      style={{ alignSelf: 'start' }}
+    >
+      <img
+        src="https://cdn-icons-png.freepik.com/256/5084/5084713.png"
+        alt="Foto de perfil"
+        className="rounded-circle shadow-sm"
+        style={{ width: '120px', height: '120px', objectFit: 'cover' }}
+      />
+
+      <h5 className="text-center fw-semibold mb-0">{user.nombreUsuario}</h5>
+
+      {user.proximaReserva ? (
+        <div className="bg-light p-3 rounded w-100 mt-3 border">
+          <h6 className="text-center text-primary fw-bold mb-2">
+            Próxima Reserva
+          </h6>
+          <p className="mb-1">
+            <strong>📍 Espacio:</strong> {user.proximaReserva.espacio}
+          </p>
+          <p className="mb-1">
+            <strong>📅 Fecha:</strong> {user.proximaReserva.fecha}
+          </p>
+          <p className="mb-0">
+            <strong>⏰ Hora:</strong> {user.proximaReserva.hora}
+          </p>
+        </div>
+      ) : (
+        <p className="text-center text-muted mt-3">
+          No tienes ninguna reserva próxima.
+        </p>
+      )}
+
+      <div className="d-flex flex-column w-100 gap-2 mt-4">
+        <a href="/espacios-privados" className="btn btn-primary w-100">
+          <i class="bi bi-house-gear-fill" /> Mis espacios
+        </a>
+        <a href="/eventos-privados" className="btn btn-outline-secondary w-100">
+          <i class="bi bi-calendar-event" /> Mis eventos
+        </a>
+        <a href="/mis-reservas" className="btn btn-info w-100">
+          <i class="bi bi-book-half" /> Mis reservas
+        </a>
+      </div>
+    </div>
+  )
+}

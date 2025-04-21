@@ -32,7 +32,7 @@ export default function AppNavbar() {
             {rolesUsuario.includes(roles.USUARIO) && (
               <button
                 className="btn btn-outline-light"
-                onClick={() => navigate(routes.RESERVAS)}
+                onClick={() => navigate(routes.MIS_RESERVAS)}
               >
                 Mis Reservas
               </button>
@@ -41,7 +41,7 @@ export default function AppNavbar() {
             {rolesUsuario.includes(roles.GESTOR_EVENTOS) && (
               <button
                 className="btn btn-outline-light"
-                onClick={() => navigate(routes.EVENTOS)}
+                onClick={() => navigate(routes.MIS_EVENTOS)}
               >
                 Mis Eventos
               </button>
@@ -50,7 +50,7 @@ export default function AppNavbar() {
             {rolesUsuario.includes(roles.PROPIETARIO_ESPACIOS) && (
               <button
                 className="btn btn-outline-light"
-                onClick={() => navigate(routes.ESPACIOS)}
+                onClick={() => navigate(routes.MIS_ESPACIOS)}
               >
                 Mis Espacios
               </button>

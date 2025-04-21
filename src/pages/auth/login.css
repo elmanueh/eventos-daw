@@ -1,18 +1,19 @@
 /* Estilos para la ventana de login */
 .login {
-  width: 100%;
   max-width: 400px;
-  margin: 100px auto; /* Centrado vertical y horizontal */
+  margin: 150px auto;
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--bs-secondary);
   border-radius: 8px;
-  background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .login h2 {
   text-align: center;
   margin-bottom: 20px;
+  color: var(--bs-primary);
+  font-weight: 600;
+  margin-bottom: 30px;
 }
 
 .login .btn {

@@ -9,9 +9,11 @@ export const roles = {
 export const routes = {
   LOGIN: '/login',
   HOME: '/home',
-  RESERVAS: '/dashboard/reservas',
-  EVENTOS: '/dashboard/eventos',
-  ESPACIOS: '/dashboard/espacios'
+  ESPACIOS: (id) => `/espacios/${id}`,
+  EVENTOS: (id) => `/eventos/${id}`,
+  MIS_ESPACIOS: '/dashboard/espacios',
+  MIS_RESERVAS: '/dashboard/reservas',
+  MIS_EVENTOS: '/dashboard/eventos'
 }
 
 // URL de la API

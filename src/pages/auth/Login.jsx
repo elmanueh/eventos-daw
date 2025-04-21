@@ -58,7 +58,21 @@ export default function Login() {
 
   return (
     <div className="login">
-      <h2>Iniciar sesión</h2>
+      <h2>Inicia sesión</h2>
+
+      <button
+        type="button"
+        className="btn btn-secondary "
+        onClick={handleGithubLogin}
+      >
+        <i class="bi bi-github" /> Continuar con GitHub
+      </button>
+
+      <div className="d-flex align-items-center my-3">
+        <hr className="flex-grow-1" />
+        <span className="mx-2">o</span>
+        <hr className="flex-grow-1" />
+      </div>
 
       <form className="d-grid gap-3">
         <div className="form-group" id="formUsername">
@@ -73,15 +87,12 @@ export default function Login() {
 
         <div id="errorMessage" className="alert alert-danger d-none" />
 
-        <button type="button" className="btn btn-primary" onClick={handleLogin}>
-          Iniciar sesión
-        </button>
         <button
           type="button"
-          className="btn btn-secondary"
-          onClick={handleGithubLogin}
+          className="btn btn-primary mt-1"
+          onClick={handleLogin}
         >
-          Iniciar sesión con GitHub
+          Iniciar sesión
         </button>
       </form>
     </div>

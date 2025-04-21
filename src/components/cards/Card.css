@@ -1,8 +1,6 @@
-.espacio-card {
-  max-width: 320px;
-  background: var(--bs-light);
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+.my-card {
+  background: rgba(var(--bs-secondary-rgb), 0.2);
+  border-radius: 8px;
   padding: 24px;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -12,26 +10,38 @@
   height: 100%;
 }
 
-.espacio-card:hover {
+.my-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.card-header {
+.my-card-header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
-.card-title {
+.my-card-header h2 {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--bs-dark);
-  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.status-badge {
+.my-card-description {
+  font-size: 1rem;
+  line-height: 1.5;
+  height: 40%;
+}
+
+.my-card-capacity {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.my-card-status {
   border-radius: 20px;
   padding: 0px 10px;
   font-weight: 500;
@@ -39,26 +49,12 @@
   white-space: nowrap;
 }
 
-.status-badge.activo {
+.my-card-status.activo {
   background-color: rgba(var(--bs-success-rgb), 0.2);
   color: var(--bs-success);
 }
 
-.status-badge.cerrado {
+.my-card-status.cerrado {
   background-color: rgba(var(--bs-danger-rgb), 0.2);
   color: var(--bs-danger);
-}
-
-.card-description {
-  color: var(--bs-dark);
-  font-size: 1rem;
-  line-height: 1.5;
-  height: 40%;
-}
-
-.capacity-info {
-  display: flex;
-  gap: 6px;
-  color: var(--bs-dark);
-  align-items: center;
 }
