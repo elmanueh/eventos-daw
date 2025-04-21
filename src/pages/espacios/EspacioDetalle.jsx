@@ -1,12 +1,11 @@
-import { espaciosEstaticos } from '@/data/estaticos'
 import EspacioCard from '@components/cards/EspacioCard'
 import { Badge, Card, Col, Container, ListGroup, Row } from 'react-bootstrap'
-import { useParams } from 'react-router'
+import { useLoaderData } from 'react-router'
 
-const EspacioDetalle = () => {
-  const { id } = useParams()
-  const espacio = espaciosEstaticos.find((e) => e.id === id)
-  const otrosEspacios = espaciosEstaticos.filter((e) => e.id !== id).slice(0, 3)
+export default function EspacioDetalle() {
+  const espacio = useLoaderData()
+  const otrosEspacios = [espacio, espacio, espacio]
+  console.log(espacio)
 
   return (
     <Container className="py-5">
@@ -127,5 +126,3 @@ const EspacioDetalle = () => {
     </Container>
   )
 }
-
-export default EspacioDetalle

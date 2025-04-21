@@ -1,7 +1,7 @@
 import { Card } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 
-const EspacioCard = ({ espacio }) => {
+export default function EspacioCard({ espacio }) {
   const navigate = useNavigate()
 
   const handleClick = () => {
@@ -32,12 +32,6 @@ const EspacioCard = ({ espacio }) => {
             : espacio.nombre}
         </Card.Title>
 
-        <Card.Text className="text-muted fs-6">
-          {espacio.descripcion.length > 60
-            ? espacio.descripcion.substring(0, 60) + '...'
-            : espacio.descripcion}
-        </Card.Text>
-
         {espacio.estado && (
           <span
             className={`badge ${
@@ -52,20 +46,7 @@ const EspacioCard = ({ espacio }) => {
             {espacio.estado}
           </span>
         )}
-
-        <div className="small text-muted" style={{ marginTop: '1rem' }}>
-          <div>
-            <span>📍</span>
-            <span className="ms-3">{espacio.direccion}</span>
-          </div>
-          <div>
-            <span>👥</span>
-            <span className="ms-2">Capacidad: {espacio.capacidad}</span>
-          </div>
-        </div>
       </Card.Body>
     </Card>
   )
 }
-
-export default EspacioCard

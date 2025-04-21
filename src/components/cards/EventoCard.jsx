@@ -31,55 +31,11 @@ const EventoCard = ({ evento }) => {
             ? evento.nombre.substring(0, 20) + '...'
             : evento.nombre}
         </Card.Title>
-
         <Card.Text className="text-muted fs-6">
           {evento.descripcion.length > 60
             ? evento.descripcion.substring(0, 60) + '...'
             : evento.descripcion}
         </Card.Text>
-
-        {evento.cancelado ? (
-          <span
-            className="badge bg-danger mb-2"
-            style={{
-              fontSize: '0.85rem',
-              padding: '0.2rem 0.6rem',
-              textTransform: 'uppercase'
-            }}
-          >
-            Cancelado
-          </span>
-        ) : (
-          <span
-            className="badge bg-success mb-2"
-            style={{
-              fontSize: '0.85rem',
-              padding: '0.2rem 0.6rem',
-              textTransform: 'uppercase'
-            }}
-          >
-            Activo
-          </span>
-        )}
-
-        <div className="small text-muted" style={{ marginTop: '1rem' }}>
-          <div>
-            <span>📍</span>
-            <span className="ms-3">{evento.ocupacion.espacioFisico}</span>
-          </div>
-          <div>
-            <span>📅</span>
-            <span className="ms-2">Fecha: {evento.ocupacion.fechaInicio}</span>
-          </div>
-          <div>
-            <span>👥</span>
-            <span className="ms-2">Plazas: {evento.numPlazas}</span>
-          </div>
-          <div>
-            <span>🏷️</span>
-            <span className="ms-2">Categoría: {evento.categoria}</span>
-          </div>
-        </div>
       </Card.Body>
     </Card>
   )

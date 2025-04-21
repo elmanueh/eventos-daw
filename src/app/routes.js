@@ -1,3 +1,5 @@
+import ErrorCargandoDatos from '@/ErrorCargandoDatos'
+import ErrorNotFound from '@/ErrorNotFound'
 import { authLoader } from '@/app/authLoader'
 import { routes, urls } from '@/configs/constant'
 import HomeMain from '@pages/HomeMain'
@@ -40,11 +42,13 @@ const appRouter = createBrowserRouter([
     path: '/',
     Component: Layout,
     loader: redirectLogin,
+    ErrorBoundary: ErrorCargandoDatos,
     children: [
       { index: true, Component: HomeMain },
       {
         path: 'home',
-        Component: Home
+        Component: Home,
+        loader: () => authLoader(urls.ESPACIOS, urls.EVENTOS)
       },
       {
         path: 'espacios',
@@ -97,6 +101,10 @@ const appRouter = createBrowserRouter([
         ]
       }
     ]
+  },
+  {
+    path: '*',
+    Component: ErrorNotFound
   }
 ])
 
