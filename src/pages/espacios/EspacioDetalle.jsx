@@ -3,9 +3,14 @@ import { Badge, Card, Col, Container, ListGroup, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function EspacioDetalle() {
-  const espacio = useLoaderData()
-  const otrosEspacios = [espacio, espacio, espacio]
-  console.log(espacio)
+  const espacio = useLoaderData()[0]
+
+  const otrosEspacios = useLoaderData()[1]
+    .espacio.map((espacio) => espacio.espacioDTO)
+    .filter((e) => e.id !== espacio.id)
+    .slice(0, 3)
+
+  console.log(otrosEspacios)
 
   return (
     <Container className="py-5">
@@ -15,8 +20,8 @@ export default function EspacioDetalle() {
             <h2 className="text-center">Espacio Físico no encontrado</h2>
           ) : (
             <>
-              <Card className="mb-4">
-                <Card.Body>
+              <Card className="mb-4 bg-secondary bg-opacity-25 border border-primary">
+                <Card.Body className="d-flex flex-column gap-3">
                   <Row className="align-items-center">
                     <Col className="d-flex justify-content-between align-items-center">
                       <Card.Title as="h1" className="mb-0">
@@ -26,34 +31,34 @@ export default function EspacioDetalle() {
                         bg={
                           espacio.estado === 'ACTIVO' ? 'success' : 'secondary'
                         }
+                        text={
+                          espacio.estado === 'ACTIVO' ? 'success' : 'secondary'
+                        }
+                        className="fs-6 bg-opacity-25 px-3 py-2 rounded-pill"
                       >
                         {espacio.estado}
                       </Badge>
                     </Col>
                   </Row>
 
-                  <Card.Subtitle className="mb-3 text-muted">
+                  <Card.Subtitle className="mb-3 text-muted fs-5">
                     {espacio.propietario}
                   </Card.Subtitle>
 
                   <Card.Text className="fs-6">{espacio.descripcion}</Card.Text>
 
                   <div className="fs-6 text-muted d-flex gap-2 flex-column">
-                    <div>
-                      <span>📍</span>
-                      <span className="ms-3">
-                        Ubiación: {espacio.direccion}
-                      </span>
+                    <div className="d-flex align-items-center">
+                      <i className="bi bi-geo-alt-fill me-2 text-secondary"></i>
+                      <span>Ubicación: {espacio.direccion}</span>
                     </div>
-                    <div>
-                      <span>👥</span>
-                      <span className="ms-2">
-                        Capacidad: {espacio.capacidad} personas
-                      </span>
+                    <div className="d-flex align-items-center">
+                      <i className="bi bi-people-fill me-2 text-secondary"></i>
+                      <span>Capacidad: {espacio.capacidad} personas</span>
                     </div>
-                    <div>
-                      <span>🌍</span>
-                      <span className="ms-2">
+                    <div className="d-flex align-items-center">
+                      <i className="bi bi-globe2 me-2 text-secondary"></i>
+                      <span>
                         Coordenadas: {espacio.latitud}, {espacio.longitud}
                       </span>
                     </div>
@@ -61,8 +66,11 @@ export default function EspacioDetalle() {
                 </Card.Body>
               </Card>
 
-              <Card className="mb-4">
-                <Card.Header as="h4" className="bg-light">
+              <Card className="mb-4 border border-primary">
+                <Card.Header
+                  as="h3"
+                  className="bg-secondary bg-opacity-25 text-primary"
+                >
                   Puntos de interés cercanos
                 </Card.Header>
                 <ListGroup variant="flush">
@@ -74,20 +82,23 @@ export default function EspacioDetalle() {
                     espacio.puntosInteres
                       .sort((a, b) => a.distancia - b.distancia)
                       .map((punto, index) => (
-                        <ListGroup.Item key={index}>
+                        <ListGroup.Item
+                          key={index}
+                          className="border-top border-primary"
+                        >
                           <div>
                             <div className="d-flex align-items-center gap-3">
-                              <h6 className="mb-0">
+                              <h4 className="mb-0">
                                 <a
                                   href={punto.url}
                                   target="_blank"
-                                  className="text-decoration-none text-dark"
+                                  className="text-decoration-none text-light"
                                 >
                                   {punto.nombre}
                                 </a>
-                              </h6>
-                              <span className="badge bg-primary text-white">
-                                {punto.distancia} km
+                              </h4>
+                              <span className="badge bg-primary bg-opacity-25 text-primary rounded-pill px-2 py-1">
+                                {punto.distancia} m
                               </span>
                             </div>
                             <p className="fs-6 text-muted mt-1">
@@ -104,12 +115,14 @@ export default function EspacioDetalle() {
         </Col>
 
         <Col md={4}>
-          <Card className="mb-4">
-            <Card.Header as="h4" className="bg-light">
-              <i className="bi bi-building me-2"></i>
+          <Card className="mb-4 border border-primary">
+            <Card.Header
+              as="h3"
+              className="bg-secondary bg-opacity-25 text-primary"
+            >
               Otros espacios físicos
             </Card.Header>
-            <Card.Body>
+            <Card.Body className="border-top border-primary">
               {otrosEspacios.length > 0 ? (
                 otrosEspacios.map((espacio) => (
                   <div key={espacio.id} className="mb-3">

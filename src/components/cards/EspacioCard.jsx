@@ -20,7 +20,7 @@ export default function EspacioCard({ espacio }) {
 
       <div className="my-card-capacity">
         <span>
-          <i class="bi bi-people-fill" /> {espacio.capacidad} personas
+          <i className="bi bi-people-fill" /> {espacio.capacidad} personas
         </span>
       </div>
     </div>

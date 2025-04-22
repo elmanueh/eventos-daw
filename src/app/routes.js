@@ -61,7 +61,7 @@ const appRouter = createBrowserRouter([
           {
             path: ':id',
             Component: EspacioDetalle,
-            loader: ({ params }) => authLoader(urls.ESPACIOS_DET(params.id))
+            loader: ({ params }) => authLoader(urls.ESPACIOS_DET(params.id), urls.ESPACIOS)
           }
         ]
       },
