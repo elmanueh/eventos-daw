@@ -65,7 +65,7 @@ export default function Login() {
         className="btn btn-secondary "
         onClick={handleGithubLogin}
       >
-        <i class="bi bi-github" /> Continuar con GitHub
+        <i className="bi bi-github" /> Continuar con GitHub
       </button>
 
       <div className="d-flex align-items-center my-3">
