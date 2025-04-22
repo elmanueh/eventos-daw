@@ -76,7 +76,7 @@ const appRouter = createBrowserRouter([
           {
             path: ':id',
             Component: EventoDetalle,
-            loader: ({ params }) => authLoader(urls.EVENTOS_DET(params.id))
+            loader: ({ params }) => authLoader(urls.EVENTOS_DET(params.id), urls.EVENTOS)
           }
         ]
       },
