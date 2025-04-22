@@ -30,7 +30,7 @@ export default function Home() {
 
         <section className="d-flex flex-column gap-4">
           <h2 className="text-primary fw-bold fs-3 mb-2">
-            <i class="bi bi-houses-fill" /> Espacios físicos disponibles
+            <i className="bi bi-houses-fill" /> Espacios físicos disponibles
           </h2>
 
           <div className="grid-auto-cards">

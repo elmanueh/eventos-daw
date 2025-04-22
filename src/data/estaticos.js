@@ -434,7 +434,7 @@ export const eventosEstaticos = [
     id: 'e1',
     nombre: 'Charla sobre Ciberseguridad',
     descripcion:
-      'Una introducción a los principios básicos de seguridad informática.',
+      'Una introducción a los principios básicos de seguridad informática y hacking.',
     organizador: 'admin',
     numPlazas: 60,
     cancelado: false,

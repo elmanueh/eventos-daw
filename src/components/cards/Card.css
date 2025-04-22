@@ -32,7 +32,12 @@
 .my-card-description {
   font-size: 1rem;
   line-height: 1.5;
-  height: 40%;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  height: 100%;
 }
 
 .my-card-capacity {

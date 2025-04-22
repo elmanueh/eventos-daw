@@ -10,13 +10,13 @@ export default function EventoCard({ evento }) {
       onClick={() => (window.location.href = routes.EVENTOS(evento.id))}
     >
       <div className="my-card-header">
-        <h2>{evento.nombre}</h2>
+        <h2 title={evento.nombre}>{evento.nombre}</h2>
         <span className={`my-card-status ${status.toLocaleLowerCase()}`}>
           {status}
         </span>
       </div>
 
-      <p className="card-description">{evento.descripcion}</p>
+      <p className="my-card-description">{evento.descripcion}</p>
 
       <div className="my-card-capacity">
         <span>

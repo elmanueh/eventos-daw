@@ -10,11 +10,13 @@ export default function EspacioCard({ espacio }) {
       onClick={() => (window.location.href = routes.ESPACIOS(espacio.id))}
     >
       <div className="my-card-header">
-        <h2>{espacio.nombre}</h2>
+        <h2 title={espacio.nombre}>{espacio.nombre}</h2>
         <span className={`my-card-status ${status.toLowerCase()}`}>
           {status}
         </span>
       </div>
+
+      <p className="my-card-description">{espacio.descripcion}</p>
 
       <div className="my-card-capacity">
         <span>
