@@ -44,7 +44,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noreferrer"
               >
-                ElManueh <i class="bi bi-github" />
+                ElManueh <i className="bi bi-github" />
               </a>
             </li>
             <li>
@@ -53,7 +53,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noreferrer"
               >
-                Julisco23 <i class="bi bi-github" />
+                Julisco23 <i className="bi bi-github" />
               </a>
             </li>
           </ul>
@@ -74,10 +74,10 @@ export default function Footer() {
               target="_blank"
               rel="noreferrer"
             >
-              <i class="bi bi-instagram" />
+              <i className="bi bi-instagram" />
             </a>
             <a href="mailto:contacto@eventy.com">
-              <i class="bi bi-envelope-fill" />
+              <i className="bi bi-envelope-fill" />
             </a>
           </div>
         </div>

@@ -1,9 +1,6 @@
 export default function UserInfoCard({ user }) {
   return (
-    <div
-      className="bg-dark rounded p-4 d-flex flex-column align-items-center gap-3 shadow-sm border"
-      style={{ alignSelf: 'start' }}
-    >
+    <div className="bg-dark rounded p-4 d-flex flex-column text-center align-items-center gap-3 border border-secondary align-self-start">
       <img
         src="https://cdn-icons-png.freepik.com/256/5084/5084713.png"
         alt="Foto de perfil"
@@ -36,13 +33,13 @@ export default function UserInfoCard({ user }) {
 
       <div className="d-flex flex-column w-100 gap-2 mt-4">
         <a href="/espacios-privados" className="btn btn-primary w-100">
-          <i class="bi bi-house-gear-fill" /> Mis espacios
+          <i className="bi bi-house-gear-fill" /> Mis espacios
         </a>
         <a href="/eventos-privados" className="btn btn-outline-secondary w-100">
-          <i class="bi bi-calendar-event" /> Mis eventos
+          <i className="bi bi-calendar-event" /> Mis eventos
         </a>
         <a href="/mis-reservas" className="btn btn-info w-100">
-          <i class="bi bi-book-half" /> Mis reservas
+          <i className="bi bi-book-half" /> Mis reservas
         </a>
       </div>
     </div>

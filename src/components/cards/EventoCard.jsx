@@ -20,7 +20,7 @@ export default function EventoCard({ evento }) {
 
       <div className="my-card-capacity">
         <span>
-          <i class="bi bi-people-fill" /> {evento.numPlazas} personas
+          <i className="bi bi-people-fill" /> {evento.numPlazas} personas
         </span>
       </div>
     </div>

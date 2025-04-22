@@ -13,11 +13,8 @@ export default function Home() {
   )
 
   return (
-    <div
-      className="d-grid py-5 gap-5 ms-5 me-4"
-      style={{ gridTemplateColumns: '1fr 320px' }}
-    >
-      <div className="d-flex flex-column gap-5 mx-5">
+    <div className="d-flex flex-lg-row flex-column py-5 gap-5 ms-5 me-4">
+      <div className="flex-grow-1">
         <header className="text-end">
           <h1 className="text-primary fw-bold">
             Bienvenido de nuevo,{' '}
@@ -28,7 +25,7 @@ export default function Home() {
           </p>
         </header>
 
-        <section className="d-flex flex-column gap-4">
+        <section className="d-flex flex-column gap-4 mt-5">
           <h2 className="text-primary fw-bold fs-3 mb-2">
             <i className="bi bi-houses-fill" /> Espacios físicos disponibles
           </h2>
@@ -48,9 +45,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="d-flex flex-column gap-4">
+        <section className="d-flex flex-column gap-4 mt-5">
           <h2 className="text-primary fw-bold fs-3 mb-2">
-            <i class="bi bi-calendar-event-fill" /> Próximos eventos
+            <i className="bi bi-calendar-event-fill" /> Próximos eventos
           </h2>
 
           <div className="grid-auto-cards">
@@ -68,8 +65,9 @@ export default function Home() {
           </div>
         </section>
       </div>
-
-      <UserInfoCard user={user} />
+      <div className="d-none d-xl-block" style={{ minWidth: '320px' }}>
+        <UserInfoCard user={user} />
+      </div>
     </div>
   )
 }
