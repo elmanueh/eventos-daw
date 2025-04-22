@@ -1,6 +1,6 @@
 import { reservasEstaticas } from '@/data/estaticos'
 import ReservaCard from '@components/cards/ReservaCard'
-import Paginacion from '@components/ui/Paginacion'
+import Paginacion from '@components/Paginacion'
 import { AuthContext } from '@context/AuthProvider'
 import { useContext, useState } from 'react'
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'

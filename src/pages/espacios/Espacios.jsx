@@ -1,5 +1,5 @@
 import EspacioCard from '@components/cards/EspacioCard'
-import Paginacion from '@components/ui/Paginacion'
+import Paginacion from '@components/Paginacion'
 import { useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'

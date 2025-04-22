@@ -1,6 +1,6 @@
 import { eventosEstaticos } from '@/data/estaticos'
 import EventoCard from '@components/cards/EventoCard'
-import Paginacion from '@components/ui/Paginacion'
+import Paginacion from '@components/Paginacion'
 import { useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 
