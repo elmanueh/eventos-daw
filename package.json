@@ -12,6 +12,7 @@
   "dependencies": {
     "bootstrap": "^5.3.5",
     "bootstrap-icons": "^1.11.3",
+    "date-fns": "^4.1.0",
     "express": "^5.1.0",
     "hbs": "^4.2.0",
     "react": "^19.0.0",
