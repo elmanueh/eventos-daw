@@ -4,6 +4,8 @@ import './card.css'
 export default function EventoCard({ evento }) {
   const status = evento.cancelado ? 'CERRADO' : 'ACTIVO'
 
+  console.log('EventoCard', evento)
+
   return (
     <div
       className="my-card"
@@ -18,9 +20,19 @@ export default function EventoCard({ evento }) {
 
       <p className="my-card-description">{evento.descripcion}</p>
 
-      <div className="my-card-capacity">
+      <div className="my-card-info">
         <span>
-          <i className="bi bi-people-fill" /> {evento.numPlazas} personas
+          <i className="bi bi-people-fill my-card-capacity" />{' '}
+          {evento.numPlazas} personas
+        </span>
+
+        <span>
+          <i className="bi bi-calendar my-card-date" />{' '}
+          {new Date(evento.fechaInicio).toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          })}
         </span>
       </div>
     </div>
