@@ -31,9 +31,10 @@ export default function EspacioCard({ espacio, visible }) {
 
         <p className="my-card-description">{espacio.descripcion}</p>
 
-        <div className="my-card-capacity">
+        <div className="my-card-info">
           <span>
-            <i className="bi bi-people-fill" /> {espacio.capacidad} personas
+            <i className="bi bi-people-fill my-card-capacity" />
+            {espacio.capacidad} personas
           </span>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { fetchLoader } from '@/app/fetchLoader'
 import { routes, urls } from '@/configs/constant'
 import EventoCard from '@components/cards/EventoCard'
 import { useEffect, useState } from 'react'
@@ -19,19 +20,15 @@ const EventoDetalle = () => {
 
     async function fetchEspacio() {
       try {
-        const response = await fetch(urls.ESPACIOS_DET(evento.espacioFisico), {
-          method: 'GET',
-          credentials: 'include'
-        })
+        const data = await fetchLoader(urls.ESPACIOS_DET(evento.espacioFisico))
 
-        if (!response.ok) {
-          throw new Error('Error al cargar los datos')
-        }
-        setEspacio(await response.json())
+        setEspacio(data)
       } catch (error) {
-        throw new Error('Error de conexión o servidor')
+        console.error('Error al cargar los espacios filtrados:', error)
+        alert('Error al cargar los espacios filtrados.')
       }
     }
+
     fetchEspacio()
   }, [evento.espacioFisico])
 

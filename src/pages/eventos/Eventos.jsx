@@ -20,26 +20,14 @@ const Eventos = () => {
     }
 
     try {
-      const response = await fetch(urls.EVENTOS, {
-        method: 'GET',
-        credentials: 'include'
-      })
+      const data = await fetchLoader(urls.EVENTOS)
+      setEventos(data._embedded?.eventoResumenList || [])
 
-      if (!response.ok) {
-        console.error('Error al cargar los datos:', response)
-        throw new Error('Error al cargar los datos')
-      }
-
-      const data = await response.json()
-      setEventos(data._embedded.eventoResumenList)
-
-      setCurrentPage(1)
       setIsEventosLoaded(true)
-
       setMesAnio('')
     } catch (error) {
-      console.error('Error de conexión o servidor:', error)
-      throw new Error('Error de conexión o servidor')
+      console.error('Error al cargar los espacios filtrados:', error)
+      alert('Error al cargar los espacios filtrados.')
     }
   }
 
@@ -51,33 +39,16 @@ const Eventos = () => {
       return
     }
 
-    console.log('Mes y año seleccionados:', mesAnio)
-    console.log('Mes:', mesAnio.split('-')[1])
-    console.log('Año:', mesAnio.split('-')[0])
-
     try {
-      const response = await fetch(
-        urls.EVENTOS_FILTRADOS(mesAnio.split('-')[1], mesAnio.split('-')[0]),
-        {
-          method: 'GET',
-          credentials: 'include'
-        }
+      const data = await fetchLoader(
+        urls.EVENTOS_FILTRADOS(mesAnio.split('-')[1], mesAnio.split('-')[0])
       )
-
-      if (!response.ok) {
-        console.error('Error al cargar los datos:', response)
-        throw new Error('Error al cargar los datos')
-      }
-
-      const data = await response.json()
-      console.log(data)
       setEventos(data._embedded?.eventoResumenList || [])
 
-      setCurrentPage(1)
       setIsEventosLoaded(false)
     } catch (error) {
-      console.error('Error de conexión o servidor:', error)
-      throw new Error('Error de conexión o servidor')
+      console.error('Error al cargar los espacios filtrados:', error)
+      alert('Error al cargar los espacios filtrados.')
     }
   }
 

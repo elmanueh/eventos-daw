@@ -29,12 +29,12 @@ export default function EventoCard({ evento, visible }) {
 
         <div className="my-card-info">
           <span>
-            <i className="bi bi-people-fill my-card-capacity" />{' '}
+            <i className="bi bi-people-fill my-card-capacity" />
             {evento.numPlazas} personas
           </span>
 
           <span>
-            <i className="bi bi-calendar my-card-date" />{' '}
+            <i className="bi bi-calendar my-card-date" />
             {new Date(evento.fechaInicio).toLocaleDateString('es-ES', {
               year: 'numeric',
               month: '2-digit',

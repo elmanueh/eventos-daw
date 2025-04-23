@@ -7,7 +7,9 @@ import { useLoaderData } from 'react-router'
 
 export default function Espacios() {
   const loaderData = useLoaderData()
-  const [espacios, setEspacios] = useState(loaderData.espacio)
+  const [espacios, setEspacios] = useState(
+    loaderData.espacio?.map((espacio) => espacio.espacioDTO) || []
+  )
 
   const [isEspaciosLoaded, setIsEspaciosLoaded] = useState(true)
 
@@ -21,28 +23,17 @@ export default function Espacios() {
     }
 
     try {
-      const response = await fetch(urls.ESPACIOS, {
-        method: 'GET',
-        credentials: 'include'
-      })
+      const data = await fetchLoader(urls.ESPACIOS)
+      setEspacios(data.espacio?.map((espacio) => espacio.espacioDTO) || [])
 
-      if (!response.ok) {
-        console.error('Error al cargar los datos:', response)
-        throw new Error('Error al cargar los datos')
-      }
-
-      const data = await response.json()
-      setEspacios(data.espacio)
-
-      setCurrentPage(1)
       setIsEspaciosLoaded(true)
 
       setFechaInicio('')
       setFechaFin('')
       setCapacidad('')
     } catch (error) {
-      console.error('Error de conexión o servidor:', error)
-      throw new Error('Error de conexión o servidor')
+      console.error('Error al cargar los espacios:', error)
+      alert('Error al cargar los espacios.')
     }
   }
 
@@ -58,30 +49,19 @@ export default function Espacios() {
     const fechaFinISO = new Date(fechaFin).toISOString().slice(0, -1)
 
     try {
-      const response = await fetch(
+      const data = await fetchLoader(
         urls.ESPACIOS_FILTRADOS(
           fechaInicioISO,
           fechaFinISO,
           parseInt(capacidad)
-        ),
-        {
-          method: 'GET',
-          credentials: 'include'
-        }
+        )
       )
 
-      if (!response.ok) {
-        console.error('Error al cargar los datos:', response)
-        throw new Error('Error al cargar los datos')
-      }
-
-      const data = await response.json()
-      setEspacios(data.espacio)
-      setCurrentPage(1)
+      setEspacios(data.espacio?.map((espacio) => espacio.espacioDTO) || [])
       setIsEspaciosLoaded(false)
     } catch (error) {
-      console.error('Error de conexión o servidor:', error)
-      throw new Error('Error de conexión o servidor')
+      console.error('Error al cargar los espacios filtrados:', error)
+      alert('Error al cargar los espacios filtrados.')
     }
   }
 
