@@ -53,15 +53,7 @@ export default function MisEspacios() {
                 xl={3}
                 className="mb-4"
               >
-                <div>
-                  <EspacioCard espacio={espacio} />
-                  <Button variant="warning" className="mt-2">
-                    Editar
-                  </Button>
-                  <Button variant="danger" className="mt-2 ms-2">
-                    Cerrar Temporalmente
-                  </Button>
-                </div>
+                <EspacioCard espacio={espacio} visible={true} />
               </Col>
             ))}
           </Row>
@@ -91,15 +83,7 @@ export default function MisEspacios() {
                 xl={3}
                 className="mb-4"
               >
-                <div>
-                  <EspacioCard espacio={espacio} />
-                  <Button variant="warning" className="mt-2">
-                    Editar
-                  </Button>
-                  <Button variant="success" className="mt-2 ms-2">
-                    Activar
-                  </Button>
-                </div>
+                <EspacioCard espacio={espacio} visible={true} />
               </Col>
             ))}
           </Row>

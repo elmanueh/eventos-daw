@@ -48,13 +48,7 @@ export default function MisEventos() {
                 lg={3}
                 className="mb-4"
               >
-                <EventoCard evento={evento} />
-                <Button variant="warning" className="mt-2">
-                  Editar
-                </Button>
-                <Button variant="danger" className="mt-2 ms-2">
-                  Cancelar
-                </Button>
+                <EventoCard evento={evento} visible={true} />
               </Col>
             ))}
           </Row>
@@ -83,10 +77,7 @@ export default function MisEventos() {
                 lg={3}
                 className="mb-4"
               >
-                <EventoCard evento={evento} />
-                <Button variant="warning" className="mt-2">
-                  Editar
-                </Button>
+                <EventoCard evento={evento} visible={true} />
               </Col>
             ))}
           </Row>
