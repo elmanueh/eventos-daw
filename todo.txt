@@ -1,12 +1,17 @@
 - Hacer login github
 
+- Ajustar margenes (MisEspacios, MisEventos, MisReserva)
+
+- En EventoCard y EspacioCard -> no funcionan los PUT (error de CORS) ---> lo he dejado comentado
+
 - En Espacios y Eventos, al actualizar los objetos, debe cambiar el paginator a la page 1
 
 - Mirar estilo paginator
 
 - Mirar GroupCards y el paginator (separar la lógica)
 
-- Los modal de MisReserva/MisEspacios/MisEventos por hacer (tanto crear como editar)
+- Crear modals para crear (espacio y evento) y crear (espacio, evento y reserva)
 
-- En eventoDetail y espacioDetail considerar colocar botones de crearEvento y crearReserva, que te redirija a MisReserva/MisEventos, te abra el modal y ahí lo creas
-- En lo mismo, pues que un gestor sobre su evento, tenga funcionalidad de cancelar desde detail (igual para espacio)
+- En eventoDetail añadir crearReserva, cancelar, y editar
+
+- espacioDetail añadir crearEvento, cancelar, activar, y editar

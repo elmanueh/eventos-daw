@@ -1,10 +1,14 @@
 import { tipoTarjeta } from '@/configs/constant'
 import GroupCards from '@components/GroupCards'
+import { useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function MisEspacios() {
-  const espacios = useLoaderData().espacio.map((espacio) => espacio.espacioDTO)
+  const initialEspacios = useLoaderData().espacio.map(
+    (espacio) => espacio.espacioDTO
+  )
+  const [espacios, setEspacios] = useState(initialEspacios)
 
   const espaciosActivos = espacios.filter(
     (espacio) => espacio.estado === 'ACTIVO'
@@ -13,11 +17,27 @@ export default function MisEspacios() {
     (espacio) => espacio.estado === 'CERRADO_TEMPORALMENTE'
   )
 
+  const handleActualizarEspacios = (espacioActualizado) => {
+    setEspacios((prevEspacios) =>
+      prevEspacios.map((espacio) =>
+        espacio.id === espacioActualizado.id ? espacioActualizado : espacio
+      )
+    )
+  }
+
+  const handleCrearEspacio = () => {
+    // Implementar la lógica para crear un nuevo evento
+  }
+
   return (
     <Container className="py-4 d-flex flex-column gap-2">
       <h1 className="text-center">Mis Espacios</h1>
 
-      <Button variant="primary" className="ms-auto">
+      <Button
+        variant="primary"
+        className="ms-auto"
+        onClick={handleCrearEspacio}
+      >
         Crear Espacio
       </Button>
 
@@ -26,6 +46,7 @@ export default function MisEspacios() {
         objetos={espaciosActivos}
         tipoTarjeta={tipoTarjeta.ESPACIOS}
         visible={true}
+        onActualizar={handleActualizarEspacios}
       ></GroupCards>
 
       <h3>Cerrados Temporalmente</h3>
@@ -33,6 +54,7 @@ export default function MisEspacios() {
         objetos={espaciosCerrados}
         tipoTarjeta={tipoTarjeta.ESPACIOS}
         visible={true}
+        onActualizar={handleActualizarEspacios}
       ></GroupCards>
     </Container>
   )

@@ -1,19 +1,53 @@
-import { routes } from '@/configs/constant'
+import { estado, routes } from '@/configs/constant'
 import './card.css'
 
-export default function EspacioCard({ espacio, visible }) {
-  const status = espacio.estado === 'ACTIVO' ? 'ACTIVO' : 'CERRADO'
+export default function EspacioCard({ espacio, visible, onActualizar }) {
+  const status =
+    espacio.estado === estado.ACTIVO ? estado.ACTIVO : estado.CERRADO
 
   const handleEdit = () => {
-    // Implementar la lógica para editar el espacio
+    // TODO: Implementar la lógica para editar el espacio
   }
 
-  const handleDesactivar = () => {
-    // Implementar la lógica para desactivar el espacio
+  const handleDesactivar = async () => {
+    // TODO: Implementar la lógica para desactivar el espacio
+    try {
+      /*
+      const response = await fetchPut(
+        urls.MODIFICAR_ESPACIO(espacio.id),
+        estado.CERRADO_TEMPORALMENTE
+      )
+
+      console.log('Espacio desactivado:', response)
+      */
+
+      const espacioActualizado = {
+        ...espacio,
+        estado: estado.CERRADO_TEMPORALMENTE
+      }
+      onActualizar?.(espacioActualizado)
+    } catch (error) {
+      console.error('Error al desactivar el evento:', error)
+    }
   }
 
-  const handleActivar = () => {
-    // Implementar la lógica para activar el espacio
+  const handleActivar = async () => {
+    // TODO: Implementar la lógica para activar el espacio
+    try {
+      /*
+      const response = await fetchPut(
+        urls.MODIFICAR_ESPACIO(espacio.id),
+        estado.ACTIVO
+      )
+
+      console.log('Espacio desactivado:', response)
+      */
+
+      const espacioActualizado = { ...espacio, estado: estado.ACTIVO }
+      onActualizar?.(espacioActualizado)
+    } catch (error) {
+      console.error('Error al desactivar el evento:', error)
+    }
   }
 
   return (
@@ -42,15 +76,15 @@ export default function EspacioCard({ espacio, visible }) {
         <div className="my-card-buttons">
           <button
             type="button"
-            class="btn btn-outline-primary"
+            className="btn btn-outline-primary"
             onClick={handleEdit}
           >
             Editar
           </button>
-          {status === 'ACTIVO' ? (
+          {status === estado.ACTIVO ? (
             <button
               type="button"
-              class="btn btn-outline-danger"
+              className="btn btn-outline-danger"
               onClick={handleDesactivar}
             >
               Desactivar
@@ -58,7 +92,7 @@ export default function EspacioCard({ espacio, visible }) {
           ) : (
             <button
               type="button"
-              class="btn btn-outline-success"
+              className="btn btn-outline-success"
               onClick={handleActivar}
             >
               Activar

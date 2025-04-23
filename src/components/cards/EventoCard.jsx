@@ -1,15 +1,24 @@
-import { routes } from '@/configs/constant'
+import { estado, routes } from '@/configs/constant'
 import './card.css'
 
-export default function EventoCard({ evento, visible }) {
-  const status = evento.cancelado ? 'CERRADO' : 'ACTIVO'
+export default function EventoCard({ evento, visible, onActualizar }) {
+  const status = evento.cancelado ? estado.CERRADO : estado.ACTIVO
 
   const handleEdit = () => {
-    // Implementar la lógica para editar el espacio
+    // TODO: Implementar la lógica para editar el evento
   }
 
-  const handleDesactivar = () => {
-    // Implementar la lógica para desactivar el espacio
+  const handleDesactivar = async () => {
+    // TODO: Implementar la lógica para desactivar el evento
+    try {
+      /*
+      await fetchPut(urls.CANCELAR_EVENTO(evento.id))
+      */
+      const eventoActualizado = { ...evento, cancelado: true }
+      onActualizar?.(eventoActualizado)
+    } catch (error) {
+      console.error('Error al desactivar el evento:', error)
+    }
   }
 
   return (
@@ -32,30 +41,31 @@ export default function EventoCard({ evento, visible }) {
             <i className="bi bi-people-fill my-card-capacity" />
             {evento.numPlazas} personas
           </span>
-
-          <span>
-            <i className="bi bi-calendar my-card-date" />
-            {new Date(evento.fechaInicio).toLocaleDateString('es-ES', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit'
-            })}
-          </span>
+          {!evento.cancelado && (
+            <span>
+              <i className="bi bi-calendar my-card-date" />
+              {new Date(evento.fechaInicio).toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+              })}
+            </span>
+          )}
         </div>
       </div>
       {visible && (
         <div className="my-card-buttons">
           <button
             type="button"
-            class="btn btn-outline-primary"
+            className="btn btn-outline-primary"
             onClick={handleEdit}
           >
             Editar
           </button>
-          {status === 'ACTIVO' && (
+          {!evento.cancelado && (
             <button
               type="button"
-              class="btn btn-outline-danger"
+              className="btn btn-outline-danger"
               onClick={handleDesactivar}
             >
               Desactivar
