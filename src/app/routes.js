@@ -1,7 +1,7 @@
-import ErrorCargandoDatos from '@/ErrorCargandoDatos'
-import ErrorNotFound from '@/ErrorNotFound'
-import { authLoader } from '@/app/authLoader'
+import { fetchLoader } from '@/app/fetchLoader'
 import { routes, urls } from '@/configs/constant'
+import ErrorCargandoDatos from '@pages/ErrorCargandoDatos'
+import ErrorNotFound from '@pages/ErrorNotFound'
 import HomeMain from '@pages/HomeMain'
 import Layout from '@pages/Layout'
 import Login from '@pages/auth/Login'
@@ -15,40 +15,42 @@ import Home from '@pages/home/Home'
 import MisReservas from '@pages/reservas/MisReservas'
 import { createBrowserRouter, redirect } from 'react-router'
 
-function redirectLogin() {
+function getUser() {
+  const user = localStorage.getItem('user')
+  if (!user) return null
+  return JSON.parse(user)
+}
+
+function authLoader() {
   const user = localStorage.getItem('user')
   if (!user && location.pathname !== routes.LOGIN) {
-    return redirect(routes.LOGIN)
+    redirect(routes.LOGIN)
   }
 
-  return null
-}
-
-function redirectApp() {
-  const user = localStorage.getItem('user')
   if (user && location.pathname === routes.LOGIN) {
-    return redirect(routes.HOME)
+    redirect(routes.HOME)
   }
+
   return null
 }
 
-const appRouter = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: '/login',
     Component: Login,
-    loader: redirectApp
+    loader: authLoader
   },
   {
     path: '/',
     Component: Layout,
-    loader: redirectLogin,
+    loader: authLoader,
     ErrorBoundary: ErrorCargandoDatos,
     children: [
       { index: true, Component: HomeMain },
       {
         path: 'home',
         Component: Home,
-        loader: () => authLoader(urls.ESPACIOS, urls.EVENTOS)
+        loader: () => fetchLoader(urls.ESPACIOS, urls.EVENTOS)
       },
       {
         path: 'espacios',
@@ -56,12 +58,13 @@ const appRouter = createBrowserRouter([
           {
             index: true,
             Component: Espacios,
-            loader: () => authLoader(urls.ESPACIOS)
+            loader: () => fetchLoader(urls.ESPACIOS)
           },
           {
             path: ':id',
             Component: EspacioDetalle,
-            loader: ({ params }) => authLoader(urls.ESPACIOS_DET(params.id), urls.ESPACIOS)
+            loader: ({ params }) =>
+              fetchLoader(urls.ESPACIOS_DET(params.id), urls.ESPACIOS)
           }
         ]
       },
@@ -71,12 +74,13 @@ const appRouter = createBrowserRouter([
           {
             index: true,
             Component: Eventos,
-            loader: () => authLoader(urls.EVENTOS)
+            loader: () => fetchLoader(urls.EVENTOS)
           },
           {
             path: ':id',
             Component: EventoDetalle,
-            loader: ({ params }) => authLoader(urls.EVENTOS_DET(params.id), urls.EVENTOS)
+            loader: ({ params }) =>
+              fetchLoader(urls.EVENTOS_DET(params.id), urls.EVENTOS)
           }
         ]
       },
@@ -86,17 +90,18 @@ const appRouter = createBrowserRouter([
           {
             path: 'espacios',
             Component: MisEspacios,
-            loader: () => authLoader(urls.ESPACIOS_PRIVADOS)
+            loader: () =>
+              fetchLoader(urls.ESPACIOS_PRIVADOS(getUser().username))
           },
           {
             path: 'eventos',
             Component: MisEventos,
-            loader: () => authLoader(urls.EVENTOS_PRIVADOS)
+            loader: () => fetchLoader(urls.EVENTOS_PRIVADOS(getUser().username))
           },
           {
             path: 'reservas',
             Component: MisReservas,
-            loader: () => authLoader(urls.RESERVAS_PRIVADAS)
+            loader: () => fetchLoader(urls.RESERVAS_PRIVADAS(getUser().id))
           }
         ]
       }
@@ -108,4 +113,4 @@ const appRouter = createBrowserRouter([
   }
 ])
 
-export default appRouter
+export default router

@@ -1,13 +1,4 @@
-import { routes } from '@/configs/constant'
-import { redirect } from 'react-router'
-
-export async function authLoader(url, url2 = null) {
-  const user = localStorage.getItem('user')
-
-  if (!user) {
-    return redirect(routes.LOGIN)
-  }
-
+export async function fetchLoader(url, url2 = null) {
   try {
     const response = await fetch(url, {
       method: 'GET',

@@ -1,14 +1,11 @@
 import { Card } from 'react-bootstrap'
 
-const ReservaCard = ({ reserva }) => {
+export default function ReservaCard({ reserva }) {
+  console.log(reserva)
   return (
     <Card>
       <Card.Body>
-        <Card.Title style={{ fontSize: '1.2rem' }}>
-          {reserva.evento.nombre.length > 20
-            ? reserva.evento.nombre.substring(0, 20) + '...'
-            : reserva.evento.nombre}
-        </Card.Title>
+        <Card.Title style={{ fontSize: '1.2rem' }}>nombre</Card.Title>
 
         <Card.Text className="text-muted fs-6 mb-2">
           {reserva.cancelada ? (
@@ -46,5 +43,3 @@ const ReservaCard = ({ reserva }) => {
     </Card>
   )
 }
-
-export default ReservaCard

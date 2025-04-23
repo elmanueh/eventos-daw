@@ -18,7 +18,7 @@ export default function Home() {
         <header className="text-end">
           <h1 className="text-primary fw-bold">
             Bienvenido de nuevo,{' '}
-            <span className="text-muted">{user.nombreUsuario}</span>
+            <span className="text-muted">{user.username}</span>
           </h1>
           <p className="text-muted fs-5">
             Aquí tienes un resumen de tu actividad

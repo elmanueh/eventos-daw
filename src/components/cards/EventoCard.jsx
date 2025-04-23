@@ -4,8 +4,6 @@ import './card.css'
 export default function EventoCard({ evento }) {
   const status = evento.cancelado ? 'CERRADO' : 'ACTIVO'
 
-  console.log('EventoCard', evento)
-
   return (
     <div
       className="my-card"

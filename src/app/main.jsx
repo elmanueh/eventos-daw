@@ -1,4 +1,4 @@
-import appRouter from '@/app/routes'
+import router from '@/app/routes'
 import { AuthProvider } from '@context/AuthProvider'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
@@ -12,7 +12,7 @@ const root = document.getElementById('root')
 ReactDOM.createRoot(root).render(
   <StrictMode>
     <AuthProvider>
-      <RouterProvider router={appRouter} />
+      <RouterProvider router={router} />
     </AuthProvider>
   </StrictMode>
 )

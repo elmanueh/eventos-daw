@@ -19,6 +19,7 @@ export const routes = {
 // URL de la API
 export const urls = {
   LOGIN: 'http://localhost:8080/api/auth/login',
+  LOGOUT: 'http://localhost:8080/api/auth/logout',
   GITHUB: 'http://localhost:8080/api/oauth2/authorization/github',
   ESPACIOS: 'http://localhost:8080/api/espaciosfisicos',
   ESPACIOS_FILTRADOS: (fechaInicio, fechaFin, capacidad) =>
