@@ -2,7 +2,7 @@ import { roles, routes } from '@/configs/constant'
 
 export default function UserInfoCard({ user }) {
   return (
-    <div className="bg-dark rounded p-4 d-flex flex-column text-center align-items-center gap-3 border border-secondary align-self-start">
+    <aside className="bg-dark rounded p-4 d-flex flex-column text-center align-items-center gap-3 border border-secondary align-self-start">
       <img
         src="https://cdn-icons-png.freepik.com/256/5084/5084713.png"
         alt="Foto de perfil"
@@ -48,6 +48,6 @@ export default function UserInfoCard({ user }) {
           <i className="bi bi-book-half" /> Mis reservas
         </a>
       </div>
-    </div>
+    </aside>
   )
 }
