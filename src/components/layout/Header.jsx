@@ -34,7 +34,7 @@ export default function Header() {
 
           <div className="d-xl-none me-3">
             <button
-              className="btn btn-outline-light"
+              className="btn btn-outline-primary"
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasWithBothOptions"
@@ -60,7 +60,7 @@ export default function Header() {
       >
         <div className="offcanvas-header">
           <h5
-            className="offcanvas-title text-primary "
+            className="offcanvas-title text-primary fw-bold"
             id="offcanvasWithBothOptionsLabel"
           >
             Tu perfil
