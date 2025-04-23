@@ -33,6 +33,7 @@ export async function authLoader(url, url2 = null) {
 
     return [await response.json(), await response2.json()]
   } catch {
+    // TODO: Manejar el error de manera adecuada
     throw new Error('Error de conexión o servidor')
   }
 }

@@ -1,11 +1,10 @@
-import { espaciosEstaticos } from '@/data/estaticos'
 import EspacioCard from '@components/cards/EspacioCard'
 import Paginacion from '@components/Paginacion'
 import { AuthContext } from '@context/AuthProvider'
 import { useContext, useState } from 'react'
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
 
-const MisEspacios = () => {
+export default function MisEspacios() {
   const { user } = useContext(AuthContext)
 
   const [misEspacios, setMisEspacios] = useState(() =>
@@ -313,5 +312,3 @@ const MisEspacios = () => {
     </Container>
   )
 }
-
-export default MisEspacios
