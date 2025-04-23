@@ -35,3 +35,9 @@ export const urls = {
     `http://localhost:8080/api/eventos/gestor/${name}`,
   RESERVAS_PRIVADAS: (id) => `http://localhost:8080/api/reservas/usuario/${id}`
 }
+
+export const tipoTarjeta = {
+  ESPACIOS: 'espacios',
+  RESERVAS: 'reservas',
+  EVENTOS: 'eventos'
+}
