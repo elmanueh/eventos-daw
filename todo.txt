@@ -1,8 +1,8 @@
 - Hacer login github
 
-- Ajustar margenes (MisEspacios, MisEventos, MisReserva)
+- Tratar errores rápidos cuando falla el filtro
 
-- En EventoCard y EspacioCard -> no funcionan los PUT (error de CORS) ---> lo he dejado comentado
+- Ajustar margenes (MisEspacios, MisEventos, MisReserva)
 
 - En Espacios y Eventos, al actualizar los objetos, debe cambiar el paginator a la page 1
 

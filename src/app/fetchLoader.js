@@ -45,8 +45,6 @@ export async function fetchPut(url, data) {
 
     const response = await fetch(url, options)
 
-    console.log('Respuesta del servidor:', response)
-
     if (!response.ok) {
       throw new Error('Error al actualizar los datos')
     }

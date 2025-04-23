@@ -1,4 +1,5 @@
-import { estado, routes } from '@/configs/constant'
+import { fetchPut } from '@/app/fetchLoader'
+import { estado, routes, urls } from '@/configs/constant'
 import './card.css'
 
 export default function EspacioCard({ espacio, visible, onActualizar }) {
@@ -12,14 +13,10 @@ export default function EspacioCard({ espacio, visible, onActualizar }) {
   const handleDesactivar = async () => {
     // TODO: Implementar la lógica para desactivar el espacio
     try {
-      /*
-      const response = await fetchPut(
+      await fetchPut(
         urls.MODIFICAR_ESPACIO(espacio.id),
         estado.CERRADO_TEMPORALMENTE
       )
-
-      console.log('Espacio desactivado:', response)
-      */
 
       const espacioActualizado = {
         ...espacio,
@@ -34,14 +31,7 @@ export default function EspacioCard({ espacio, visible, onActualizar }) {
   const handleActivar = async () => {
     // TODO: Implementar la lógica para activar el espacio
     try {
-      /*
-      const response = await fetchPut(
-        urls.MODIFICAR_ESPACIO(espacio.id),
-        estado.ACTIVO
-      )
-
-      console.log('Espacio desactivado:', response)
-      */
+      await fetchPut(urls.MODIFICAR_ESPACIO(espacio.id), estado.ACTIVO)
 
       const espacioActualizado = { ...espacio, estado: estado.ACTIVO }
       onActualizar?.(espacioActualizado)

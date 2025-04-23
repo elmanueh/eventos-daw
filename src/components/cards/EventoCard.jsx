@@ -1,4 +1,5 @@
-import { estado, routes } from '@/configs/constant'
+import { fetchPut } from '@/app/fetchLoader'
+import { estado, routes, urls } from '@/configs/constant'
 import './card.css'
 
 export default function EventoCard({ evento, visible, onActualizar }) {
@@ -11,9 +12,7 @@ export default function EventoCard({ evento, visible, onActualizar }) {
   const handleDesactivar = async () => {
     // TODO: Implementar la lógica para desactivar el evento
     try {
-      /*
       await fetchPut(urls.CANCELAR_EVENTO(evento.id))
-      */
       const eventoActualizado = { ...evento, cancelado: true }
       onActualizar?.(eventoActualizado)
     } catch (error) {
