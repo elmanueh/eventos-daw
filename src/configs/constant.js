@@ -33,7 +33,8 @@ export const urls = {
     `http://localhost:8080/api/espaciosfisicos/propietario/${name}`,
   EVENTOS_PRIVADOS: (name) =>
     `http://localhost:8080/api/eventos/gestor/${name}`,
-  RESERVAS_PRIVADAS: (id) => `http://localhost:8080/api/reservas/usuario/${id}`
+  RESERVAS_PRIVADAS: (id) => `http://localhost:8080/api/reservas/usuario/${id}`,
+  RESERVAS_DET: (id) => `http://localhost:8080/api/reservas/${id}`
 }
 
 export const tipoTarjeta = {
