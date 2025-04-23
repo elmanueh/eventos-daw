@@ -1,15 +1,15 @@
-import EspacioCard from '@components/cards/EspacioCard'
-import EventoCard from '@components/cards/EventoCard'
+import { tipoTarjeta } from '@/configs/constant'
+import GroupCards from '@components/GroupCards'
 import { AuthContext } from '@context/AuthProvider'
 import { useContext } from 'react'
 import { useLoaderData } from 'react-router'
 
 export default function Home() {
   const { user } = useContext(AuthContext)
-  const eventos = useLoaderData()[1]._embedded.eventoResumenList
-  const espacios = useLoaderData()[0].espacio.map(
-    (espacio) => espacio.espacioDTO
-  )
+  const eventos = useLoaderData()[1]._embedded.eventoResumenList.slice(0, 8)
+  const espacios = useLoaderData()[0]
+    .espacio.map((espacio) => espacio.espacioDTO)
+    .slice(0, 8)
 
   return (
     <div className="d-flex flex-lg-col flex-column py-5 gap-5 ms-5 me-4">
@@ -28,19 +28,11 @@ export default function Home() {
           <i className="bi bi-houses-fill" /> Espacios físicos disponibles
         </h2>
 
-        <div className="grid-auto-cards">
-          {espacios.slice(0, 4).map((espacio) => (
-            <div key={espacio.id}>
-              <EspacioCard espacio={espacio} />
-            </div>
-          ))}
-        </div>
-
-        <div className="text-end">
-          <a href="/espacios" className="btn btn-outline-primary">
-            Ver todos los espacios
-          </a>
-        </div>
+        <GroupCards
+          objetos={espacios}
+          tipoTarjeta={tipoTarjeta.ESPACIOS}
+          noPaginator={true}
+        ></GroupCards>
       </section>
 
       <section className="d-flex flex-column gap-4 mt-5">
@@ -48,19 +40,11 @@ export default function Home() {
           <i className="bi bi-calendar-event-fill" /> Próximos eventos
         </h2>
 
-        <div className="grid-auto-cards">
-          {eventos.slice(0, 4).map((evento) => (
-            <div key={evento.id}>
-              <EventoCard evento={evento} />
-            </div>
-          ))}
-        </div>
-
-        <div className="text-end">
-          <a href="/eventos" className="btn btn-outline-primary">
-            Ver todos los eventos
-          </a>
-        </div>
+        <GroupCards
+          objetos={eventos}
+          tipoTarjeta={tipoTarjeta.EVENTOS}
+          noPaginator={true}
+        ></GroupCards>
       </section>
     </div>
   )

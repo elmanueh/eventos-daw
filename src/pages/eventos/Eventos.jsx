@@ -1,6 +1,6 @@
-import { urls } from '@/configs/constant'
-import EventoCard from '@components/cards/EventoCard'
-import Paginacion from '@components/Paginacion'
+import { fetchLoader } from '@/app/fetchLoader'
+import { tipoTarjeta, urls } from '@/configs/constant'
+import GroupCards from '@components/GroupCards'
 import { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
@@ -10,20 +10,6 @@ const Eventos = () => {
   const [eventos, setEventos] = useState(loaderData._embedded.eventoResumenList)
 
   const [isEventosLoaded, setIsEventosLoaded] = useState(true)
-
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize] = useState(8)
-  const totalPages = Math.ceil(eventos.length / pageSize)
-
-  const getCurrentPageEventos = () => {
-    const startIndex = (currentPage - 1) * pageSize
-    const endIndex = startIndex + pageSize
-    return eventos.slice(startIndex, endIndex)
-  }
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber)
-  }
 
   const [mesAnio, setMesAnio] = useState('')
 
@@ -135,29 +121,11 @@ const Eventos = () => {
         </Form>
       </section>
 
-      <section className="d-flex flex-column gap-4 mt-5">
-        {getCurrentPageEventos().length === 0 ? (
-          <div style={{ marginBottom: '100px' }}>
-            <p>No hay eventos disponibles.</p>
-          </div>
-        ) : (
-          <>
-            <Row className="g-4">
-              {getCurrentPageEventos().map((evento) => (
-                <Col key={evento.id} sm={12} md={6} xl={4} xxl={3}>
-                  <EventoCard evento={evento} />
-                </Col>
-              ))}
-            </Row>
-
-            <Paginacion
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </>
-        )}
-      </section>
+      {/* TODO: Al actualizar eventos, debe cambiar el paginator page a 1*/}
+      <GroupCards
+        objetos={eventos}
+        tipoTarjeta={tipoTarjeta.EVENTOS}
+      ></GroupCards>
     </div>
   )
 }

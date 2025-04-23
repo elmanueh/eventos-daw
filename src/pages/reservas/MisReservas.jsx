@@ -1,31 +1,13 @@
-import ReservaCard from '@components/cards/ReservaCard'
-import Paginacion from '@components/Paginacion'
-import { useState } from 'react'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { tipoTarjeta } from '@/configs/constant'
+import GroupCards from '@components/GroupCards'
+import { Button, Container } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function MisReservas() {
   const reservas = useLoaderData()._embedded.reservaResumenList
 
-  const [currentPageActivos, setCurrentPageActivos] = useState(1)
-  const [currentPageCerrados, setCurrentPageCerrados] = useState(1)
-  const [pageSize] = useState(8)
-
   const reservasActivas = reservas.filter((r) => !r.cancelada)
   const reservasCanceladas = reservas.filter((r) => r.cancelada)
-
-  const totalPagesActivos = Math.ceil(reservasActivas.length / pageSize)
-  const totalPagesCerrados = Math.ceil(reservasCanceladas.length / pageSize)
-
-  const getPaginatedActivos = () => {
-    const start = (currentPageActivos - 1) * pageSize
-    return reservasActivas.slice(start, start + pageSize)
-  }
-
-  const getPaginatedCerrados = () => {
-    const start = (currentPageCerrados - 1) * pageSize
-    return reservasCanceladas.slice(start, start + pageSize)
-  }
 
   return (
     <Container className="py-4 d-flex flex-column gap-2">
@@ -36,62 +18,16 @@ export default function MisReservas() {
       </Button>
 
       <h3>Activas</h3>
-      {getPaginatedActivos().length > 0 ? (
-        <>
-          <Row>
-            {getPaginatedActivos().map((reserva) => (
-              <Col
-                key={reserva.id}
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                className="mb-4"
-              >
-                <ReservaCard reserva={reserva} />
-              </Col>
-            ))}
-          </Row>
-          <Paginacion
-            totalPages={totalPagesActivos}
-            currentPage={currentPageActivos}
-            setCurrentPage={setCurrentPageActivos}
-          />
-        </>
-      ) : (
-        <div style={{ marginBottom: '100px' }}>
-          <p>No hay reservas activas.</p>
-        </div>
-      )}
+      <GroupCards
+        objetos={reservasActivas}
+        tipoTarjeta={tipoTarjeta.RESERVAS}
+      ></GroupCards>
 
       <h3>Canceladas</h3>
-      {getPaginatedCerrados().length > 0 ? (
-        <>
-          <Row>
-            {getPaginatedCerrados().map((reserva) => (
-              <Col
-                key={reserva.id}
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                className="mb-4"
-              >
-                <ReservaCard reserva={reserva} />
-              </Col>
-            ))}
-          </Row>
-          <Paginacion
-            totalPages={totalPagesCerrados}
-            currentPage={currentPageCerrados}
-            setCurrentPage={setCurrentPageCerrados}
-          />
-        </>
-      ) : (
-        <div style={{ marginBottom: '100px' }}>
-          <p>No hay reservas canceladas.</p>
-        </div>
-      )}
+      <GroupCards
+        objetos={reservasCanceladas}
+        tipoTarjeta={tipoTarjeta.RESERVAS}
+      ></GroupCards>
     </Container>
   )
 }

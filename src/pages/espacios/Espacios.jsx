@@ -1,6 +1,6 @@
-import { urls } from '@/configs/constant'
-import EspacioCard from '@components/cards/EspacioCard'
-import Paginacion from '@components/Paginacion'
+import { fetchLoader } from '@/app/fetchLoader'
+import { tipoTarjeta, urls } from '@/configs/constant'
+import GroupCards from '@components/GroupCards'
 import { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
@@ -10,20 +10,6 @@ export default function Espacios() {
   const [espacios, setEspacios] = useState(loaderData.espacio)
 
   const [isEspaciosLoaded, setIsEspaciosLoaded] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
-
-  const pageSize = 8
-  const totalPages = Math.ceil(espacios.length / pageSize)
-
-  const getCurrentPageEspacios = () => {
-    const startIndex = (currentPage - 1) * pageSize
-    const endIndex = startIndex + pageSize
-    return espacios.slice(startIndex, endIndex)
-  }
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber)
-  }
 
   const [fechaInicio, setFechaInicio] = useState('')
   const [fechaFin, setFechaFin] = useState('')
@@ -31,7 +17,6 @@ export default function Espacios() {
 
   const updateEspacios = async () => {
     if (isEspaciosLoaded) {
-      console.log('Espacios ya cargados')
       return
     }
 
@@ -175,29 +160,11 @@ export default function Espacios() {
         </Form>
       </section>
 
-      <section className="d-flex flex-column gap-4">
-        {getCurrentPageEspacios().length === 0 ? (
-          <div style={{ marginBottom: '100px' }}>
-            <p>No hay espacios disponibles.</p>
-          </div>
-        ) : (
-          <>
-            <Row className="g-4">
-              {getCurrentPageEspacios().map((espacio) => (
-                <Col key={espacio.espacioDTO.id} sm={12} md={6} xl={4} xxl={3}>
-                  <EspacioCard espacio={espacio.espacioDTO} />
-                </Col>
-              ))}
-            </Row>
-
-            <Paginacion
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </>
-        )}
-      </section>
+      {/* TODO: Al actualizar espacios, debe cambiar el paginator page a 1*/}
+      <GroupCards
+        objetos={espacios}
+        tipoTarjeta={tipoTarjeta.ESPACIOS}
+      ></GroupCards>
     </div>
   )
 }
