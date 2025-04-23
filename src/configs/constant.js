@@ -21,9 +21,13 @@ export const urls = {
   LOGIN: 'http://localhost:8080/api/auth/login',
   GITHUB: 'http://localhost:8080/api/oauth2/authorization/github',
   ESPACIOS: 'http://localhost:8080/api/espaciosfisicos',
+  ESPACIOS_FILTRADOS: (fechaInicio, fechaFin, capacidad) =>
+    `http://localhost:8080/api/espaciosfisicos/libre?fechainicio=${fechaInicio}&fechafin=${fechaFin}&capacidad=${capacidad}`,
   ESPACIOS_DET: (id) => `http://localhost:8080/api/espaciosfisicos/${id}`,
   EVENTOS: 'http://localhost:8080/api/eventos',
   EVENTOS_DET: (id) => `http://localhost:8080/api/eventos/${id}`,
+  EVENTOS_FILTRADOS: (mes, ano) =>
+    `http://localhost:8080/api/eventos?mes=${mes}&año=${ano}`,
   ESPACIOS_PRIVADOS: (name) =>
     `http://localhost:8080/api/espaciosfisicos/propietario/${name}`,
   EVENTOS_PRIVADOS: (name) =>
