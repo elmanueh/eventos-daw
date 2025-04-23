@@ -1,20 +1,12 @@
-- Hacer que funcione el fetch de home, e ir quitando todo lo estático
-
-- Al paginar, que salte arriba de la sección
-
 - Hacer login github
 
-- Crear cards, footer y  navBar desde 0, sin usar componentes ya creados
+- En Espacios y Eventos, al actualizar los objetos, debe cambiar el paginator a la page 1
 
-- Desde evento, al mostrar el nombre del espacio, poder clickear a ver el espacio
+- Mirar estilo paginator
 
-- En los getAll, faltaría permitir los filtros
+- Mirar GroupCards y el paginator (separar la lógica)
 
 - Los modal de MisReserva/MisEspacios/MisEventos por hacer (tanto crear como editar)
 
 - En eventoDetail y espacioDetail considerar colocar botones de crearEvento y crearReserva, que te redirija a MisReserva/MisEventos, te abra el modal y ahí lo creas
 - En lo mismo, pues que un gestor sobre su evento, tenga funcionalidad de cancelar desde detail (igual para espacio)
-
-- En App, chekear que solos los roles pueden entrar a ciertas zonas (Un gestor no puede entrar a misEspacios)
-
-- Considerar que un gestor tb debe ser usuario, por simplicidad del front
