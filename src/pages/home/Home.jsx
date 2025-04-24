@@ -1,6 +1,6 @@
 import { tipoTarjeta } from '@/configs/constant'
 import GroupCards from '@components/GroupCards'
-import { AuthContext } from '@context/AuthProvider'
+import { AuthContext } from '@context/AuthContext'
 import { useContext } from 'react'
 import { useLoaderData } from 'react-router'
 

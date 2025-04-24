@@ -1,5 +1,5 @@
-import { fetchPut } from '@/app/fetchLoader'
 import { estado, routes, urls } from '@/configs/constant'
+import { fetchPut } from '@/utils/fetchPut'
 import './card.css'
 
 export default function EspacioCard({ espacio, visible, onActualizar }) {

@@ -1,11 +1,13 @@
-import { fetchLoader } from '@/app/fetchLoader'
 import { roles, routes, urls } from '@/configs/constant'
+import { fetchGet } from '@/utils/fetchGet'
+import { AuthContext } from '@context/AuthContext'
 import format from 'date-fns/format'
 import es from 'date-fns/locale/es'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router'
 
-export default function UserInfoCard({ user }) {
+export default function UserInfoCard() {
+  const { user } = useContext(AuthContext)
   const [info, setInfo] = useState({
     evento: null,
     espacio: null
@@ -14,25 +16,21 @@ export default function UserInfoCard({ user }) {
   useEffect(() => {
     const getInfo = async () => {
       try {
-        const reservasDto = await fetchLoader(urls.RESERVAS_PRIVADAS(user.id))
+        const reservasDto = await fetchGet(urls.RESERVAS_PRIVADAS(user.id))
         const reservas = await Promise.all(
           reservasDto._embedded.reservaResumenList.map((reserva) =>
-            fetchLoader(urls.RESERVAS_DET(reserva.id))
+            fetchGet(urls.RESERVAS_DET(reserva.id))
           )
         )
         const eventos = await Promise.all(
-          reservas.map((reserva) =>
-            fetchLoader(urls.EVENTOS_DET(reserva.evento))
-          )
+          reservas.map((reserva) => fetchGet(urls.EVENTOS_DET(reserva.evento)))
         )
         const evento = eventos.sort((a, b) => {
           const fechaA = new Date(a.fechaInicio)
           const fechaB = new Date(b.fechaInicio)
           return fechaA - fechaB
         })[0]
-        const espacio = await fetchLoader(
-          urls.ESPACIOS_DET(evento.espacioFisico)
-        )
+        const espacio = await fetchGet(urls.ESPACIOS_DET(evento.espacioFisico))
 
         setInfo({
           evento: evento,
@@ -43,7 +41,7 @@ export default function UserInfoCard({ user }) {
       }
     }
     getInfo()
-  }, [user.id])
+  }, [user])
 
   return (
     <aside className="bg-dark rounded p-4 d-flex flex-column text-center align-items-center gap-3 border border-secondary align-self-start">

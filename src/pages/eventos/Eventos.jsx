@@ -1,5 +1,5 @@
-import { fetchLoader } from '@/app/fetchLoader'
 import { tipoTarjeta, urls } from '@/configs/constant'
+import { fetchGet } from '@/utils/fetchGet'
 import GroupCards from '@components/GroupCards'
 import { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
@@ -20,7 +20,7 @@ const Eventos = () => {
     }
 
     try {
-      const data = await fetchLoader(urls.EVENTOS)
+      const data = await fetchGet(urls.EVENTOS)
       setEventos(data._embedded?.eventoResumenList || [])
 
       setIsEventosLoaded(true)
@@ -40,7 +40,7 @@ const Eventos = () => {
     }
 
     try {
-      const data = await fetchLoader(
+      const data = await fetchGet(
         urls.EVENTOS_FILTRADOS(mesAnio.split('-')[1], mesAnio.split('-')[0])
       )
       setEventos(data._embedded?.eventoResumenList || [])

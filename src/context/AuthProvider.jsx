@@ -1,8 +1,6 @@
-/* eslint-disable react-refresh/only-export-components */
 import { urls } from '@/configs/constant'
-import { createContext, useEffect, useState } from 'react'
-
-export const AuthContext = createContext()
+import { AuthContext } from '@context/AuthContext'
+import { useEffect, useState } from 'react'
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -15,14 +13,14 @@ export function AuthProvider({ children }) {
   }, [])
 
   function login(userData) {
-    const user = {
+    const userInfo = {
       id: userData.idUsuario,
       username: userData.nombreUsuario,
       roles: userData.rolesUsuario
     }
 
-    localStorage.setItem('user', JSON.stringify(user))
-    setUser(user)
+    localStorage.setItem('user', JSON.stringify(userInfo))
+    setUser(userInfo)
   }
 
   async function logout() {

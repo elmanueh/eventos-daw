@@ -1,5 +1,5 @@
-import { fetchLoader } from '@/app/fetchLoader'
 import { urls } from '@/configs/constant'
+import { fetchGet } from '@/utils/fetchGet'
 import { useEffect, useState } from 'react'
 import './card.css'
 
@@ -10,9 +10,9 @@ export default function ReservaCard({ reserva }) {
   useEffect(() => {
     const fetchEvento = async () => {
       try {
-        const data = await fetchLoader(urls.RESERVAS_DET(reserva.id))
+        const data = await fetchGet(urls.RESERVAS_DET(reserva.id))
 
-        const data2 = await fetchLoader(urls.EVENTOS_DET(data.evento))
+        const data2 = await fetchGet(urls.EVENTOS_DET(data.evento))
 
         setEventoNombre(data2.nombre)
       } catch (error) {

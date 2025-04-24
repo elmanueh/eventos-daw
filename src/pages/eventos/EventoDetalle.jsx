@@ -1,5 +1,5 @@
-import { fetchLoader } from '@/app/fetchLoader'
 import { routes, urls } from '@/configs/constant'
+import { fetchGet } from '@/utils/fetchGet'
 import EventoCard from '@components/cards/EventoCard'
 import { useEffect, useState } from 'react'
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
@@ -20,7 +20,7 @@ const EventoDetalle = () => {
 
     async function fetchEspacio() {
       try {
-        const data = await fetchLoader(urls.ESPACIOS_DET(evento.espacioFisico))
+        const data = await fetchGet(urls.ESPACIOS_DET(evento.espacioFisico))
 
         setEspacio(data)
       } catch (error) {

@@ -1,5 +1,5 @@
-import { fetchLoader } from '@/app/fetchLoader'
 import { routes, urls } from '@/configs/constant'
+import { fetchGet } from '@/utils/fetchGet'
 import ErrorCargandoDatos from '@pages/ErrorCargandoDatos'
 import ErrorNotFound from '@pages/ErrorNotFound'
 import HomeMain from '@pages/HomeMain'
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
       {
         path: 'home',
         Component: Home,
-        loader: () => fetchLoader(urls.ESPACIOS, urls.EVENTOS)
+        loader: () => fetchGet(urls.ESPACIOS, urls.EVENTOS)
       },
       {
         path: 'espacios',
@@ -58,13 +58,13 @@ const router = createBrowserRouter([
           {
             index: true,
             Component: Espacios,
-            loader: () => fetchLoader(urls.ESPACIOS)
+            loader: () => fetchGet(urls.ESPACIOS)
           },
           {
             path: ':id',
             Component: EspacioDetalle,
             loader: ({ params }) =>
-              fetchLoader(urls.ESPACIOS_DET(params.id), urls.ESPACIOS)
+              fetchGet(urls.ESPACIOS_DET(params.id), urls.ESPACIOS)
           }
         ]
       },
@@ -74,13 +74,13 @@ const router = createBrowserRouter([
           {
             index: true,
             Component: Eventos,
-            loader: () => fetchLoader(urls.EVENTOS)
+            loader: () => fetchGet(urls.EVENTOS)
           },
           {
             path: ':id',
             Component: EventoDetalle,
             loader: ({ params }) =>
-              fetchLoader(urls.EVENTOS_DET(params.id), urls.EVENTOS)
+              fetchGet(urls.EVENTOS_DET(params.id), urls.EVENTOS)
           }
         ]
       },
@@ -90,18 +90,17 @@ const router = createBrowserRouter([
           {
             path: 'espacios',
             Component: MisEspacios,
-            loader: () =>
-              fetchLoader(urls.ESPACIOS_PRIVADOS(getUser().username))
+            loader: () => fetchGet(urls.ESPACIOS_PRIVADOS(getUser().username))
           },
           {
             path: 'eventos',
             Component: MisEventos,
-            loader: () => fetchLoader(urls.EVENTOS_PRIVADOS(getUser().username))
+            loader: () => fetchGet(urls.EVENTOS_PRIVADOS(getUser().username))
           },
           {
             path: 'reservas',
             Component: MisReservas,
-            loader: () => fetchLoader(urls.RESERVAS_PRIVADAS(getUser().id))
+            loader: () => fetchGet(urls.RESERVAS_PRIVADAS(getUser().id))
           }
         ]
       }

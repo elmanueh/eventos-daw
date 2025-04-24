@@ -1,5 +1,5 @@
 import { routes, urls } from '@/configs/constant'
-import { AuthContext } from '@context/AuthProvider'
+import { AuthContext } from '@context/AuthContext'
 import '@pages/auth/login.css'
 import { useContext } from 'react'
 

@@ -1,5 +1,5 @@
-import { fetchLoader } from '@/app/fetchLoader'
 import { tipoTarjeta, urls } from '@/configs/constant'
+import { fetchGet } from '@/utils/fetchGet'
 import GroupCards from '@components/GroupCards'
 import { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
@@ -23,7 +23,7 @@ export default function Espacios() {
     }
 
     try {
-      const data = await fetchLoader(urls.ESPACIOS)
+      const data = await fetchGet(urls.ESPACIOS)
       setEspacios(data.espacio?.map((espacio) => espacio.espacioDTO) || [])
 
       setIsEspaciosLoaded(true)
@@ -49,7 +49,7 @@ export default function Espacios() {
     const fechaFinISO = new Date(fechaFin).toISOString().slice(0, -1)
 
     try {
-      const data = await fetchLoader(
+      const data = await fetchGet(
         urls.ESPACIOS_FILTRADOS(
           fechaInicioISO,
           fechaFinISO,

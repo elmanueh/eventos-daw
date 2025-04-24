@@ -1,6 +1,6 @@
 import { routes } from '@/configs/constant'
 import UserInfoCard from '@components/UserInfoCard'
-import { AuthContext } from '@context/AuthProvider'
+import { AuthContext } from '@context/AuthContext'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import logo from '/logo.png'
