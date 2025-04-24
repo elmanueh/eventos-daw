@@ -6,21 +6,24 @@ import OthersCards from '@components/OthersCards'
 import { AuthContext } from '@context/AuthContext'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 const EventoDetalle = () => {
   const { user } = useContext(AuthContext)
-  const evento = useLoaderData()[0]
+  const loaderData = useLoaderData()
+  const evento = loaderData[0]
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const status = evento.cancelado ? estado.CERRADO : estado.ACTIVO
 
-  const otrosEventos = useLoaderData()[1]
-    ._embedded.eventoResumenList.filter((e) => e.id !== evento.id)
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 3)
+  const otrosEventos = useMemo(() => {
+    return loaderData[1]._embedded.eventoResumenList
+      .filter((e) => e.id !== evento.id)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3)
+  }, [loaderData, evento.id])
 
   const [espacio, setEspacio] = useState(null)
 

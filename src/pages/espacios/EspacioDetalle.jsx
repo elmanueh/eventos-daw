@@ -6,23 +6,26 @@ import {
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import OthersCards from '@components/OthersCards'
 import { AuthContext } from '@context/AuthContext'
-import { useContext, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { Badge, Card, Col, Container, ListGroup, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function EspacioDetalle() {
   const { user } = useContext(AuthContext)
-  const espacio = useLoaderData()[0]
+  const loaderData = useLoaderData()
+  const espacio = loaderData[0]
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const status =
     espacio.estado === estado.ACTIVO ? estado.ACTIVO : estado.CERRADO
 
-  const otrosEspacios = useLoaderData()[1]
-    .espacio.map((espacio) => espacio.espacioDTO)
-    .filter((e) => e.id !== espacio.id)
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 3)
+  const otrosEspacios = useMemo(() => {
+    return loaderData[1].espacio
+      .map((espacio) => espacio.espacioDTO)
+      .filter((e) => e.id !== espacio.id)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3)
+  }, [loaderData, espacio.id])
 
   return (
     <Container className="py-5">
@@ -113,7 +116,10 @@ export default function EspacioDetalle() {
                         <button
                           type="button"
                           className="btn btn-outline-danger"
-                          onClick={() => setShowConfirmation(true)}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            setShowConfirmation(true)
+                          }}
                         >
                           Desactivar
                         </button>
@@ -121,7 +127,10 @@ export default function EspacioDetalle() {
                         <button
                           type="button"
                           className="btn btn-outline-success"
-                          onClick={() => setShowConfirmation(true)}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            setShowConfirmation(true)
+                          }}
                         >
                           Activar
                         </button>

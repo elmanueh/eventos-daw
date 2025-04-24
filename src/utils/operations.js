@@ -15,6 +15,7 @@ export const handleCambiarEstadoEspacio = async (espacio, status, setShowConfirm
   try {
     await fetchPut(urls.MODIFICAR_ESTADO_ESPACIO(espacio.id), estadoNuevo)
     setShowConfirmation(false)
+    window.location.reload()
   } catch (error) {
     console.error('Error al desactivar el evento:', error)
   }
@@ -30,6 +31,7 @@ export const handleDesactivarEvento = async (id, setShowConfirmation) => {
   try {
       await fetchPut(urls.CANCELAR_EVENTO(id))
       setShowConfirmation(false)
+      window.location.reload()
     } catch (error) {
       console.error('Error al desactivar el evento:', error)
     }
