@@ -1,7 +1,7 @@
 import EspacioCard from '@components/cards/EspacioCard'
 import EventoCard from '@components/cards/EventoCard'
 import ReservaCard from '@components/cards/ReservaCard'
-import Paginacion from '@components/Paginacion'
+import { Pagination } from '@components/pagination/Pagination'
 import { useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 
@@ -73,7 +73,7 @@ export default function GroupCards({
               </a>
             </div>
           ) : (
-            <Paginacion
+            <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}

@@ -16,6 +16,7 @@ const Eventos = () => {
 
   const updateEventos = async () => {
     if (isEventosLoaded) {
+      setMesAnio('')
       return hideMessageError()
     }
 
