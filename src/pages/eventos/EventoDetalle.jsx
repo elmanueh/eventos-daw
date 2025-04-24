@@ -1,6 +1,7 @@
-import { routes, tipoTarjeta, urls } from '@/configs/constant'
+import { estado, routes, tipoTarjeta, urls } from '@/configs/constant'
 import { fetchGet } from '@/utils/fetchGet'
 import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
+import ConfirmationModal from '@components/modals/ConfirmationModal'
 import OthersCards from '@components/OthersCards'
 import { AuthContext } from '@context/AuthContext'
 import { format } from 'date-fns'
@@ -12,6 +13,9 @@ import { useLoaderData } from 'react-router'
 const EventoDetalle = () => {
   const { user } = useContext(AuthContext)
   const evento = useLoaderData()[0]
+
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const status = evento.cancelado ? estado.CERRADO : estado.ACTIVO
 
   const otrosEventos = useLoaderData()[1]
     ._embedded.eventoResumenList.filter((e) => e.id !== evento.id)
@@ -43,6 +47,16 @@ const EventoDetalle = () => {
 
   return (
     <Container className="py-5">
+      <ConfirmationModal
+        show={showConfirmation}
+        callback={() =>
+          handleDesactivarEvento(evento.idEvento, setShowConfirmation)
+        }
+        onHide={() => setShowConfirmation(false)}
+        title={evento.nombre}
+        status={status}
+        tipo={tipoTarjeta.EVENTOS}
+      />
       <Row>
         <Col md={4}>
           <OthersCards
@@ -67,7 +81,7 @@ const EventoDetalle = () => {
                       text={evento.cancelado ? 'danger' : 'success'}
                       className="fs-6 bg-opacity-25 px-3 py-2 rounded-pill"
                     >
-                      {evento.cancelado ? 'CERRADO' : 'ACTIVO'}
+                      {status}
                     </Badge>
                   </Col>
                 </Row>
@@ -155,7 +169,7 @@ const EventoDetalle = () => {
                       <button
                         type="button"
                         className="btn btn-outline-danger"
-                        onClick={() => handleDesactivarEvento(evento.idEvento)}
+                        onClick={() => setShowConfirmation(true)}
                       >
                         Desactivar
                       </button>

@@ -8,27 +8,28 @@ export const handleEditEspacio = async () => {
 
 export const handleCambiarEstadoEspacio = async (espacio, status, setShowConfirmation) => {
   const estadoNuevo = 
-    status === estado.ACTIVO ? estado.CERRADO_TEMPORALMENTE : estado.ACTIVO;
+    status === estado.ACTIVO ? estado.CERRADO_TEMPORALMENTE : estado.ACTIVO
 
-  console.log('Cambiando estado del espacio a', estadoNuevo);
+  console.log('Cambiando estado del espacio a', estadoNuevo)
 
   try {
-    await fetchPut(urls.MODIFICAR_ESTADO_ESPACIO(espacio.id), estadoNuevo);
-    setShowConfirmation(false); // Cerrar el modal después de la actualización
+    await fetchPut(urls.MODIFICAR_ESTADO_ESPACIO(espacio.id), estadoNuevo)
+    setShowConfirmation(false)
   } catch (error) {
-    console.error('Error al desactivar el evento:', error);
+    console.error('Error al desactivar el evento:', error)
   }
 }
 
 export const handleEditEvento = async () => {
   // TODO: Implementar la lógica para editar el evento
-  console.log('Editando evento...');
+  console.log('Editando evento...')
 }
 
-export const handleDesactivarEvento = async (id) => {
-  console.log('Desactivando evento...');
+export const handleDesactivarEvento = async (id, setShowConfirmation) => {
+  console.log('Desactivando evento...')
   try {
       await fetchPut(urls.CANCELAR_EVENTO(id))
+      setShowConfirmation(false)
     } catch (error) {
       console.error('Error al desactivar el evento:', error)
     }

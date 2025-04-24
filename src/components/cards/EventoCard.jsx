@@ -1,12 +1,23 @@
-import { estado, routes } from '@/configs/constant'
+import { estado, routes, tipoTarjeta } from '@/configs/constant'
 import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
+import ConfirmationModal from '@components/modals/ConfirmationModal'
+import { useState } from 'react'
 import './card.css'
 
 export default function EventoCard({ evento, visible }) {
+  const [showConfirmation, setShowConfirmation] = useState(false)
   const status = evento.cancelado ? estado.CERRADO : estado.ACTIVO
 
   return (
     <div>
+      <ConfirmationModal
+        show={showConfirmation}
+        callback={() => handleDesactivarEvento(evento.id, setShowConfirmation)}
+        onHide={() => setShowConfirmation(false)}
+        title={evento.nombre}
+        status={status}
+        tipo={tipoTarjeta.EVENTOS}
+      />
       <div
         className="my-card"
         onClick={() => (window.location.href = routes.EVENTOS(evento.id))}
@@ -50,7 +61,7 @@ export default function EventoCard({ evento, visible }) {
             <button
               type="button"
               className="btn btn-outline-danger"
-              onClick={() => handleDesactivarEvento(evento.id)}
+              onClick={() => setShowConfirmation(true)}
             >
               Desactivar
             </button>
