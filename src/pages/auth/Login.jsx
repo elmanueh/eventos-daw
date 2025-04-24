@@ -1,13 +1,8 @@
 import { routes, urls } from '@/configs/constant'
+import { showMessageError } from '@/utils/error'
 import { AuthContext } from '@context/AuthContext'
 import '@pages/auth/login.css'
 import { useContext } from 'react'
-
-function showMessageError(message) {
-  const element = document.getElementById('errorMessage')
-  element.innerHTML = message
-  element.classList.remove('d-none')
-}
 
 export default function Login() {
   const { login } = useContext(AuthContext)

@@ -1,4 +1,5 @@
 import { tipoTarjeta, urls } from '@/configs/constant'
+import { hideMessageError, showMessageError } from '@/utils/error'
 import { fetchGet } from '@/utils/fetchGet'
 import GroupCards from '@components/GroupCards'
 import { useState } from 'react'
@@ -19,7 +20,7 @@ export default function Espacios() {
 
   const updateEspacios = async () => {
     if (isEspaciosLoaded) {
-      return
+      return hideMessageError()
     }
 
     try {
@@ -28,22 +29,28 @@ export default function Espacios() {
 
       setIsEspaciosLoaded(true)
 
+      hideMessageError()
+
       setFechaInicio('')
       setFechaFin('')
       setCapacidad('')
     } catch (error) {
       console.error('Error al cargar los espacios:', error)
-      alert('Error al cargar los espacios.')
+      showMessageError('Error al cargar los espacios.')
     }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (fechaInicio === '' || fechaFin === '' || capacidad === '') {
-      alert('Por favor, completa todos los campos')
-      return
-    }
+    if (fechaInicio === '')
+      return showMessageError('La fecha de inicio es obligatoria.')
+
+    if (fechaFin === '')
+      return showMessageError('La fecha de fin es obligatoria.')
+
+    if (capacidad === '')
+      return showMessageError('La capacidad es obligatoria.')
 
     const fechaInicioISO = new Date(fechaInicio).toISOString().slice(0, -1)
     const fechaFinISO = new Date(fechaFin).toISOString().slice(0, -1)
@@ -58,15 +65,17 @@ export default function Espacios() {
       )
 
       setEspacios(data.espacio?.map((espacio) => espacio.espacioDTO) || [])
+      hideMessageError()
+
       setIsEspaciosLoaded(false)
     } catch (error) {
       console.error('Error al cargar los espacios filtrados:', error)
-      alert('Error al cargar los espacios filtrados.')
+      showMessageError('Error al cargar los espacios filtrados.')
     }
   }
 
   return (
-    <div className="d-flex flex-column py-5 gap-5 ms-5 me-4">
+    <div className="d-flex flex-column py-5 gap-3 ms-5 me-4">
       <header className="text-center">
         <h1 className="text-primary fw-bold">Espacios Físicos</h1>
       </header>
@@ -140,7 +149,13 @@ export default function Espacios() {
         </Form>
       </section>
 
-      {/* TODO: Al actualizar espacios, debe cambiar el paginator page a 1*/}
+      <section>
+        <div
+          id="errorMessage"
+          className="alert alert-danger d-inline-block d-none"
+        />
+      </section>
+
       <GroupCards
         objetos={espacios}
         tipoTarjeta={tipoTarjeta.ESPACIOS}

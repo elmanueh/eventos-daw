@@ -2,6 +2,8 @@
 
 - Tratar errores rápidos cuando falla el filtro
 
+- Añadir modal de confirmación en cada transacción
+
 - Ajustar margenes (MisEspacios, MisEventos, MisReserva)
 
 - En Espacios y Eventos, al actualizar los objetos, debe cambiar el paginator a la page 1
