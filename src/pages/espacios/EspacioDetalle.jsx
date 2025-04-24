@@ -65,7 +65,7 @@ export default function EspacioDetalle() {
                       <Badge
                         bg={status === 'ACTIVO' ? 'success' : 'danger'}
                         text={status === 'ACTIVO' ? 'success' : 'danger'}
-                        className="fs-6 bg-opacity-25 px-3 py-2 rounded-pill"
+                        className="fs-6 fw-medium bg-opacity-25 px-3 py-2 rounded-pill"
                       >
                         {status}
                       </Badge>

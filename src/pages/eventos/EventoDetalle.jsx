@@ -89,7 +89,7 @@ const EventoDetalle = () => {
                     <Badge
                       bg={evento.cancelado ? 'danger' : 'success'}
                       text={evento.cancelado ? 'danger' : 'success'}
-                      className="fs-6 bg-opacity-25 px-3 py-2 rounded-pill"
+                      className="fs-6 fw-medium bg-opacity-25 px-3 py-2 rounded-pill"
                     >
                       {status}
                     </Badge>
