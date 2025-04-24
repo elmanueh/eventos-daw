@@ -10,8 +10,16 @@
   height: 100%;
 }
 
+.my-card.no-hover {
+  cursor: default;
+}
+
 .my-card:hover {
   transform: translateY(-4px);
+}
+
+.my-card.no-hover:hover {
+  transform: none;
 }
 
 .my-card-header {
@@ -47,9 +55,16 @@
   align-items: center;
 }
 
+.my-card-info.next {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
 .my-card-capacity,
-.my-card-date {
-  margin-right: 10px;
+.my-card-date,
+.my-card-time,
+.my-card-espacio {
+  margin-right: 5px;
 }
 
 .my-card-status {

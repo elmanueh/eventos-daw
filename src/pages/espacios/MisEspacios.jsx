@@ -44,7 +44,7 @@ export default function MisEspacios() {
       <h3>Activos</h3>
       <GroupCards
         objetos={espaciosActivos}
-        tipoTarjeta={tipoTarjeta.ESPACIOS}
+        tipo={tipoTarjeta.ESPACIOS}
         visible={true}
         onActualizar={handleActualizarEspacios}
       ></GroupCards>
@@ -52,7 +52,7 @@ export default function MisEspacios() {
       <h3>Cerrados Temporalmente</h3>
       <GroupCards
         objetos={espaciosCerrados}
-        tipoTarjeta={tipoTarjeta.ESPACIOS}
+        tipo={tipoTarjeta.ESPACIOS}
         visible={true}
         onActualizar={handleActualizarEspacios}
       ></GroupCards>

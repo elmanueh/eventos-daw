@@ -16,6 +16,7 @@ const Eventos = () => {
 
   const updateEventos = async () => {
     if (isEventosLoaded) {
+      setMesAnio('')
       return hideMessageError()
     }
 
@@ -103,7 +104,7 @@ const Eventos = () => {
 
       <GroupCards
         objetos={eventos}
-        tipoTarjeta={tipoTarjeta.EVENTOS}
+        tipo={tipoTarjeta.EVENTOS}
       ></GroupCards>
     </div>
   )

@@ -1,13 +1,14 @@
+import { tipoTarjeta } from '@/configs/constant'
 import EspacioCard from '@components/cards/EspacioCard'
 import EventoCard from '@components/cards/EventoCard'
 import ReservaCard from '@components/cards/ReservaCard'
-import Paginacion from '@components/Paginacion'
+import { Pagination } from '@components/pagination/Pagination'
 import { useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 
 export default function GroupCards({
   objetos,
-  tipoTarjeta,
+  tipo,
   visible,
   noPaginator,
   onActualizar
@@ -31,49 +32,53 @@ export default function GroupCards({
     <section className="d-flex flex-column gap-4">
       {getCurrentPageEspacios().length === 0 ? (
         <div style={{ marginBottom: '100px' }}>
-          <p>No hay {tipoTarjeta} disponibles.</p>
+          <p>No hay {tipo} disponibles.</p>
         </div>
       ) : (
         <>
-          <Row className="g-4">
-            {getCurrentPageEspacios().map((objeto) => (
-              <Col key={objeto.id} sm={12} md={6} xl={4} xxl={3}>
-                {(() => {
-                  switch (tipoTarjeta) {
-                    case 'espacios':
-                      return (
-                        <EspacioCard
-                          espacio={objeto}
-                          visible={visible}
-                          onActualizar={onActualizar}
-                        />
-                      )
-                    case 'eventos':
-                      return (
-                        <EventoCard
-                          evento={objeto}
-                          visible={visible}
-                          onActualizar={onActualizar}
-                        />
-                      )
-                    case 'reservas':
-                      return <ReservaCard reserva={objeto} />
-                    default:
-                      return null
-                  }
-                })()}
-              </Col>
-            ))}
-          </Row>
+          {tipo === tipoTarjeta.RESERVAS ? (
+            <div className="d-flex flex-column gap-4">
+              {getCurrentPageEspacios().map((objeto) => {
+                return <ReservaCard key={objeto.id} reserva={objeto} />
+              })}
+            </div>
+          ) : (
+            <Row className="g-4">
+              {getCurrentPageEspacios().map((objeto) => (
+                <Col key={objeto.id} sm={12} md={6} xl={4} xxl={3}>
+                  {(() => {
+                    switch (tipo) {
+                      case tipoTarjeta.ESPACIOS:
+                        return (
+                          <EspacioCard
+                            espacio={objeto}
+                            visible={visible}
+                            onActualizar={onActualizar}
+                          />
+                        )
+                      case tipoTarjeta.EVENTOS:
+                        return (
+                          <EventoCard
+                            evento={objeto}
+                            visible={visible}
+                            onActualizar={onActualizar}
+                          />
+                        )
+                    }
+                  })()}
+                </Col>
+              ))}
+            </Row>
+          )}
 
           {noPaginator ? (
             <div className="text-end">
-              <a href={`/${tipoTarjeta}`} className="btn btn-outline-primary">
-                Ver todos los {tipoTarjeta}
+              <a href={`/${tipo}`} className="btn btn-outline-primary">
+                Ver todos los {tipo}
               </a>
             </div>
           ) : (
-            <Paginacion
+            <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}

@@ -1,14 +1,12 @@
 - Hacer login github
 
-- Tratar errores rápidos cuando falla el filtro
+- Tratar errores rápidos cuando falla el filtro (hacerlo automático y mejorado)
 
 - Añadir modal de confirmación en cada transacción
 
 - Ajustar margenes (MisEspacios, MisEventos, MisReserva)
 
 - En Espacios y Eventos, al actualizar los objetos, debe cambiar el paginator a la page 1
-
-- Mirar estilo paginator
 
 - Mirar GroupCards y el paginator (separar la lógica)
 

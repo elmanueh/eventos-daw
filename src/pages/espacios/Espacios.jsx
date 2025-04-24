@@ -20,6 +20,9 @@ export default function Espacios() {
 
   const updateEspacios = async () => {
     if (isEspaciosLoaded) {
+      setFechaInicio('')
+      setFechaFin('')
+      setCapacidad('')
       return hideMessageError()
     }
 
@@ -34,6 +37,7 @@ export default function Espacios() {
       setFechaInicio('')
       setFechaFin('')
       setCapacidad('')
+      console.log(fechaInicio)
     } catch (error) {
       console.error('Error al cargar los espacios:', error)
       showMessageError('Error al cargar los espacios.')
@@ -158,7 +162,7 @@ export default function Espacios() {
 
       <GroupCards
         objetos={espacios}
-        tipoTarjeta={tipoTarjeta.ESPACIOS}
+        tipo={tipoTarjeta.ESPACIOS}
       ></GroupCards>
     </div>
   )
