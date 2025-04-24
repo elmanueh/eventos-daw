@@ -1,0 +1,32 @@
+import { tipoTarjeta } from '@/configs/constant'
+import EspacioCard from '@components/cards/EspacioCard'
+import EventoCard from '@components/cards/EventoCard'
+import { Card } from 'react-bootstrap'
+
+export default function OthersCards({ otros, tipo }) {
+  return (
+    <Card className="mb-4 border border-primary">
+      <Card.Header as="h3" className="bg-secondary bg-opacity-25 text-primary">
+        Otros {tipo}
+      </Card.Header>
+      <Card.Body className="border-top border-primary">
+        {otros.length > 0 ? (
+          otros.map((objeto) => (
+            <div key={objeto.id} className="mb-3">
+              {(() => {
+                switch (tipo) {
+                  case tipoTarjeta.ESPACIOS:
+                    return <EspacioCard espacio={objeto} />
+                  case tipoTarjeta.EVENTOS:
+                    return <EventoCard evento={objeto} />
+                }
+              })()}
+            </div>
+          ))
+        ) : (
+          <p className="text-muted">No hay otros {tipo} disponibles</p>
+        )}
+      </Card.Body>
+    </Card>
+  )
+}

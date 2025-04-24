@@ -86,7 +86,7 @@ export default function UserInfoCard() {
               <strong> Fecha: </strong>
               {format(
                 new Date(info.evento.fechaInicio),
-                "dd'/'MM'/'yyyy HH:mm",
+                "dd'/'MM'/'yyyy 'a las' HH:mm",
                 { locale: es }
               )}
             </li>

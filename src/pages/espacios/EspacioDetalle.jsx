@@ -1,8 +1,12 @@
-import EspacioCard from '@components/cards/EspacioCard'
+import { tipoTarjeta } from '@/configs/constant'
+import OthersCards from '@components/OthersCards'
+import { AuthContext } from '@context/AuthContext'
+import { useContext } from 'react'
 import { Badge, Card, Col, Container, ListGroup, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function EspacioDetalle() {
+  const { user } = useContext(AuthContext)
   const espacio = useLoaderData()[0]
 
   const otrosEspacios = useLoaderData()[1]
@@ -16,6 +20,13 @@ export default function EspacioDetalle() {
   return (
     <Container className="py-5">
       <Row>
+        <Col md={4}>
+          <OthersCards
+            otros={otrosEspacios}
+            tipo={tipoTarjeta.ESPACIOS}
+          ></OthersCards>
+        </Col>
+
         <Col md={8}>
           {!espacio ? (
             <h2 className="text-center">Espacio Físico no encontrado</h2>
@@ -123,28 +134,6 @@ export default function EspacioDetalle() {
               </Card>
             </>
           )}
-        </Col>
-
-        <Col md={4}>
-          <Card className="mb-4 border border-primary">
-            <Card.Header
-              as="h3"
-              className="bg-secondary bg-opacity-25 text-primary"
-            >
-              Otros espacios físicos
-            </Card.Header>
-            <Card.Body className="border-top border-primary">
-              {otrosEspacios.length > 0 ? (
-                otrosEspacios.map((espacio) => (
-                  <div key={espacio.id} className="mb-3">
-                    <EspacioCard espacio={espacio} />
-                  </div>
-                ))
-              ) : (
-                <p className="text-muted">No hay otros espacios disponibles</p>
-              )}
-            </Card.Body>
-          </Card>
         </Col>
       </Row>
     </Container>

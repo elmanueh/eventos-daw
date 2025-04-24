@@ -1,6 +1,8 @@
-import { routes, urls } from '@/configs/constant'
+import { routes, tipoTarjeta, urls } from '@/configs/constant'
 import { fetchGet } from '@/utils/fetchGet'
-import EventoCard from '@components/cards/EventoCard'
+import OthersCards from '@components/OthersCards'
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale/es'
 import { useEffect, useState } from 'react'
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
@@ -54,6 +56,13 @@ const EventoDetalle = () => {
   return (
     <Container className="py-5">
       <Row>
+        <Col md={4}>
+          <OthersCards
+            otros={otrosEventos}
+            tipo={tipoTarjeta.EVENTOS}
+          ></OthersCards>
+        </Col>
+
         <Col md={8}>
           {!evento ? (
             <h2 className="text-center">Evento no encontrado</h2>
@@ -88,14 +97,22 @@ const EventoDetalle = () => {
                         <i className="bi bi-calendar-event-fill me-2 text-primary"></i>
                         <span>
                           <strong>Inicio:</strong>{' '}
-                          {formatFecha(evento.fechaInicio)}
+                          {format(
+                            new Date(evento.fechaInicio),
+                            "dd'/'MM'/'yyyy 'a las' HH:mm",
+                            { locale: es }
+                          )}
                         </span>
                       </div>
                       <div>
                         <i className="bi bi-calendar-event-fill me-2 text-primary"></i>
                         <span>
                           <strong>Finalización:</strong>{' '}
-                          {formatFecha(evento.fechaFin)}
+                          {format(
+                            new Date(evento.fechaFin),
+                            "dd'/'MM'/'yyyy 'a las' HH:mm",
+                            { locale: es }
+                          )}
                         </span>
                       </div>
                       <div>
@@ -139,28 +156,6 @@ const EventoDetalle = () => {
               </Card.Body>
             </Card>
           )}
-        </Col>
-
-        <Col md={4}>
-          <Card className="mb-4 border border-primary">
-            <Card.Header
-              as="h3"
-              className="bg-secondary bg-opacity-25 text-primary"
-            >
-              Otros eventos
-            </Card.Header>
-            <Card.Body className="border-top border-primary">
-              {otrosEventos.length > 0 ? (
-                otrosEventos.map((evento) => (
-                  <div key={evento.id} className="mb-3">
-                    <EventoCard evento={evento} />
-                  </div>
-                ))
-              ) : (
-                <p className="text-muted">No hay otros eventos disponibles</p>
-              )}
-            </Card.Body>
-          </Card>
         </Col>
       </Row>
     </Container>
