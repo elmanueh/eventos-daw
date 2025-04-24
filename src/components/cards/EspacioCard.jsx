@@ -1,40 +1,25 @@
 import { estado, routes, urls } from '@/configs/constant'
 import { fetchPut } from '@/utils/fetchPut'
+import ConfirmationModal from '@components/modals/ConfirmationModal'
+import { useState } from 'react'
 import './card.css'
 
-export default function EspacioCard({ espacio, visible, onActualizar }) {
+export default function EspacioCard({ espacio, visible }) {
+  const [showConfirmation, setShowConfirmation] = useState(false)
   const status =
     espacio.estado === estado.ACTIVO ? estado.ACTIVO : estado.CERRADO
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
     // TODO: Implementar la lógica para editar el espacio
   }
 
-  const handleDesactivar = async () => {
-    // TODO: Implementar la lógica para desactivar el espacio
+  const handleEstado = async () => {
+    const estadoNuevo =
+      status === estado.ACTIVO ? estado.CERRADO_TEMPORALMENTE : estado.ACTIVO
+
     try {
-      await fetchPut(
-        urls.MODIFICAR_ESPACIO(espacio.id),
-        estado.CERRADO_TEMPORALMENTE
-      )
-
-      const espacioActualizado = {
-        ...espacio,
-        estado: estado.CERRADO_TEMPORALMENTE
-      }
-      onActualizar?.(espacioActualizado)
-    } catch (error) {
-      console.error('Error al desactivar el evento:', error)
-    }
-  }
-
-  const handleActivar = async () => {
-    // TODO: Implementar la lógica para activar el espacio
-    try {
-      await fetchPut(urls.MODIFICAR_ESPACIO(espacio.id), estado.ACTIVO)
-
-      const espacioActualizado = { ...espacio, estado: estado.ACTIVO }
-      onActualizar?.(espacioActualizado)
+      await fetchPut(urls.MODIFICAR_ESTADO_ESPACIO(espacio.id), estadoNuevo)
+      setShowConfirmation(false)
     } catch (error) {
       console.error('Error al desactivar el evento:', error)
     }
@@ -42,6 +27,13 @@ export default function EspacioCard({ espacio, visible, onActualizar }) {
 
   return (
     <div>
+      <ConfirmationModal
+        show={showConfirmation}
+        callback={handleEstado}
+        onHide={() => setShowConfirmation(false)}
+        title={espacio.nombre}
+        status={status}
+      />
       <div
         className="my-card"
         onClick={() => (window.location.href = routes.ESPACIOS(espacio.id))}
@@ -75,7 +67,7 @@ export default function EspacioCard({ espacio, visible, onActualizar }) {
             <button
               type="button"
               className="btn btn-outline-danger"
-              onClick={handleDesactivar}
+              onClick={() => setShowConfirmation(true)}
             >
               Desactivar
             </button>
@@ -83,7 +75,7 @@ export default function EspacioCard({ espacio, visible, onActualizar }) {
             <button
               type="button"
               className="btn btn-outline-success"
-              onClick={handleActivar}
+              onClick={() => setShowConfirmation(true)}
             >
               Activar
             </button>

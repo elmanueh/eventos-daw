@@ -27,7 +27,7 @@ export const urls = {
   ESPACIOS_DET: (id) => `http://localhost:8080/api/espaciosfisicos/${id}`,
   ESPACIOS_FILTRADOS: (fechaInicio, fechaFin, capacidad) =>
     `http://localhost:8080/api/espaciosfisicos/libre?fechainicio=${fechaInicio}&fechafin=${fechaFin}&capacidad=${capacidad}`,
-  MODIFICAR_ESPACIO: (id) =>
+  MODIFICAR_ESTADO_ESPACIO: (id) =>
     `http://localhost:8080/api/espaciosfisicos/${id}/estado`,
   ESPACIOS_PRIVADOS: (name) =>
     `http://localhost:8080/api/espaciosfisicos/propietario/${name}`,
