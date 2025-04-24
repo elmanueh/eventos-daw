@@ -162,7 +162,7 @@ export default function Espacios() {
 
       <GroupCards
         objetos={espacios}
-        tipoTarjeta={tipoTarjeta.ESPACIOS}
+        tipo={tipoTarjeta.ESPACIOS}
       ></GroupCards>
     </div>
   )

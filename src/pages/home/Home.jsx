@@ -30,7 +30,7 @@ export default function Home() {
 
         <GroupCards
           objetos={espacios}
-          tipoTarjeta={tipoTarjeta.ESPACIOS}
+          tipo={tipoTarjeta.ESPACIOS}
           noPaginator={true}
         ></GroupCards>
       </section>
@@ -42,7 +42,7 @@ export default function Home() {
 
         <GroupCards
           objetos={eventos}
-          tipoTarjeta={tipoTarjeta.EVENTOS}
+          tipo={tipoTarjeta.EVENTOS}
           noPaginator={true}
         ></GroupCards>
       </section>

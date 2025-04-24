@@ -104,7 +104,7 @@ const Eventos = () => {
 
       <GroupCards
         objetos={eventos}
-        tipoTarjeta={tipoTarjeta.EVENTOS}
+        tipo={tipoTarjeta.EVENTOS}
       ></GroupCards>
     </div>
   )

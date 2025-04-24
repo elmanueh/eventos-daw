@@ -34,7 +34,7 @@ export default function MisEventos() {
       <h3>Activos</h3>
       <GroupCards
         objetos={eventosActivos}
-        tipoTarjeta={tipoTarjeta.EVENTOS}
+        tipo={tipoTarjeta.EVENTOS}
         visible={true}
         onActualizar={handleActualizarEventos}
       ></GroupCards>
@@ -42,7 +42,7 @@ export default function MisEventos() {
       <h3>Cancelados</h3>
       <GroupCards
         objetos={eventosCancelados}
-        tipoTarjeta={tipoTarjeta.EVENTOS}
+        tipo={tipoTarjeta.EVENTOS}
         visible={true}
       ></GroupCards>
     </Container>

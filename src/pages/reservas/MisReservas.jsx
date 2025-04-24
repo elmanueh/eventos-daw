@@ -20,13 +20,14 @@ export default function MisReservas() {
       <h3>Activas</h3>
       <GroupCards
         objetos={reservasActivas}
-        tipoTarjeta={tipoTarjeta.RESERVAS}
+        tipo={tipoTarjeta.RESERVAS}
+        raw={true}
       ></GroupCards>
 
       <h3>Canceladas</h3>
       <GroupCards
         objetos={reservasCanceladas}
-        tipoTarjeta={tipoTarjeta.RESERVAS}
+        tipo={tipoTarjeta.RESERVAS}
       ></GroupCards>
     </Container>
   )
