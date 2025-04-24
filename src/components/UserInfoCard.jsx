@@ -18,10 +18,12 @@ export default function UserInfoCard() {
       try {
         const reservasDto = await fetchGet(urls.RESERVAS_PRIVADAS(user.id))
         const reservas = await Promise.all(
-          reservasDto._embedded.reservaResumenList.map((reserva) =>
-            fetchGet(urls.RESERVAS_DET(reserva.id))
-          )
+          reservasDto._embedded.reservaResumenList
+            .filter((reserva) => !reserva.cancelada)
+            .map((reserva) => fetchGet(urls.RESERVAS_DET(reserva.id)))
         )
+        if (reservas.length === 0) return null
+
         const eventos = await Promise.all(
           reservas.map((reserva) => fetchGet(urls.EVENTOS_DET(reserva.evento)))
         )
