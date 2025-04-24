@@ -1,5 +1,8 @@
-import { estado, routes, urls } from '@/configs/constant'
-import { fetchPut } from '@/utils/fetchPut'
+import { estado, routes } from '@/configs/constant'
+import {
+  handleCambiarEstadoEspacio,
+  handleEditEspacio
+} from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import { useState } from 'react'
 import './card.css'
@@ -9,27 +12,13 @@ export default function EspacioCard({ espacio, visible }) {
   const status =
     espacio.estado === estado.ACTIVO ? estado.ACTIVO : estado.CERRADO
 
-  const handleEdit = async () => {
-    // TODO: Implementar la lógica para editar el espacio
-  }
-
-  const handleEstado = async () => {
-    const estadoNuevo =
-      status === estado.ACTIVO ? estado.CERRADO_TEMPORALMENTE : estado.ACTIVO
-
-    try {
-      await fetchPut(urls.MODIFICAR_ESTADO_ESPACIO(espacio.id), estadoNuevo)
-      setShowConfirmation(false)
-    } catch (error) {
-      console.error('Error al desactivar el evento:', error)
-    }
-  }
-
   return (
     <div>
       <ConfirmationModal
         show={showConfirmation}
-        callback={handleEstado}
+        callback={() =>
+          handleCambiarEstadoEspacio(espacio, status, setShowConfirmation)
+        }
         onHide={() => setShowConfirmation(false)}
         title={espacio.nombre}
         status={status}
@@ -59,7 +48,7 @@ export default function EspacioCard({ espacio, visible }) {
           <button
             type="button"
             className="btn btn-outline-primary"
-            onClick={handleEdit}
+            onClick={handleEditEspacio}
           >
             Editar
           </button>

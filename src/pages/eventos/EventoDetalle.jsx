@@ -1,13 +1,16 @@
 import { routes, tipoTarjeta, urls } from '@/configs/constant'
 import { fetchGet } from '@/utils/fetchGet'
+import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
 import OthersCards from '@components/OthersCards'
+import { AuthContext } from '@context/AuthContext'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 const EventoDetalle = () => {
+  const { user } = useContext(AuthContext)
   const evento = useLoaderData()[0]
 
   const otrosEventos = useLoaderData()[1]
@@ -33,21 +36,6 @@ const EventoDetalle = () => {
 
     fetchEspacio()
   }, [evento.espacioFisico])
-
-  const formatFecha = (fecha) => {
-    const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric'
-    }
-
-    const date = new Date(fecha)
-    const formattedDate = new Intl.DateTimeFormat('es-ES', options).format(date)
-
-    return formattedDate.replace(',', ', a las ')
-  }
 
   const handleNavigate = () => {
     window.location.href = routes.ESPACIOS(espacio.id)
@@ -153,6 +141,27 @@ const EventoDetalle = () => {
                     </span>
                   </div>
                 </div>
+
+                {evento.organizador == user.username && (
+                  <div className="d-flex justify-content-end gap-2">
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary"
+                      onClick={() => handleEditEvento}
+                    >
+                      Editar
+                    </button>
+                    {!evento.cancelado && (
+                      <button
+                        type="button"
+                        className="btn btn-outline-danger"
+                        onClick={() => handleDesactivarEvento(evento.idEvento)}
+                      >
+                        Desactivar
+                      </button>
+                    )}
+                  </div>
+                )}
               </Card.Body>
             </Card>
           )}

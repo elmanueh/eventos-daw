@@ -1,24 +1,9 @@
-import { estado, routes, urls } from '@/configs/constant'
-import { fetchPut } from '@/utils/fetchPut'
+import { estado, routes } from '@/configs/constant'
+import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
 import './card.css'
 
-export default function EventoCard({ evento, visible, onActualizar }) {
+export default function EventoCard({ evento, visible }) {
   const status = evento.cancelado ? estado.CERRADO : estado.ACTIVO
-
-  const handleEdit = () => {
-    // TODO: Implementar la lógica para editar el evento
-  }
-
-  const handleDesactivar = async () => {
-    // TODO: Implementar la lógica para desactivar el evento
-    try {
-      await fetchPut(urls.CANCELAR_EVENTO(evento.id))
-      const eventoActualizado = { ...evento, cancelado: true }
-      onActualizar?.(eventoActualizado)
-    } catch (error) {
-      console.error('Error al desactivar el evento:', error)
-    }
-  }
 
   return (
     <div>
@@ -57,7 +42,7 @@ export default function EventoCard({ evento, visible, onActualizar }) {
           <button
             type="button"
             className="btn btn-outline-primary"
-            onClick={handleEdit}
+            onClick={() => handleEditEvento}
           >
             Editar
           </button>
@@ -65,7 +50,7 @@ export default function EventoCard({ evento, visible, onActualizar }) {
             <button
               type="button"
               className="btn btn-outline-danger"
-              onClick={handleDesactivar}
+              onClick={() => handleDesactivarEvento(evento.id)}
             >
               Desactivar
             </button>

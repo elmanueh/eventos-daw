@@ -17,14 +17,6 @@ export default function MisEspacios() {
     (espacio) => espacio.estado === 'CERRADO_TEMPORALMENTE'
   )
 
-  const handleActualizarEspacios = (espacioActualizado) => {
-    setEspacios((prevEspacios) =>
-      prevEspacios.map((espacio) =>
-        espacio.id === espacioActualizado.id ? espacioActualizado : espacio
-      )
-    )
-  }
-
   const handleCrearEspacio = () => {
     // Implementar la lógica para crear un nuevo evento
   }
@@ -46,7 +38,6 @@ export default function MisEspacios() {
         objetos={espaciosActivos}
         tipo={tipoTarjeta.ESPACIOS}
         visible={true}
-        onActualizar={handleActualizarEspacios}
       ></GroupCards>
 
       <h3>Cerrados Temporalmente</h3>
@@ -54,7 +45,6 @@ export default function MisEspacios() {
         objetos={espaciosCerrados}
         tipo={tipoTarjeta.ESPACIOS}
         visible={true}
-        onActualizar={handleActualizarEspacios}
       ></GroupCards>
     </Container>
   )

@@ -11,14 +11,6 @@ export default function MisEventos() {
   const eventosActivos = eventos.filter((e) => !e.cancelado)
   const eventosCancelados = eventos.filter((e) => e.cancelado)
 
-  const handleActualizarEventos = (eventoActualizado) => {
-    setEventos((prevEventos) =>
-      prevEventos.map((evento) =>
-        evento.id === eventoActualizado.id ? eventoActualizado : evento
-      )
-    )
-  }
-
   const handleCrearEvento = () => {
     // Implementar la lógica para crear un nuevo evento
   }
@@ -36,7 +28,6 @@ export default function MisEventos() {
         objetos={eventosActivos}
         tipo={tipoTarjeta.EVENTOS}
         visible={true}
-        onActualizar={handleActualizarEventos}
       ></GroupCards>
 
       <h3>Cancelados</h3>

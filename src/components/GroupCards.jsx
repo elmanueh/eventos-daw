@@ -10,8 +10,7 @@ export default function GroupCards({
   objetos,
   tipo,
   visible,
-  noPaginator,
-  onActualizar
+  noPaginator
 }) {
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -53,7 +52,6 @@ export default function GroupCards({
                           <EspacioCard
                             espacio={objeto}
                             visible={visible}
-                            onActualizar={onActualizar}
                           />
                         )
                       case tipoTarjeta.EVENTOS:
@@ -61,7 +59,6 @@ export default function GroupCards({
                           <EventoCard
                             evento={objeto}
                             visible={visible}
-                            onActualizar={onActualizar}
                           />
                         )
                     }

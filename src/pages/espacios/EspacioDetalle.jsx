@@ -1,7 +1,12 @@
-import { tipoTarjeta } from '@/configs/constant'
+import { estado, tipoTarjeta } from '@/configs/constant'
+import {
+  handleCambiarEstadoEspacio,
+  handleEditEspacio
+} from '@/utils/operations'
+import ConfirmationModal from '@components/modals/ConfirmationModal'
 import OthersCards from '@components/OthersCards'
 import { AuthContext } from '@context/AuthContext'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Badge, Card, Col, Container, ListGroup, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
@@ -9,16 +14,27 @@ export default function EspacioDetalle() {
   const { user } = useContext(AuthContext)
   const espacio = useLoaderData()[0]
 
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const status =
+    espacio.estado === estado.ACTIVO ? estado.ACTIVO : estado.CERRADO
+
   const otrosEspacios = useLoaderData()[1]
     .espacio.map((espacio) => espacio.espacioDTO)
     .filter((e) => e.id !== espacio.id)
     .sort(() => 0.5 - Math.random())
     .slice(0, 3)
 
-  console.log(otrosEspacios)
-
   return (
     <Container className="py-5">
+      <ConfirmationModal
+        show={showConfirmation}
+        callback={() =>
+          handleCambiarEstadoEspacio(espacio, status, setShowConfirmation)
+        }
+        onHide={() => setShowConfirmation(false)}
+        title={espacio.nombre}
+        status={status}
+      />
       <Row>
         <Col md={4}>
           <OthersCards
@@ -40,13 +56,11 @@ export default function EspacioDetalle() {
                         {espacio.nombre}
                       </Card.Title>
                       <Badge
-                        bg={espacio.estado === 'ACTIVO' ? 'success' : 'danger'}
-                        text={
-                          espacio.estado === 'ACTIVO' ? 'success' : 'danger'
-                        }
+                        bg={status === 'ACTIVO' ? 'success' : 'danger'}
+                        text={status === 'ACTIVO' ? 'success' : 'danger'}
                         className="fs-6 bg-opacity-25 px-3 py-2 rounded-pill"
                       >
-                        {espacio.estado}
+                        {status}
                       </Badge>
                     </Col>
                   </Row>
@@ -85,6 +99,35 @@ export default function EspacioDetalle() {
                       </span>
                     </div>
                   </div>
+
+                  {espacio.propietario === user.username && (
+                    <div className="d-flex justify-content-end gap-2">
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary"
+                        onClick={handleEditEspacio}
+                      >
+                        Editar
+                      </button>
+                      {status === estado.ACTIVO ? (
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger"
+                          onClick={() => setShowConfirmation(true)}
+                        >
+                          Desactivar
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="btn btn-outline-success"
+                          onClick={() => setShowConfirmation(true)}
+                        >
+                          Activar
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </Card.Body>
               </Card>
 
