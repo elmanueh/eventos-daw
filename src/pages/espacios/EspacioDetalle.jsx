@@ -1,6 +1,7 @@
-import { estado, tipoTarjeta } from '@/configs/constant'
+import { estado, roles, tipoTarjeta } from '@/configs/constant'
 import {
   handleCambiarEstadoEspacio,
+  handleCrearEvento,
   handleEditEspacio
 } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
@@ -11,13 +12,8 @@ import { Badge, Card, Col, Container, ListGroup, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function EspacioDetalle() {
-  const { user } = useContext(AuthContext)
   const loaderData = useLoaderData()
   const espacio = loaderData[0]
-
-  const [showConfirmation, setShowConfirmation] = useState(false)
-  const status =
-    espacio.estado === estado.ACTIVO ? estado.ACTIVO : estado.CERRADO
 
   const otrosEspacios = useMemo(() => {
     return loaderData[1].espacio
@@ -26,6 +22,14 @@ export default function EspacioDetalle() {
       .sort(() => 0.5 - Math.random())
       .slice(0, 3)
   }, [loaderData, espacio.id])
+
+  const { user } = useContext(AuthContext)
+  const isUser = user.roles.includes(roles.GESTOR_EVENTOS)
+  const esMio = espacio.propietario == user.username
+
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const status =
+    espacio.estado === estado.ACTIVO ? estado.ACTIVO : estado.CERRADO
 
   return (
     <Container className="py-5">
@@ -103,36 +107,49 @@ export default function EspacioDetalle() {
                     </div>
                   </div>
 
-                  {espacio.propietario === user.username && (
+                  {(esMio || isUser) && (
                     <div className="d-flex justify-content-end gap-2">
-                      <button
-                        type="button"
-                        className="btn btn-outline-primary"
-                        onClick={handleEditEspacio}
-                      >
-                        Editar
-                      </button>
-                      {status === estado.ACTIVO ? (
+                      {esMio && (
+                        <>
+                          <button
+                            type="button"
+                            className="btn btn-outline-primary"
+                            onClick={handleEditEspacio()}
+                          >
+                            Editar
+                          </button>
+                          {status === estado.ACTIVO ? (
+                            <button
+                              type="button"
+                              className="btn btn-outline-danger"
+                              onClick={() => {
+                                setShowConfirmation(true)
+                              }}
+                            >
+                              Desactivar
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className="btn btn-outline-success"
+                              onClick={() => {
+                                setShowConfirmation(true)
+                              }}
+                            >
+                              Activar
+                            </button>
+                          )}
+                        </>
+                      )}
+                      {isUser && status === estado.ACTIVO && (
                         <button
                           type="button"
-                          className="btn btn-outline-danger"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            setShowConfirmation(true)
+                          className="btn btn-outline-secondary"
+                          onClick={() => {
+                            handleCrearEvento()
                           }}
                         >
-                          Desactivar
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="btn btn-outline-success"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            setShowConfirmation(true)
-                          }}
-                        >
-                          Activar
+                          Crear evento
                         </button>
                       )}
                     </div>

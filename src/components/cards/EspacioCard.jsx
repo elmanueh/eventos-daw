@@ -49,7 +49,7 @@ export default function EspacioCard({ espacio, visible }) {
           <button
             type="button"
             className="btn btn-outline-primary"
-            onClick={handleEditEspacio}
+            onClick={handleEditEspacio()}
           >
             Editar
           </button>

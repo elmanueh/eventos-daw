@@ -1,6 +1,11 @@
 import { estado, urls } from "@/configs/constant";
 import { fetchPut } from "@/utils/fetchPut";
 
+export const handleCrearEspacio = async () => {
+  // TODO: Implementar la lógica para crear un espacio
+  console.log("Creando espacio...");
+}
+
 export const handleEditEspacio = async () => {
   // TODO: Implementar la lógica para editar el espacio
   console.log('Editando espacio...');
@@ -21,6 +26,11 @@ export const handleCambiarEstadoEspacio = async (espacio, status, setShowConfirm
   }
 }
 
+export const handleCrearEvento = async () => {
+  // TODO: Implementar la lógica para crear un evento
+  console.log('Creando evento...')
+}
+
 export const handleEditEvento = async () => {
   // TODO: Implementar la lógica para editar el evento
   console.log('Editando evento...')
@@ -35,4 +45,9 @@ export const handleDesactivarEvento = async (id, setShowConfirmation) => {
     } catch (error) {
       console.error('Error al desactivar el evento:', error)
     }
+}
+
+export const handleResevar = async () => {
+  // TODO: Implementar la lógica para reservar
+  console.log('Reservando...')
 }

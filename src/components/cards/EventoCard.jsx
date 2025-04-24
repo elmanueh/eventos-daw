@@ -53,7 +53,7 @@ export default function EventoCard({ evento, visible }) {
           <button
             type="button"
             className="btn btn-outline-primary"
-            onClick={() => handleEditEvento}
+            onClick={() => handleEditEvento()}
           >
             Editar
           </button>
