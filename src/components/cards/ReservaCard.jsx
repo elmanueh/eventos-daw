@@ -55,14 +55,8 @@ export default function ReservaCard({ reserva }) {
           {status}
         </span>
       </div>
-
-      <div className="my-card-info next">
-        <span>
-          <i className="bi bi-people-fill my-card-capacity" />
-          {reserva.plazasReservadas} personas
-        </span>
-
-        {!reserva.cancelada && info.espacio && (
+      {!reserva.cancelada && info.espacio && (
+        <div className="my-card-info">
           <span>
             <i className="bi bi-pin-map-fill my-card-espacio" />
             <Link
@@ -72,25 +66,29 @@ export default function ReservaCard({ reserva }) {
               {info.espacio.nombre}
             </Link>
           </span>
-        )}
-
+        </div>
+      )}
+      <div className="my-card-info">
         {!reserva.cancelada && info.evento && (
-          <span>
-            <i className="bi bi-calendar my-card-date" />
-            {format(new Date(info.evento.fechaInicio), "dd'/'MM'/'yyyy", {
-              locale: es
-            })}
-          </span>
+          <div className="my-card-info next">
+            <span>
+              <i className="bi bi-calendar my-card-date" />
+              {format(new Date(info.evento.fechaInicio), "dd'/'MM'/'yyyy", {
+                locale: es
+              })}
+            </span>
+            <span>
+              <i className="bi bi-clock-fill my-card-time" />
+              {format(new Date(info.evento.fechaInicio), 'HH:mm', {
+                locale: es
+              })}
+            </span>
+          </div>
         )}
-
-        {!reserva.cancelada && info.evento && (
-          <span>
-            <i className="bi bi-clock-fill my-card-time" />
-            {format(new Date(info.evento.fechaInicio), 'HH:mm', {
-              locale: es
-            })}
-          </span>
-        )}
+        <span>
+          <i className="bi bi-people-fill my-card-capacity" />
+          {reserva.plazasReservadas} personas
+        </span>
       </div>
     </div>
   )

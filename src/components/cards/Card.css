@@ -52,7 +52,6 @@
 .my-card-info {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 .my-card-info.next {
