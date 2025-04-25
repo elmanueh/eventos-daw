@@ -1,3 +1,25 @@
+#root {
+  padding: 0 120px;
+}
+
+@media (max-width: 1200px) {
+  #root {
+    padding: 0 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  #root {
+    padding: 0 20px;
+  }
+}
+
 .grid-auto-cards {
   display: grid;
   gap: 1.5rem;

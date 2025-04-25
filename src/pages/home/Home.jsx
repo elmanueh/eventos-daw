@@ -12,7 +12,7 @@ export default function Home() {
     .slice(0, 8)
 
   return (
-    <div className="d-flex flex-lg-col flex-column py-5 gap-5 ms-5 me-4">
+    <div className="d-flex flex-lg-col flex-column gap-5">
       <header className="text-end">
         <h1 className="text-primary fw-bold">
           Bienvenido de nuevo,{' '}

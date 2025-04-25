@@ -47,7 +47,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         }
       `}</style>
       <nav
-        className="d-flex justify-content-center mt-4 mb-4"
+        className="d-flex justify-content-center"
         aria-label="Page navigation"
       >
         <ul className="pagination">

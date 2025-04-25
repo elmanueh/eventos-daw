@@ -79,7 +79,7 @@ export default function Espacios() {
   }
 
   return (
-    <div className="d-flex flex-column py-5 gap-3 ms-5 me-4">
+    <div className="d-flex flex-column gap-3 align-items-center">
       <header className="text-center">
         <h1 className="text-primary fw-bold">Espacios Físicos</h1>
       </header>

@@ -17,22 +17,16 @@ export default function Header() {
   return (
     <>
       <nav className="navbar bg-dark sticky-top">
-        <div className="container-fluid">
+        <div className="container-fluid p-0">
           <a
             className="navbar-brand d-flex align-items-center"
             href={NAV_ROUTES.HOME}
           >
-            <img
-              src={logo}
-              alt="Logo"
-              width="50"
-              height="50"
-              className="ms-4"
-            />
+            <img src={logo} alt="Logo" width="50" height="50" />
             <span className="ms-3 text-primary fw-semibold">Eventy</span>
           </a>
 
-          <div className="d-xl-none me-3">
+          <div className="d-xl-none">
             <button
               className="btn btn-outline-primary"
               type="button"
@@ -44,7 +38,7 @@ export default function Header() {
             </button>
           </div>
 
-          <div className="d-none d-xl-block me-3">
+          <div className="d-none d-xl-block">
             <button className="btn btn-danger" onClick={handleLogout}>
               Cerrar sesión
             </button>

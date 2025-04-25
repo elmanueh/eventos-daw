@@ -10,7 +10,7 @@ export default function MisReservas() {
   const reservasCanceladas = reservas.filter((r) => r.cancelada)
 
   return (
-    <Container className="py-4 d-flex flex-column gap-2">
+    <Container className="d-flex flex-column gap-3 p-0">
       <h1 className="text-center">Mis Reservas</h1>
 
       <Button variant="primary" className="ms-auto">

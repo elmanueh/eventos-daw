@@ -21,7 +21,7 @@ export default function MisEspacios() {
   )
 
   return (
-    <Container className="py-4 d-flex flex-column gap-2">
+    <Container className="d-flex flex-column p-0 gap-3">
       <EspacioModal
         show={showEspacioModal}
         callback={(espacio) => handleCrearEspacio(espacio, setShowEspacioModal)}

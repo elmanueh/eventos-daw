@@ -50,7 +50,7 @@ export default function EspacioDetalle() {
   }
 
   return (
-    <Container className="py-5">
+    <Container className="p-0">
       <ConfirmationModal
         show={showConfirmation}
         callback={() =>

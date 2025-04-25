@@ -16,7 +16,7 @@ export default function MisEventos() {
   }
 
   return (
-    <Container className="py-4 d-flex flex-column gap-2">
+    <Container className="d-flex flex-column gap-3 p-0">
       <h1 className="text-center">Mis Eventos</h1>
 
       <Button variant="primary" className="ms-auto" onClick={handleCrearEvento}>

@@ -5,14 +5,14 @@ import { Card } from 'react-bootstrap'
 
 export default function OthersCards({ otros, tipo }) {
   return (
-    <Card className="mb-4 border border-primary">
+    <Card className="border border-primary">
       <Card.Header as="h3" className="bg-secondary bg-opacity-25 text-primary">
         Otros {tipo}
       </Card.Header>
       <Card.Body className="border-top border-primary">
         {otros.length > 0 ? (
           otros.map((objeto) => (
-            <div key={objeto.id} className="mb-3">
+            <div key={objeto.id} className="py-2">
               {(() => {
                 switch (tipo) {
                   case TARJETA_TIPOS.ESPACIOS:

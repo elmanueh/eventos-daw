@@ -20,14 +20,11 @@ export default function Layout() {
   return (
     <>
       <Header />
-      <div className="d-flex">
+      <div className="d-flex gap-4 mt-5">
         <div className="flex-grow-1">
           <Outlet />
         </div>
-        <div
-          className="mt-5 ms-4 me-4 d-none d-xl-block"
-          style={{ minWidth: '320px' }}
-        >
+        <div className="d-none d-xl-block" style={{ minWidth: '350px' }}>
           <UserInfoCard />
         </div>
       </div>
