@@ -21,14 +21,9 @@ export default function MisEspacios() {
   )
 
   const handleCrearEspacio = async (data) => {
-    console.log('Espacio creado:', data)
-    const response = await fetchPost(API_URLS.ESPACIOS_CREAR, data)
-    console.log(response.status)
-    if (response.ok) {
-      const newEspacio = await response.json()
-      setEspacios((prevEspacios) => [...prevEspacios, newEspacio])
-      setShowEspacioModal(false)
-    }
+    await fetchPost(API_URLS.ESPACIOS_CREAR, data)
+    setShowEspacioModal(false)
+    window.location.reload()
   }
 
   return (
