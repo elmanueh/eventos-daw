@@ -1,9 +1,7 @@
 import { TARJETA_TIPOS } from '@/configs/constant'
-import { handleResevar } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
-import ReservaModal from '@components/modals/ReservaModal'
 import { useState } from 'react'
-import { Button, Container } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function MisReservas() {
@@ -15,26 +13,12 @@ export default function MisReservas() {
 
   return (
     <Container className="d-flex flex-column gap-3 p-0">
-      <ReservaModal
-        show={showReservaModal}
-        callback={(reserva) => handleResevar(reserva, setShowReservaModal)}
-        onHide={() => setShowReservaModal(false)}
-      />
       <h1 className="text-center">Mis Reservas</h1>
-
-      <Button
-        variant="primary"
-        className="ms-auto"
-        onClick={() => setShowReservaModal(true)}
-      >
-        Crear Reserva
-      </Button>
 
       <h3>Activas</h3>
       <GroupCards
         objetos={reservasActivas}
         tipo={TARJETA_TIPOS.RESERVAS}
-        raw={true}
       ></GroupCards>
 
       <h3>Canceladas</h3>

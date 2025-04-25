@@ -46,14 +46,14 @@ export default function ReservaCard({ reserva }) {
     <div className="my-card no-hover">
       <div className="my-card-header">
         {info.evento && (
-          <Link
-            to={NAV_ROUTES.EVENTOS_DET(info.evento.idEvento)}
-            className="text-decoration-none"
-          >
-            <h2 title={info.evento.nombre} className="m-0">
+          <h2 title={info.evento.nombre} className="text-primary">
+            <a
+              href={NAV_ROUTES.EVENTOS_DET(info.evento.id)}
+              className="text-decoration-none"
+            >
               {info.evento.nombre}
-            </h2>
-          </Link>
+            </a>
+          </h2>
         )}
         <span className={`my-card-status ${status.toLowerCase()}`}>
           {status}

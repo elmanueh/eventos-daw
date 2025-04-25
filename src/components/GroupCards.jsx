@@ -9,7 +9,7 @@ import { Col, Row } from 'react-bootstrap'
 export default function GroupCards({ objetos, tipo, visible, noPaginator }) {
   const [currentPage, setCurrentPage] = useState(1)
 
-  const pageSize = 8
+  const pageSize = 6
   const totalPages = Math.ceil(objetos.length / pageSize)
 
   const getCurrentPageEspacios = () => {
@@ -30,30 +30,30 @@ export default function GroupCards({ objetos, tipo, visible, noPaginator }) {
         </div>
       ) : (
         <>
-          {tipo === TARJETA_TIPOS.RESERVAS ? (
-            <div className="d-flex flex-column gap-4">
-              {getCurrentPageEspacios().map((objeto) => {
-                return <ReservaCard key={objeto.id} reserva={objeto} />
-              })}
-            </div>
-          ) : (
-            <Row className="g-4">
-              {getCurrentPageEspacios().map((objeto) => (
-                <Col key={objeto.id} sm={12} md={6} xl={4} xxl={3}>
-                  {(() => {
-                    switch (tipo) {
-                      case TARJETA_TIPOS.ESPACIOS:
-                        return (
-                          <EspacioCard espacio={objeto} visible={visible} />
-                        )
-                      case TARJETA_TIPOS.EVENTOS:
-                        return <EventoCard evento={objeto} visible={visible} />
-                    }
-                  })()}
-                </Col>
-              ))}
-            </Row>
-          )}
+          <Row className="g-4">
+            {getCurrentPageEspacios().map((objeto) => {
+              switch (tipo) {
+                case TARJETA_TIPOS.RESERVAS:
+                  return (
+                    <Col key={objeto.id} xl={12} xxl={6}>
+                      <ReservaCard reserva={objeto} />
+                    </Col>
+                  )
+                case TARJETA_TIPOS.ESPACIOS:
+                  return (
+                    <Col key={objeto.id} sm={12} md={6} xl={6} xxl={4}>
+                      <EspacioCard espacio={objeto} visible={visible} />
+                    </Col>
+                  )
+                case TARJETA_TIPOS.EVENTOS:
+                  return (
+                    <Col key={objeto.id} sm={12} md={6} xl={6} xxl={4}>
+                      <EventoCard evento={objeto} visible={visible} />
+                    </Col>
+                  )
+              }
+            })}
+          </Row>
 
           {noPaginator ? (
             <div className="text-end">

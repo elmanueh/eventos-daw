@@ -13,3 +13,5 @@
 - En eventoDetail añadir crearReserva
 
 - espacioDetail añadir crearEvento
+
+- Al pasar página de paginación saltar al titulo
