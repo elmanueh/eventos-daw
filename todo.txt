@@ -8,7 +8,7 @@
 
 - Mirar GroupCards y el paginator (separar la lógica)
 
-- Crear modals para editar (espacio y evento) y crear (espacio, evento y reserva)
+- Crear modals para editar (espacio y evento) y crear (evento y reserva)
 
 - En eventoDetail añadir crearReserva
 

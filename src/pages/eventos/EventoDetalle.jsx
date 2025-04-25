@@ -76,14 +76,14 @@ const EventoDetalle = () => {
         tipo={TARJETA_TIPOS.EVENTOS}
       />
       <Row>
-        <Col md={4}>
+        <Col md={4} className="order-sm-2 order-md-1">
           <OthersCards
             otros={otrosEventos}
             tipo={TARJETA_TIPOS.EVENTOS}
           ></OthersCards>
         </Col>
 
-        <Col md={8}>
+        <Col md={8} className="order-sm-1 order-md-2">
           {!evento ? (
             <h2 className="text-center">Evento no encontrado</h2>
           ) : (

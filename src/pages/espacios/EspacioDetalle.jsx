@@ -61,14 +61,14 @@ export default function EspacioDetalle() {
         status={status}
       />
       <Row>
-        <Col md={4}>
+        <Col md={4} className="order-sm-2 order-md-1">
           <OthersCards
             otros={otrosEspacios}
             tipo={TARJETA_TIPOS.ESPACIOS}
           ></OthersCards>
         </Col>
 
-        <Col md={8}>
+        <Col md={8} className="order-sm-1 order-md-2">
           {!espacio ? (
             <h2 className="text-center">Espacio Físico no encontrado</h2>
           ) : (
