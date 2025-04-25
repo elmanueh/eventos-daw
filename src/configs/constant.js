@@ -42,6 +42,7 @@ export const API_URLS = {
   EVENTOS_GESTOR: (name) => `http://localhost:8080/api/eventos/gestor/${name}`,
 
   // ----- RESERVAS -----
+  RESERVAS_CREAR: 'http://localhost:8080/api/reservas',
   RESERVAS_DETALLE: (id) => `http://localhost:8080/api/reservas/${id}`,
   RESERVAS_USUARIO: (id) => `http://localhost:8080/api/reservas/usuario/${id}`
 }
