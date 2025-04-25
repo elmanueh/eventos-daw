@@ -1,19 +1,38 @@
-import { ESTADOS, NAV_ROUTES, TARJETA_TIPOS } from '@/configs/constant'
+import {
+  API_URLS,
+  ESTADOS,
+  NAV_ROUTES,
+  TARJETA_TIPOS
+} from '@/configs/constant'
+import { fetchGet } from '@/utils/fetchGet'
 import {
   handleCambiarEstadoEspacio,
   handleEditEspacio
 } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
+import EspacioModal from '@components/modals/EspacioModal'
 import { useState } from 'react'
 import './card.css'
 
 export default function EspacioCard({ espacio, visible }) {
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const [showEspacioModal, setShowEspacioModal] = useState(false)
+
+  const [espacioDet, setEspacioDet] = useState(null)
+
   const status =
     espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO
 
   return (
     <div>
+      <EspacioModal
+        show={showEspacioModal}
+        callback={(modificados) =>
+          handleEditEspacio(espacio.id, modificados, setShowEspacioModal)
+        }
+        onHide={() => setShowEspacioModal(false)}
+        espacio={espacioDet}
+      />
       <ConfirmationModal
         show={showConfirmation}
         callback={() =>
@@ -51,7 +70,12 @@ export default function EspacioCard({ espacio, visible }) {
           <button
             type="button"
             className="btn btn-outline-primary"
-            onClick={() => handleEditEspacio()}
+            onClick={async () => {
+              const data = await fetchGet(API_URLS.ESPACIOS_DETALLE(espacio.id))
+              console.log('Espacio Detalle:', data)
+              setEspacioDet(data)
+              setShowEspacioModal(true)
+            }}
           >
             Editar
           </button>

@@ -32,6 +32,8 @@ export const API_URLS = {
     `http://localhost:8080/api/espaciosfisicos/${id}/estado`,
   ESPACIOS_PROPIETARIO: (name) =>
     `http://localhost:8080/api/espaciosfisicos/propietario/${name}`,
+  ESPACIOS_MODIFICAR: (id) =>
+    `http://localhost:8080/api/espaciosfisicos/${id}`,
 
   // ----- EVENTOS -----
   EVENTOS_CREAR: 'http://localhost:8080/api/eventos',
@@ -62,6 +64,7 @@ export const ESTADOS = {
   CERRADO: 'CERRADO'
 }
 
+// Categorías de eventos
 export const CATEGORIA_EVENTOS = {
   ACADEMICOS: 'Academicos',
   CULTURALES: 'Culturales',
@@ -69,3 +72,10 @@ export const CATEGORIA_EVENTOS = {
   DEPORTES: 'Deportes',
   OTROS: 'Otros'
 };
+
+// Campos obligatorios para modificar espacios
+export const ESPACIOS_OBLIGATORIOS = [
+  'nombre',
+  'descripcion',
+  'capacidad'
+]

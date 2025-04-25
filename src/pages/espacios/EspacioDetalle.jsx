@@ -5,6 +5,7 @@ import {
   handleEditEspacio
 } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
+import EspacioModal from '@components/modals/EspacioModal'
 import EventoModal from '@components/modals/EventoModal'
 import OthersCards from '@components/OthersCards'
 import { AuthContext } from '@context/AuthContext'
@@ -30,6 +31,7 @@ export default function EspacioDetalle() {
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showEventoModal, setShowEventoModal] = useState(false)
+  const [showEspacioModal, setShowEspacioModal] = useState(false)
 
   const status =
     espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO
@@ -54,6 +56,12 @@ export default function EspacioDetalle() {
 
   return (
     <Container className="p-0">
+      <EspacioModal
+        show={showEspacioModal}
+        callback={(modificados) => handleEditEspacio(espacio.id, modificados, setShowEspacioModal)}
+        onHide={() => setShowEspacioModal(false)}
+        espacio={espacio}
+      />
       <EventoModal
         show={showEventoModal}
         callback={(evento) => handleCrearEvento(evento, setShowEventoModal)}
@@ -142,7 +150,7 @@ export default function EspacioDetalle() {
                           <button
                             type="button"
                             className="btn btn-outline-primary"
-                            onClick={() => handleEditEspacio()}
+                            onClick={() => setShowEspacioModal(true)}
                           >
                             Editar
                           </button>

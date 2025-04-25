@@ -10,7 +10,7 @@
 
 - En Espacios y Eventos, al filtrar de nuevo, debe cambiar el paginator a la page 1
 
-- Crear modals para editar (espacio y evento)
+- Crear modals para editar (evento)
 
 - Faltar que se filtren los espacios cuando se seleccione una fecha en el modal 
 (mirar si hacerlo pq un rol gestor no debería poder hacer buscarEspaciosFisicosLibres que es de rol propietario)
@@ -18,3 +18,5 @@
 - Realmente es necesario crear evento desde MisEventos??
 
 - Crear alguna animación cuando se ha realizado una transacción o ha fallado
+
+- Poner filtros en Mis, para facilitar busqueda

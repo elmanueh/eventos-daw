@@ -1,10 +1,12 @@
+import { ESPACIOS_OBLIGATORIOS } from '@/configs/constant'
 import { AuthContext } from '@context/AuthContext'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 
-export default function EspacioModal({ show, callback, onHide }) {
+export default function EspacioModal({ show, callback, onHide, espacio }) {
+  console.log('EspacioModal', espacio)
   const { user } = useContext(AuthContext)
 
   const [formData, setFormData] = useState({
@@ -16,6 +18,15 @@ export default function EspacioModal({ show, callback, onHide }) {
     latitud: '',
     descripcion: ''
   })
+
+  useEffect(() => {
+    if (espacio) {
+      const { id, ...espacioSinId } = espacio
+      setFormData({
+        ...espacioSinId
+      })
+    }
+  }, [espacio])
 
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -41,11 +52,30 @@ export default function EspacioModal({ show, callback, onHide }) {
     callback(formData)
   }
 
+  const handleEdit = () => {
+    if (!formData.nombre || !formData.capacidad || !formData.descripcion) {
+      setErrorMessage('Por favor, completa todos los campos obligatorios.')
+      return
+    }
+
+    const camposObligatorios = ['nombre', 'capacidad', 'descripcion']
+
+    setErrorMessage('')
+
+    const cambios = Object.fromEntries(
+      ESPACIOS_OBLIGATORIOS
+        .filter((campo) => !espacio || formData[campo] !== espacio[campo])
+        .map((campo) => [campo, formData[campo]])
+    )
+
+    callback(cambios)
+  }
+
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header>
         <Modal.Title className="text-primary fw-bold">
-          Crear espacio físico
+          {espacio ? 'Modificar espacio físico' : 'Crear espacio físico'}
         </Modal.Title>
       </Modal.Header>
 
@@ -81,38 +111,55 @@ export default function EspacioModal({ show, callback, onHide }) {
 
           <Form.Group className="mb-3" controlId="formDireccion">
             <Form.Label>Dirección</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Ej. C/ Apóstoles, 8, 30003 Murcia, España"
-              name="direccion"
-              value={formData.direccion}
-              onChange={handleChange}
-            />
+            {espacio ? (
+              <Form.Control type="text" value={formData.direccion} readOnly />
+            ) : (
+              <Form.Control
+                type="text"
+                placeholder="Ej. C/ Apóstoles, 8, 30003 Murcia, España"
+                name="direccion"
+                value={formData.direccion}
+                onChange={handleChange}
+              />
+            )}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formLongitud">
             <div className="row">
               <div className="col-md-6">
                 <Form.Label>Latitud (N/S)</Form.Label>
-                <Form.Control
-                  type="number"
-                  step="any"
-                  placeholder="Ej. 37.9861"
-                  name="latitud"
-                  value={formData.latitud}
-                  onChange={handleChange}
-                />
+
+                {espacio ? (
+                  <Form.Control type="text" value={formData.latitud} readOnly />
+                ) : (
+                  <Form.Control
+                    type="number"
+                    step="any"
+                    placeholder="Ej. 37.9861"
+                    name="latitud"
+                    value={formData.latitud}
+                    onChange={handleChange}
+                  />
+                )}
               </div>
               <div className="col-md-6">
                 <Form.Label>Longitud (E/W)</Form.Label>
-                <Form.Control
-                  type="number"
-                  step="any"
-                  placeholder="Ej. -1.1295"
-                  name="longitud"
-                  value={formData.longitud}
-                  onChange={handleChange}
-                />
+                {espacio ? (
+                  <Form.Control
+                    type="text"
+                    value={formData.longitud}
+                    readOnly
+                  />
+                ) : (
+                  <Form.Control
+                    type="number"
+                    step="any"
+                    placeholder="Ej. -1.1295"
+                    name="longitud"
+                    value={formData.longitud}
+                    onChange={handleChange}
+                  />
+                )}
               </div>
             </div>
           </Form.Group>
@@ -135,8 +182,8 @@ export default function EspacioModal({ show, callback, onHide }) {
         <Button variant="secondary" onClick={onHide}>
           Cancelar
         </Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          Crear
+        <Button variant="primary" onClick={espacio ? handleEdit : handleSubmit}>
+          {espacio ? 'Modificar' : 'Crear'}
         </Button>
       </Modal.Footer>
     </Modal>
