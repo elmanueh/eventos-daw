@@ -1,5 +1,5 @@
-import { API_URLS, TARJETA_TIPOS } from '@/configs/constant'
-import { fetchPost } from '@/utils/fetchPost'
+import { TARJETA_TIPOS } from '@/configs/constant'
+import { handleCrearEspacio } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
 import EspacioModal from '@components/modals/EspacioModal'
 import { useState } from 'react'
@@ -20,17 +20,11 @@ export default function MisEspacios() {
     (espacio) => espacio.estado === 'CERRADO_TEMPORALMENTE'
   )
 
-  const handleCrearEspacio = async (data) => {
-    await fetchPost(API_URLS.ESPACIOS_CREAR, data)
-    setShowEspacioModal(false)
-    window.location.reload()
-  }
-
   return (
     <Container className="py-4 d-flex flex-column gap-2">
       <EspacioModal
         show={showEspacioModal}
-        callback={handleCrearEspacio}
+        callback={(espacio) => handleCrearEspacio(espacio, setShowEspacioModal)}
         onHide={() => setShowEspacioModal(false)}
       />
       <h1 className="text-center text-primary fw-bold">Mis Espacios</h1>

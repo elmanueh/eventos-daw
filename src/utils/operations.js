@@ -1,9 +1,17 @@
 import { API_URLS, ESTADOS } from '@/configs/constant'
+import { fetchPost } from '@/utils/fetchPost'
 import { fetchPut } from '@/utils/fetchPut'
 
-export const handleCrearEspacio = async () => {
-  // TODO: Implementar la lógica para crear un espacio
+export const handleCrearEspacio = async (espacio, setShowEspacioModal) => {
   console.log('Creando espacio...')
+
+  try {
+    await fetchPost(API_URLS.ESPACIOS_CREAR, espacio)
+    setShowEspacioModal(false)
+    window.location.reload()
+  } catch (error) {
+    console.error('Error al crear el espacio:', error)
+  }
 }
 
 export const handleEditEspacio = async () => {
