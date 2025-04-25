@@ -94,7 +94,6 @@ export default function Espacios() {
               </Form.Label>
               <Form.Control
                 type="datetime-local"
-                className="text-primary border-primary"
                 id="fechaInicio"
                 name="fechaInicio"
                 value={fechaInicio}
@@ -111,7 +110,6 @@ export default function Espacios() {
               </Form.Label>
               <Form.Control
                 type="datetime-local"
-                className="text-primary border-primary"
                 id="fechaFin"
                 name="fechaFin"
                 value={fechaFin}
@@ -127,12 +125,12 @@ export default function Espacios() {
               </Form.Label>
               <Form.Control
                 type="number"
-                className="text-primary border-primary"
                 id="capacidad"
                 name="capacidad"
                 min="1"
                 value={capacidad}
                 onChange={(e) => setCapacidad(e.target.value)}
+                placeholder="0"
               />
             </Col>
 

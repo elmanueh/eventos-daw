@@ -38,9 +38,16 @@ export const handleCambiarEstadoEspacio = async (
   }
 }
 
-export const handleCrearEvento = async () => {
-  // TODO: Implementar la lógica para crear un evento
-  console.log('Creando evento...')
+export const handleCrearEvento = async (evento, setShowEventoModal) => {
+  console.log('Creando evento...', evento)
+
+  try {
+    await fetchPost(API_URLS.EVENTOS_CREAR, evento)
+    setShowEventoModal(false)
+    window.location.reload()
+  } catch (error) {
+    console.error('Error al crear el evento:', error)
+  }
 }
 
 export const handleEditEvento = async () => {

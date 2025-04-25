@@ -12,6 +12,7 @@ import {
   handleResevar
 } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
+import EventoModal from '@components/modals/EventoModal'
 import ReservaModal from '@components/modals/ReservaModal'
 import OthersCards from '@components/OthersCards'
 import { AuthContext } from '@context/AuthContext'
@@ -21,7 +22,7 @@ import { useContext, useEffect, useMemo, useState } from 'react'
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
-const EventoDetalle = () => {
+export default function EventoDetalle() {
   const loaderData = useLoaderData()
   const evento = loaderData[0]
 
@@ -224,5 +225,3 @@ const EventoDetalle = () => {
     </Container>
   )
 }
-
-export default EventoDetalle

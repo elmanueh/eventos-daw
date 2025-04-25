@@ -2,16 +2,13 @@
 
 - Tratar errores rápidos cuando falla el filtro (hacerlo automático y mejorado)
 
-- Ajustar margenes (MisEspacios, MisEventos, MisReserva)
-
 - En Espacios y Eventos, al filtrar de nuevo, debe cambiar el paginator a la page 1
 
 - Mirar GroupCards y el paginator (separar la lógica)
 
-- Crear modals para editar (espacio y evento) y crear (evento y reserva)
-
-- En eventoDetail añadir crearReserva
-
-- espacioDetail añadir crearEvento
+- Crear modals para editar (espacio y evento)
 
 - Al pasar página de paginación saltar al titulo
+
+- Faltar que se filtren los espacios cuando se seleccione una fecha en el modal 
+(mirar si hacerlo pq un rol gestor no debería poder hacer buscarEspaciosFisicosLibres que es de rol propietario)

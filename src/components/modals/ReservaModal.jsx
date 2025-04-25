@@ -1,7 +1,5 @@
-import { API_URLS } from '@/configs/constant'
-import { fetchGet } from '@/utils/fetchGet'
 import { AuthContext } from '@context/AuthContext'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
@@ -9,26 +7,12 @@ import Modal from 'react-bootstrap/Modal'
 export default function ReservaModal({ show, callback, onHide, evento }) {
   const { user } = useContext(AuthContext)
   const [formData, setFormData] = useState({
-    idEvento: evento ? evento.idEvento : '',
+    idEvento: evento.idEvento,
     idUsuario: user.id,
     numPlazas: ''
   })
 
   const [errorMessage, setErrorMessage] = useState('')
-  const [eventosList, setEventosList] = useState([])
-
-  useEffect(() => {
-    const fetchEventos = async () => {
-      if (!evento) {
-        const data = await fetchGet(API_URLS.EVENTOS_LISTAR)
-        setEventosList(
-          data._embedded.eventoResumenList.filter((e) => !e.cancelado)
-        )
-      }
-    }
-
-    fetchEventos()
-  }, [evento])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -36,12 +20,10 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
   }
 
   const handleSubmit = () => {
-    if (!formData.idEvento || !formData.numPlazas) {
+    if (!formData.numPlazas) {
       setErrorMessage('Por favor, completa todos los campos obligatorios.')
       return
     }
-
-    console.log('Reserva data:', formData)
 
     setErrorMessage('')
     callback(formData)
@@ -65,23 +47,7 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
         <Form>
           <Form.Group className="mb-3" controlId="formEvento">
             <Form.Label>Evento</Form.Label>
-            {evento ? (
-              <Form.Control type="text" value={evento.nombre} readOnly />
-            ) : (
-              <Form.Select
-                name="idEvento"
-                value={formData.idEvento}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Seleccione un evento</option>
-                {eventosList.map((evento) => (
-                  <option key={evento.id} value={evento.id}>
-                    {evento.nombre}
-                  </option>
-                ))}
-              </Form.Select>
-            )}
+            <Form.Control type="text" value={evento.nombre} readOnly />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formNumPlazas">

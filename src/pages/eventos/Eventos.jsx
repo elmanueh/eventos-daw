@@ -66,11 +66,10 @@ const Eventos = () => {
           <Row className="justify-content-start align-items-end g-3">
             <Col xs="auto">
               <Form.Label htmlFor="mesAnio" className="mb-1">
-                Mes y Año
+                Mes y año
               </Form.Label>
               <Form.Control
                 type="month"
-                className="text-primary border-primary"
                 id="mesAnio"
                 name="mesAnio"
                 value={mesAnio}

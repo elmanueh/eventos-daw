@@ -5,6 +5,7 @@ import {
   handleEditEspacio
 } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
+import EventoModal from '@components/modals/EventoModal'
 import OthersCards from '@components/OthersCards'
 import { AuthContext } from '@context/AuthContext'
 import { useContext, useMemo, useState } from 'react'
@@ -28,13 +29,15 @@ export default function EspacioDetalle() {
   const esMio = espacio.propietario == user.username
 
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const [showEventoModal, setShowEventoModal] = useState(false)
+
   const status =
     espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO
 
   function decimalToDMS(coordinate, isLongitude = false) {
     const degrees = Math.floor(coordinate)
     const minutes = Math.floor((coordinate - degrees) * 60)
-    const seconds = ((coordinate - degrees - minutes / 60) * 3600).toFixed(1) // Redondeamos a 1 decimal.
+    const seconds = ((coordinate - degrees - minutes / 60) * 3600).toFixed(1)
 
     let direction = ''
 
@@ -51,6 +54,12 @@ export default function EspacioDetalle() {
 
   return (
     <Container className="p-0">
+      <EventoModal
+        show={showEventoModal}
+        callback={(evento) => handleCrearEvento(evento, setShowEventoModal)}
+        onHide={() => setShowEventoModal(false)}
+        espacioFisico={espacio}
+      />
       <ConfirmationModal
         show={showConfirmation}
         callback={() =>
@@ -164,9 +173,7 @@ export default function EspacioDetalle() {
                         <button
                           type="button"
                           className="btn btn-outline-secondary"
-                          onClick={() => {
-                            handleCrearEvento()
-                          }}
+                          onClick={() => setShowEventoModal(true)}
                         >
                           Crear evento
                         </button>

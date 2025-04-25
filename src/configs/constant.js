@@ -34,6 +34,7 @@ export const API_URLS = {
     `http://localhost:8080/api/espaciosfisicos/propietario/${name}`,
 
   // ----- EVENTOS -----
+  EVENTOS_CREAR: 'http://localhost:8080/api/eventos',
   EVENTOS_LISTAR: 'http://localhost:8080/api/eventos',
   EVENTOS_DETALLE: (id) => `http://localhost:8080/api/eventos/${id}`,
   EVENTOS_FILTRADOS: (mes, ano) =>
@@ -60,3 +61,11 @@ export const ESTADOS = {
   CERRADO_TEMPORALMENTE: 'CERRADO_TEMPORALMENTE',
   CERRADO: 'CERRADO'
 }
+
+export const CATEGORIA_EVENTOS = {
+  ACADEMICOS: 'Academicos',
+  CULTURALES: 'Culturales',
+  ENTRETENIMIENTO: 'Entretenimiento',
+  DEPORTES: 'Deportes',
+  OTROS: 'Otros'
+};
