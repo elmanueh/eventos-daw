@@ -1,14 +1,20 @@
+- Mejorar index.hbs
+
 - Hacer login github
 
-- Tratar errores rápidos cuando falla el filtro (hacerlo automático y mejorado)
+- Tratar los errores
 
-- En Espacios y Eventos, al filtrar de nuevo, debe cambiar el paginator a la page 1
+- Mejorar filtrar en eventos y espacios (que filtre automatico)
 
 - Mirar GroupCards y el paginator (separar la lógica)
 
-- Crear modals para editar (espacio y evento)
+- En Espacios y Eventos, al filtrar de nuevo, debe cambiar el paginator a la page 1
 
-- Al pasar página de paginación saltar al titulo
+- Crear modals para editar (espacio y evento)
 
 - Faltar que se filtren los espacios cuando se seleccione una fecha en el modal 
 (mirar si hacerlo pq un rol gestor no debería poder hacer buscarEspaciosFisicosLibres que es de rol propietario)
+
+- Realmente es necesario crear evento desde MisEventos??
+
+- Crear alguna animación cuando se ha realizado una transacción o ha fallado
