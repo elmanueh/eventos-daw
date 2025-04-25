@@ -1,22 +1,36 @@
-import { routes, tipoTarjeta, urls } from '@/configs/constant'
+import { estado, roles, routes, tipoTarjeta, urls } from '@/configs/constant'
 import { fetchGet } from '@/utils/fetchGet'
-import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
+import {
+  handleDesactivarEvento,
+  handleEditEvento,
+  handleResevar
+} from '@/utils/operations'
+import ConfirmationModal from '@components/modals/ConfirmationModal'
 import OthersCards from '@components/OthersCards'
 import { AuthContext } from '@context/AuthContext'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 const EventoDetalle = () => {
-  const { user } = useContext(AuthContext)
-  const evento = useLoaderData()[0]
+  const loaderData = useLoaderData()
+  const evento = loaderData[0]
 
-  const otrosEventos = useLoaderData()[1]
-    ._embedded.eventoResumenList.filter((e) => e.id !== evento.id)
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 3)
+  const otrosEventos = useMemo(() => {
+    return loaderData[1]._embedded.eventoResumenList
+      .filter((e) => e.id !== evento.id)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3)
+  }, [loaderData, evento.id])
+
+  const { user } = useContext(AuthContext)
+  const isUser = user.roles.includes(roles.USUARIO)
+  const esMio = evento.organizador == user.username
+
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const status = evento.cancelado ? estado.CERRADO : estado.ACTIVO
 
   const [espacio, setEspacio] = useState(null)
 
@@ -43,6 +57,16 @@ const EventoDetalle = () => {
 
   return (
     <Container className="py-5">
+      <ConfirmationModal
+        show={showConfirmation}
+        callback={() =>
+          handleDesactivarEvento(evento.idEvento, setShowConfirmation)
+        }
+        onHide={() => setShowConfirmation(false)}
+        title={evento.nombre}
+        status={status}
+        tipo={tipoTarjeta.EVENTOS}
+      />
       <Row>
         <Col md={4}>
           <OthersCards
@@ -65,9 +89,9 @@ const EventoDetalle = () => {
                     <Badge
                       bg={evento.cancelado ? 'danger' : 'success'}
                       text={evento.cancelado ? 'danger' : 'success'}
-                      className="fs-6 bg-opacity-25 px-3 py-2 rounded-pill"
+                      className="fs-6 fw-medium bg-opacity-25 px-3 py-2 rounded-pill"
                     >
-                      {evento.cancelado ? 'CERRADO' : 'ACTIVO'}
+                      {status}
                     </Badge>
                   </Col>
                 </Row>
@@ -142,22 +166,35 @@ const EventoDetalle = () => {
                   </div>
                 </div>
 
-                {evento.organizador == user.username && (
+                {(esMio || isUser) && (
                   <div className="d-flex justify-content-end gap-2">
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={() => handleEditEvento}
-                    >
-                      Editar
-                    </button>
-                    {!evento.cancelado && (
+                    {esMio && (
+                      <>
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                          onClick={() => handleEditEvento()}
+                        >
+                          Editar
+                        </button>
+                        {!evento.cancelado && (
+                          <button
+                            type="button"
+                            className="btn btn-outline-danger"
+                            onClick={() => setShowConfirmation(true)}
+                          >
+                            Desactivar
+                          </button>
+                        )}
+                      </>
+                    )}
+                    {isUser && !evento.cancelado && (
                       <button
                         type="button"
-                        className="btn btn-outline-danger"
-                        onClick={() => handleDesactivarEvento(evento.idEvento)}
+                        className="btn btn-outline-info"
+                        onClick={() => handleResevar()}
                       >
-                        Desactivar
+                        Reservar
                       </button>
                     )}
                   </div>

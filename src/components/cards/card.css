@@ -67,25 +67,25 @@
 }
 
 .my-card-status {
-  border-radius: 20px;
+  border-radius: 50rem;
   padding: 5px 10px;
   font-weight: 500;
-  font-size: 0.85rem;
-  white-space: nowrap;
+  font-size: 0.875rem;
 }
 
 .my-card-status.activo {
-  background-color: rgba(var(--bs-success-rgb), 0.2);
+  background-color: rgba(var(--bs-success-rgb), 0.25);
   color: var(--bs-success);
 }
 
 .my-card-status.cerrado {
-  background-color: rgba(var(--bs-danger-rgb), 0.2);
+  background-color: rgba(var(--bs-danger-rgb), 0.25);
   color: var(--bs-danger);
 }
 
 .my-card-buttons {
   display: flex;
+  justify-content: flex-end;
   gap: 10px;
   margin-top: 10px;
 }

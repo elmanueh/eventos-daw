@@ -2,16 +2,14 @@
 
 - Tratar errores rápidos cuando falla el filtro (hacerlo automático y mejorado)
 
-- Añadir modal de confirmación en cada transacción
-
 - Ajustar margenes (MisEspacios, MisEventos, MisReserva)
 
-- En Espacios y Eventos, al actualizar los objetos, debe cambiar el paginator a la page 1
+- En Espacios y Eventos, al filtrar de nuevo, debe cambiar el paginator a la page 1
 
 - Mirar GroupCards y el paginator (separar la lógica)
 
-- Crear modals para crear (espacio y evento) y crear (espacio, evento y reserva)
+- Crear modals para editar (espacio y evento) y crear (espacio, evento y reserva)
 
-- En eventoDetail añadir crearReserva, cancelar, y editar
+- En eventoDetail añadir crearReserva
 
-- espacioDetail añadir crearEvento, cancelar, activar, y editar
+- espacioDetail añadir crearEvento

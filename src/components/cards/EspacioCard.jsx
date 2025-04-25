@@ -1,4 +1,4 @@
-import { estado, routes } from '@/configs/constant'
+import { estado, routes, tipoTarjeta } from '@/configs/constant'
 import {
   handleCambiarEstadoEspacio,
   handleEditEspacio
@@ -22,6 +22,7 @@ export default function EspacioCard({ espacio, visible }) {
         onHide={() => setShowConfirmation(false)}
         title={espacio.nombre}
         status={status}
+        tipo={tipoTarjeta.ESPACIOS}
       />
       <div
         className="my-card"
@@ -48,7 +49,7 @@ export default function EspacioCard({ espacio, visible }) {
           <button
             type="button"
             className="btn btn-outline-primary"
-            onClick={handleEditEspacio}
+            onClick={handleEditEspacio()}
           >
             Editar
           </button>

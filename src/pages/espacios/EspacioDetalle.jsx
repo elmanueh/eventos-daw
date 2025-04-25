@@ -1,28 +1,35 @@
-import { estado, tipoTarjeta } from '@/configs/constant'
+import { estado, roles, tipoTarjeta } from '@/configs/constant'
 import {
   handleCambiarEstadoEspacio,
+  handleCrearEvento,
   handleEditEspacio
 } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import OthersCards from '@components/OthersCards'
 import { AuthContext } from '@context/AuthContext'
-import { useContext, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { Badge, Card, Col, Container, ListGroup, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function EspacioDetalle() {
+  const loaderData = useLoaderData()
+  const espacio = loaderData[0]
+
+  const otrosEspacios = useMemo(() => {
+    return loaderData[1].espacio
+      .map((espacio) => espacio.espacioDTO)
+      .filter((e) => e.id !== espacio.id)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3)
+  }, [loaderData, espacio.id])
+
   const { user } = useContext(AuthContext)
-  const espacio = useLoaderData()[0]
+  const isUser = user.roles.includes(roles.GESTOR_EVENTOS)
+  const esMio = espacio.propietario == user.username
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const status =
     espacio.estado === estado.ACTIVO ? estado.ACTIVO : estado.CERRADO
-
-  const otrosEspacios = useLoaderData()[1]
-    .espacio.map((espacio) => espacio.espacioDTO)
-    .filter((e) => e.id !== espacio.id)
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 3)
 
   return (
     <Container className="py-5">
@@ -58,7 +65,7 @@ export default function EspacioDetalle() {
                       <Badge
                         bg={status === 'ACTIVO' ? 'success' : 'danger'}
                         text={status === 'ACTIVO' ? 'success' : 'danger'}
-                        className="fs-6 bg-opacity-25 px-3 py-2 rounded-pill"
+                        className="fs-6 fw-medium bg-opacity-25 px-3 py-2 rounded-pill"
                       >
                         {status}
                       </Badge>
@@ -100,30 +107,49 @@ export default function EspacioDetalle() {
                     </div>
                   </div>
 
-                  {espacio.propietario === user.username && (
+                  {(esMio || isUser) && (
                     <div className="d-flex justify-content-end gap-2">
-                      <button
-                        type="button"
-                        className="btn btn-outline-primary"
-                        onClick={handleEditEspacio}
-                      >
-                        Editar
-                      </button>
-                      {status === estado.ACTIVO ? (
+                      {esMio && (
+                        <>
+                          <button
+                            type="button"
+                            className="btn btn-outline-primary"
+                            onClick={handleEditEspacio()}
+                          >
+                            Editar
+                          </button>
+                          {status === estado.ACTIVO ? (
+                            <button
+                              type="button"
+                              className="btn btn-outline-danger"
+                              onClick={() => {
+                                setShowConfirmation(true)
+                              }}
+                            >
+                              Desactivar
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className="btn btn-outline-success"
+                              onClick={() => {
+                                setShowConfirmation(true)
+                              }}
+                            >
+                              Activar
+                            </button>
+                          )}
+                        </>
+                      )}
+                      {isUser && status === estado.ACTIVO && (
                         <button
                           type="button"
-                          className="btn btn-outline-danger"
-                          onClick={() => setShowConfirmation(true)}
+                          className="btn btn-outline-secondary"
+                          onClick={() => {
+                            handleCrearEvento()
+                          }}
                         >
-                          Desactivar
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="btn btn-outline-success"
-                          onClick={() => setShowConfirmation(true)}
-                        >
-                          Activar
+                          Crear evento
                         </button>
                       )}
                     </div>
