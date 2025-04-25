@@ -81,7 +81,9 @@ export default function Espacios() {
   return (
     <div className="d-flex flex-column gap-3 align-items-center">
       <header className="text-center">
-        <h1 className="text-primary fw-bold">Espacios Físicos</h1>
+        <h1 className="text-primary fw-bold" id="titulo1-groupCards">
+          Espacios Físicos
+        </h1>
       </header>
 
       <section>
@@ -158,7 +160,11 @@ export default function Espacios() {
         />
       </section>
 
-      <GroupCards objetos={espacios} tipo={TARJETA_TIPOS.ESPACIOS}></GroupCards>
+      <GroupCards
+        objetos={espacios}
+        tipo={TARJETA_TIPOS.ESPACIOS}
+        id={'titulo1-groupCards'}
+      ></GroupCards>
     </div>
   )
 }

@@ -58,7 +58,9 @@ const Eventos = () => {
   return (
     <div className="d-flex flex-column align-items-center">
       <header className="text-center">
-        <h1 className="text-primary fw-bold">Eventos</h1>
+        <h1 className="text-primary fw-bold" id="titulo1-groupCards">
+          Eventos
+        </h1>
       </header>
 
       <section>
@@ -101,7 +103,11 @@ const Eventos = () => {
         />
       </section>
 
-      <GroupCards objetos={eventos} tipo={TARJETA_TIPOS.EVENTOS}></GroupCards>
+      <GroupCards
+        objetos={eventos}
+        tipo={TARJETA_TIPOS.EVENTOS}
+        id={'titulo1-groupCards'}
+      ></GroupCards>
     </div>
   )
 }

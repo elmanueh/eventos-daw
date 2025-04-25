@@ -15,16 +15,18 @@ export default function MisReservas() {
     <Container className="d-flex flex-column gap-3 p-0">
       <h1 className="text-center">Mis Reservas</h1>
 
-      <h3>Activas</h3>
+      <h3 id="titulo1-groupCards">Activas</h3>
       <GroupCards
         objetos={reservasActivas}
         tipo={TARJETA_TIPOS.RESERVAS}
+        id={'titulo1-groupCards'}
       ></GroupCards>
 
-      <h3>Canceladas</h3>
+      <h3 id="titulo2-groupCards">Canceladas</h3>
       <GroupCards
         objetos={reservasCanceladas}
         tipo={TARJETA_TIPOS.RESERVAS}
+        id={'titulo2-groupCards'}
       ></GroupCards>
     </Container>
   )

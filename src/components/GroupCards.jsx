@@ -6,7 +6,13 @@ import { Pagination } from '@components/pagination/Pagination'
 import { useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 
-export default function GroupCards({ objetos, tipo, visible, noPaginator }) {
+export default function GroupCards({
+  objetos,
+  tipo,
+  visible,
+  noPaginator,
+  id
+}) {
   const [currentPage, setCurrentPage] = useState(1)
 
   const pageSize = 6
@@ -20,6 +26,13 @@ export default function GroupCards({ objetos, tipo, visible, noPaginator }) {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber)
+
+    const el = document.getElementById(id)
+    if (el) {
+      const offset = 80
+      const y = el.getBoundingClientRect().top + window.pageYOffset - offset
+      window.scrollTo({ top: y, behavior: 'smooth' })
+    }
   }
 
   return (

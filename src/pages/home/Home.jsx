@@ -24,7 +24,7 @@ export default function Home() {
       </header>
 
       <section className="d-flex flex-column gap-4 mt-5">
-        <h2 className="text-primary fw-bold fs-3 mb-2">
+        <h2 className="text-primary fw-bold fs-3 mb-2" id="titulo1-groupCards">
           <i className="bi bi-houses-fill" /> Espacios físicos disponibles
         </h2>
 
@@ -32,10 +32,14 @@ export default function Home() {
           objetos={espacios}
           tipo={TARJETA_TIPOS.ESPACIOS}
           noPaginator={true}
+          id="titulo1-groupCards"
         ></GroupCards>
       </section>
 
-      <section className="d-flex flex-column gap-4 mt-5">
+      <section
+        className="d-flex flex-column gap-4 mt-5"
+        id={'titulo2-groupCards'}
+      >
         <h2 className="text-primary fw-bold fs-3 mb-2">
           <i className="bi bi-calendar-event-fill" /> Próximos eventos
         </h2>
@@ -44,6 +48,7 @@ export default function Home() {
           objetos={eventos}
           tipo={TARJETA_TIPOS.EVENTOS}
           noPaginator={true}
+          id={'titulo2-groupCards'}
         ></GroupCards>
       </section>
     </div>

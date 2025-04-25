@@ -32,18 +32,20 @@ export default function MisEventos() {
         Crear Evento
       </Button>
 
-      <h3>Activos</h3>
+      <h3 id="titulo1-groupCards">Activos</h3>
       <GroupCards
         objetos={eventosActivos}
         tipo={TARJETA_TIPOS.EVENTOS}
         visible={true}
+        id={'titulo1-groupCards'}
       ></GroupCards>
 
-      <h3>Cancelados</h3>
+      <h3 id="titulo2-groupCards">Cancelados</h3>
       <GroupCards
         objetos={eventosCancelados}
         tipo={TARJETA_TIPOS.EVENTOS}
         visible={true}
+        id={'titulo2-groupCards'}
       ></GroupCards>
     </Container>
   )
