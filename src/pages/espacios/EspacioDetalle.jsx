@@ -31,6 +31,24 @@ export default function EspacioDetalle() {
   const status =
     espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO
 
+  function decimalToDMS(coordinate, isLongitude = false) {
+    const degrees = Math.floor(coordinate)
+    const minutes = Math.floor((coordinate - degrees) * 60)
+    const seconds = ((coordinate - degrees - minutes / 60) * 3600).toFixed(1) // Redondeamos a 1 decimal.
+
+    let direction = ''
+
+    if (isLongitude) {
+      direction = coordinate < 0 ? 'W' : 'E'
+    } else {
+      direction = coordinate < 0 ? 'S' : 'N'
+    }
+
+    return `${Math.abs(degrees)}°${Math.abs(minutes)}'${Math.abs(
+      seconds
+    )}"${direction}`
+  }
+
   return (
     <Container className="py-5">
       <ConfirmationModal
@@ -101,7 +119,8 @@ export default function EspacioDetalle() {
                           rel="noopener noreferrer"
                           className="text-decoration-none"
                         >
-                          {espacio.latitud}° N, {espacio.longitud}° E
+                          {decimalToDMS(espacio.latitud)}{' '}
+                          {decimalToDMS(espacio.longitud, true)}
                         </a>
                       </span>
                     </div>
@@ -114,7 +133,7 @@ export default function EspacioDetalle() {
                           <button
                             type="button"
                             className="btn btn-outline-primary"
-                            onClick={handleEditEspacio()}
+                            onClick={() => handleEditEspacio()}
                           >
                             Editar
                           </button>

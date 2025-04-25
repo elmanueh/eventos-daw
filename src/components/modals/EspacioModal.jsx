@@ -93,25 +93,24 @@ export default function EspacioModal({ show, callback, onHide }) {
           <Form.Group className="mb-3" controlId="formLongitud">
             <div className="row">
               <div className="col-md-6">
-                <Form.Label>Longitud</Form.Label>
-                <Form.Control
-                  type="number"
-                  step="any"
-                  placeholder="Ej. -1.1295"
-                  name="longitud"
-                  value={formData.longitud}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="col-md-6">
-                <Form.Label>Latitud</Form.Label>
+                <Form.Label>Latitud (N/S)</Form.Label>
                 <Form.Control
                   type="number"
                   step="any"
                   placeholder="Ej. 37.9861"
                   name="latitud"
                   value={formData.latitud}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="col-md-6">
+                <Form.Label>Longitud (E/W)</Form.Label>
+                <Form.Control
+                  type="number"
+                  step="any"
+                  placeholder="Ej. -1.1295"
+                  name="longitud"
+                  value={formData.longitud}
                   onChange={handleChange}
                 />
               </div>
