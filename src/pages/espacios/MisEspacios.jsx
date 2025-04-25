@@ -1,10 +1,13 @@
-import { tipoTarjeta } from '@/configs/constant'
+import { tipoTarjeta, urls } from '@/configs/constant'
+import { fetchPost } from '@/utils/fetchPost'
 import GroupCards from '@components/GroupCards'
+import EspacioModal from '@components/modals/EspacioModal'
 import { useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function MisEspacios() {
+  const [showEspacioModal, setShowEspacioModal] = useState(false)
   const initialEspacios = useLoaderData().espacio.map(
     (espacio) => espacio.espacioDTO
   )
@@ -17,18 +20,30 @@ export default function MisEspacios() {
     (espacio) => espacio.estado === 'CERRADO_TEMPORALMENTE'
   )
 
-  const handleCrearEspacio = () => {
-    // Implementar la lógica para crear un nuevo evento
+  const handleCrearEspacio = async (data) => {
+    console.log('Espacio creado:', data)
+    const response = await fetchPost(urls.CREAR_ESPACIO, data)
+    console.log(response.status)
+    if (response.ok) {
+      const newEspacio = await response.json()
+      setEspacios((prevEspacios) => [...prevEspacios, newEspacio])
+      setShowEspacioModal(false)
+    }
   }
 
   return (
     <Container className="py-4 d-flex flex-column gap-2">
-      <h1 className="text-center">Mis Espacios</h1>
+      <EspacioModal
+        show={showEspacioModal}
+        callback={handleCrearEspacio}
+        onHide={() => setShowEspacioModal(false)}
+      />
+      <h1 className="text-center text-primary fw-bold">Mis Espacios</h1>
 
       <Button
         variant="primary"
         className="ms-auto"
-        onClick={handleCrearEspacio}
+        onClick={() => setShowEspacioModal(true)}
       >
         Crear Espacio
       </Button>

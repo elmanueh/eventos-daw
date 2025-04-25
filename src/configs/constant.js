@@ -23,6 +23,7 @@ export const urls = {
   GITHUB: 'http://localhost:8080/api/oauth2/authorization/github',
 
   // ----- ESPACIOS -----
+  CREAR_ESPACIO: 'http://localhost:8080/api/espaciosfisicos',
   ESPACIOS: 'http://localhost:8080/api/espaciosfisicos',
   ESPACIOS_DET: (id) => `http://localhost:8080/api/espaciosfisicos/${id}`,
   ESPACIOS_FILTRADOS: (fechaInicio, fechaFin, capacidad) =>
