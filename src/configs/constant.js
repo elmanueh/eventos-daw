@@ -1,61 +1,60 @@
 // Roles de usuario
-export const roles = {
+export const AUTH_ROLES = {
   USUARIO: 'USUARIO',
   GESTOR_EVENTOS: 'GESTOR_EVENTOS',
   PROPIETARIO_ESPACIOS: 'PROPIETARIO_ESPACIOS'
 }
 
 // Rutas de navegación
-export const routes = {
+export const NAV_ROUTES = {
   LOGIN: '/login',
   HOME: '/home',
-  ESPACIOS: (id) => `/espacios/${id}`,
-  EVENTOS: (id) => `/eventos/${id}`,
+  ESPACIOS_DET: (id) => `/espacios/${id}`,
+  EVENTOS_DET: (id) => `/eventos/${id}`,
   MIS_ESPACIOS: '/dashboard/espacios',
   MIS_RESERVAS: '/dashboard/reservas',
   MIS_EVENTOS: '/dashboard/eventos'
 }
 
 // URL de la API
-export const urls = {
-  LOGIN: 'http://localhost:8080/api/auth/login',
-  LOGOUT: 'http://localhost:8080/api/auth/logout',
-  GITHUB: 'http://localhost:8080/api/oauth2/authorization/github',
+export const API_URLS = {
+  AUTH_LOGIN: 'http://localhost:8080/api/auth/login',
+  AUTH_LOGOUT: 'http://localhost:8080/api/auth/logout',
+  AUTH_GITHUB_OAUTH: 'http://localhost:8080/api/oauth2/authorization/github',
 
   // ----- ESPACIOS -----
-  CREAR_ESPACIO: 'http://localhost:8080/api/espaciosfisicos',
-  ESPACIOS: 'http://localhost:8080/api/espaciosfisicos',
-  ESPACIOS_DET: (id) => `http://localhost:8080/api/espaciosfisicos/${id}`,
+  ESPACIOS_CREAR: 'http://localhost:8080/api/espaciosfisicos',
+  ESPACIOS_LISTAR: 'http://localhost:8080/api/espaciosfisicos',
+  ESPACIOS_DETALLE: (id) => `http://localhost:8080/api/espaciosfisicos/${id}`,
   ESPACIOS_FILTRADOS: (fechaInicio, fechaFin, capacidad) =>
     `http://localhost:8080/api/espaciosfisicos/libre?fechainicio=${fechaInicio}&fechafin=${fechaFin}&capacidad=${capacidad}`,
-  MODIFICAR_ESTADO_ESPACIO: (id) =>
+  ESPACIOS_CAMBIAR_ESTADO: (id) =>
     `http://localhost:8080/api/espaciosfisicos/${id}/estado`,
-  ESPACIOS_PRIVADOS: (name) =>
+  ESPACIOS_PROPIETARIO: (name) =>
     `http://localhost:8080/api/espaciosfisicos/propietario/${name}`,
 
   // ----- EVENTOS -----
-  EVENTOS: 'http://localhost:8080/api/eventos',
-  EVENTOS_DET: (id) => `http://localhost:8080/api/eventos/${id}`,
+  EVENTOS_LISTAR: 'http://localhost:8080/api/eventos',
+  EVENTOS_DETALLE: (id) => `http://localhost:8080/api/eventos/${id}`,
   EVENTOS_FILTRADOS: (mes, ano) =>
     `http://localhost:8080/api/eventos?mes=${mes}&año=${ano}`,
-  CANCELAR_EVENTO: (id) => `http://localhost:8080/api/eventos/${id}/ocupacion`,
-  EVENTOS_PRIVADOS: (name) =>
-    `http://localhost:8080/api/eventos/gestor/${name}`,
+  EVENTOS_CANCELAR: (id) => `http://localhost:8080/api/eventos/${id}/ocupacion`,
+  EVENTOS_GESTOR: (name) => `http://localhost:8080/api/eventos/gestor/${name}`,
 
   // ----- RESERVAS -----
-  RESERVAS_DET: (id) => `http://localhost:8080/api/reservas/${id}`,
-  RESERVAS_PRIVADAS: (id) => `http://localhost:8080/api/reservas/usuario/${id}`
+  RESERVAS_DETALLE: (id) => `http://localhost:8080/api/reservas/${id}`,
+  RESERVAS_USUARIO: (id) => `http://localhost:8080/api/reservas/usuario/${id}`
 }
 
 // Tipos de tarjeta (cards)
-export const tipoTarjeta = {
+export const TARJETA_TIPOS = {
   ESPACIOS: 'espacios',
   RESERVAS: 'reservas',
   EVENTOS: 'eventos'
 }
 
 // Estados de los espacios y eventos
-export const estado = {
+export const ESTADOS = {
   ACTIVO: 'ACTIVO',
   CERRADO_TEMPORALMENTE: 'CERRADO_TEMPORALMENTE',
   CERRADO: 'CERRADO'

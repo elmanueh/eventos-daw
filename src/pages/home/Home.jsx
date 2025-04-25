@@ -1,4 +1,4 @@
-import { tipoTarjeta } from '@/configs/constant'
+import { TARJETA_TIPOS } from '@/configs/constant'
 import GroupCards from '@components/GroupCards'
 import { AuthContext } from '@context/AuthContext'
 import { useContext } from 'react'
@@ -30,7 +30,7 @@ export default function Home() {
 
         <GroupCards
           objetos={espacios}
-          tipo={tipoTarjeta.ESPACIOS}
+          tipo={TARJETA_TIPOS.ESPACIOS}
           noPaginator={true}
         ></GroupCards>
       </section>
@@ -42,7 +42,7 @@ export default function Home() {
 
         <GroupCards
           objetos={eventos}
-          tipo={tipoTarjeta.EVENTOS}
+          tipo={TARJETA_TIPOS.EVENTOS}
           noPaginator={true}
         ></GroupCards>
       </section>

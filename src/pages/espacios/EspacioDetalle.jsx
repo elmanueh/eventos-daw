@@ -1,4 +1,4 @@
-import { estado, roles, tipoTarjeta } from '@/configs/constant'
+import { AUTH_ROLES, ESTADOS, TARJETA_TIPOS } from '@/configs/constant'
 import {
   handleCambiarEstadoEspacio,
   handleCrearEvento,
@@ -24,12 +24,12 @@ export default function EspacioDetalle() {
   }, [loaderData, espacio.id])
 
   const { user } = useContext(AuthContext)
-  const isUser = user.roles.includes(roles.GESTOR_EVENTOS)
+  const isUser = user.roles.includes(AUTH_ROLES.GESTOR_EVENTOS)
   const esMio = espacio.propietario == user.username
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const status =
-    espacio.estado === estado.ACTIVO ? estado.ACTIVO : estado.CERRADO
+    espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO
 
   return (
     <Container className="py-5">
@@ -46,7 +46,7 @@ export default function EspacioDetalle() {
         <Col md={4}>
           <OthersCards
             otros={otrosEspacios}
-            tipo={tipoTarjeta.ESPACIOS}
+            tipo={TARJETA_TIPOS.ESPACIOS}
           ></OthersCards>
         </Col>
 
@@ -118,7 +118,7 @@ export default function EspacioDetalle() {
                           >
                             Editar
                           </button>
-                          {status === estado.ACTIVO ? (
+                          {status === ESTADOS.ACTIVO ? (
                             <button
                               type="button"
                               className="btn btn-outline-danger"
@@ -141,7 +141,7 @@ export default function EspacioDetalle() {
                           )}
                         </>
                       )}
-                      {isUser && status === estado.ACTIVO && (
+                      {isUser && status === ESTADOS.ACTIVO && (
                         <button
                           type="button"
                           className="btn btn-outline-secondary"

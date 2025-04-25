@@ -1,4 +1,4 @@
-import { estado, routes, tipoTarjeta } from '@/configs/constant'
+import { ESTADOS, NAV_ROUTES, TARJETA_TIPOS } from '@/configs/constant'
 import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import { useState } from 'react'
@@ -6,7 +6,7 @@ import './card.css'
 
 export default function EventoCard({ evento, visible }) {
   const [showConfirmation, setShowConfirmation] = useState(false)
-  const status = evento.cancelado ? estado.CERRADO : estado.ACTIVO
+  const status = evento.cancelado ? ESTADOS.CERRADO : ESTADOS.ACTIVO
 
   return (
     <div>
@@ -16,11 +16,13 @@ export default function EventoCard({ evento, visible }) {
         onHide={() => setShowConfirmation(false)}
         title={evento.nombre}
         status={status}
-        tipo={tipoTarjeta.EVENTOS}
+        tipo={TARJETA_TIPOS.EVENTOS}
       />
       <div
         className="my-card"
-        onClick={() => (window.location.href = routes.EVENTOS(evento.id))}
+        onClick={() =>
+          (window.location.href = NAV_ROUTES.EVENTOS_DET(evento.id))
+        }
       >
         <div className="my-card-header">
           <h2 title={evento.nombre}>{evento.nombre}</h2>

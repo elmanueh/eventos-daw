@@ -1,4 +1,4 @@
-import { roles, routes, urls } from '@/configs/constant'
+import { API_URLS, AUTH_ROLES, NAV_ROUTES } from '@/configs/constant'
 import { fetchGet } from '@/utils/fetchGet'
 import { AuthContext } from '@context/AuthContext'
 import format from 'date-fns/format'
@@ -16,23 +16,27 @@ export default function UserInfoCard() {
   useEffect(() => {
     const getInfo = async () => {
       try {
-        const reservasDto = await fetchGet(urls.RESERVAS_PRIVADAS(user.id))
+        const reservasDto = await fetchGet(API_URLS.RESERVAS_USUARIO(user.id))
         const reservas = await Promise.all(
           reservasDto._embedded.reservaResumenList
             .filter((reserva) => !reserva.cancelada)
-            .map((reserva) => fetchGet(urls.RESERVAS_DET(reserva.id)))
+            .map((reserva) => fetchGet(API_URLS.RESERVAS_DETALLE(reserva.id)))
         )
         if (reservas.length === 0) return null
 
         const eventos = await Promise.all(
-          reservas.map((reserva) => fetchGet(urls.EVENTOS_DET(reserva.evento)))
+          reservas.map((reserva) =>
+            fetchGet(API_URLS.EVENTOS_DETALLE(reserva.evento))
+          )
         )
         const evento = eventos.sort((a, b) => {
           const fechaA = new Date(a.fechaInicio)
           const fechaB = new Date(b.fechaInicio)
           return fechaA - fechaB
         })[0]
-        const espacio = await fetchGet(urls.ESPACIOS_DET(evento.espacioFisico))
+        const espacio = await fetchGet(
+          API_URLS.ESPACIOS_DETALLE(evento.espacioFisico)
+        )
 
         setInfo({
           evento: evento,
@@ -64,7 +68,7 @@ export default function UserInfoCard() {
               <i className="bi bi-star-fill text-primary" />
               <strong> Evento: </strong>
               <Link
-                to={routes.EVENTOS(info.evento.idEvento)}
+                to={NAV_ROUTES.EVENTOS_DET(info.evento.idEvento)}
                 className="text-decoration-none"
               >
                 {info.evento.nombre}
@@ -75,7 +79,7 @@ export default function UserInfoCard() {
               <i className="bi bi-pin-map-fill text-primary" />
               <strong> Lugar: </strong>
               <Link
-                to={routes.ESPACIOS(info.espacio.id)}
+                to={NAV_ROUTES.ESPACIOS_DET(info.espacio.id)}
                 className="text-decoration-none"
               >
                 {info.espacio.nombre}
@@ -98,20 +102,23 @@ export default function UserInfoCard() {
         </p>
       )}
       <div className="d-flex flex-column w-100 gap-2 mt-4">
-        {user.roles.includes(roles.GESTOR_EVENTOS) && (
+        {user.roles.includes(AUTH_ROLES.GESTOR_EVENTOS) && (
           <>
-            <Link to={routes.MIS_ESPACIOS} className="btn btn-primary w-100">
+            <Link
+              to={NAV_ROUTES.MIS_ESPACIOS}
+              className="btn btn-primary w-100"
+            >
               <i className="bi bi-house-gear-fill" /> Mis espacios
             </Link>
             <Link
-              to={routes.MIS_EVENTOS}
+              to={NAV_ROUTES.MIS_EVENTOS}
               className="btn btn-outline-secondary w-100"
             >
               <i className="bi bi-calendar-event" /> Mis eventos
             </Link>
           </>
         )}
-        <Link to={routes.MIS_RESERVAS} className="btn btn-info w-100">
+        <Link to={NAV_ROUTES.MIS_RESERVAS} className="btn btn-info w-100">
           <i className="bi bi-book-half" /> Mis reservas
         </Link>
       </div>

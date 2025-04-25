@@ -1,4 +1,4 @@
-import { routes } from '@/configs/constant'
+import { NAV_ROUTES } from '@/configs/constant'
 import UserInfoCard from '@components/UserInfoCard'
 import { AuthContext } from '@context/AuthContext'
 import { useContext } from 'react'
@@ -11,7 +11,7 @@ export default function Header() {
 
   const handleLogout = () => {
     logout()
-    navigate(routes.LOGIN)
+    navigate(NAV_ROUTES.LOGIN)
   }
 
   return (
@@ -20,7 +20,7 @@ export default function Header() {
         <div className="container-fluid">
           <a
             className="navbar-brand d-flex align-items-center"
-            href={routes.HOME}
+            href={NAV_ROUTES.HOME}
           >
             <img
               src={logo}

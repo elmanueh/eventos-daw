@@ -1,4 +1,4 @@
-import { estado, routes, tipoTarjeta } from '@/configs/constant'
+import { ESTADOS, NAV_ROUTES, TARJETA_TIPOS } from '@/configs/constant'
 import {
   handleCambiarEstadoEspacio,
   handleEditEspacio
@@ -10,7 +10,7 @@ import './card.css'
 export default function EspacioCard({ espacio, visible }) {
   const [showConfirmation, setShowConfirmation] = useState(false)
   const status =
-    espacio.estado === estado.ACTIVO ? estado.ACTIVO : estado.CERRADO
+    espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO
 
   return (
     <div>
@@ -22,11 +22,13 @@ export default function EspacioCard({ espacio, visible }) {
         onHide={() => setShowConfirmation(false)}
         title={espacio.nombre}
         status={status}
-        tipo={tipoTarjeta.ESPACIOS}
+        tipo={TARJETA_TIPOS.ESPACIOS}
       />
       <div
         className="my-card"
-        onClick={() => (window.location.href = routes.ESPACIOS(espacio.id))}
+        onClick={() =>
+          (window.location.href = NAV_ROUTES.ESPACIOS_DET(espacio.id))
+        }
       >
         <div className="my-card-header">
           <h2 title={espacio.nombre}>{espacio.nombre}</h2>
@@ -53,7 +55,7 @@ export default function EspacioCard({ espacio, visible }) {
           >
             Editar
           </button>
-          {status === estado.ACTIVO ? (
+          {status === ESTADOS.ACTIVO ? (
             <button
               type="button"
               className="btn btn-outline-danger"

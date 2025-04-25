@@ -1,4 +1,4 @@
-import { tipoTarjeta } from '@/configs/constant'
+import { TARJETA_TIPOS } from '@/configs/constant'
 import GroupCards from '@components/GroupCards'
 import { Button, Container } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
@@ -20,14 +20,14 @@ export default function MisReservas() {
       <h3>Activas</h3>
       <GroupCards
         objetos={reservasActivas}
-        tipo={tipoTarjeta.RESERVAS}
+        tipo={TARJETA_TIPOS.RESERVAS}
         raw={true}
       ></GroupCards>
 
       <h3>Canceladas</h3>
       <GroupCards
         objetos={reservasCanceladas}
-        tipo={tipoTarjeta.RESERVAS}
+        tipo={TARJETA_TIPOS.RESERVAS}
       ></GroupCards>
     </Container>
   )

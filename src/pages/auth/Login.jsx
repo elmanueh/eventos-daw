@@ -1,4 +1,4 @@
-import { routes, urls } from '@/configs/constant'
+import { API_URLS, NAV_ROUTES } from '@/configs/constant'
 import { showMessageError } from '@/utils/error'
 import { AuthContext } from '@context/AuthContext'
 import '@pages/auth/login.css'
@@ -20,7 +20,7 @@ export default function Login() {
     }
 
     try {
-      const response = await fetch(urls.LOGIN, {
+      const response = await fetch(API_URLS.AUTH_LOGIN, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({ usuario: username, contraseña: password }),
@@ -37,7 +37,7 @@ export default function Login() {
 
       const userData = await response.json()
       login(userData)
-      window.location.replace(routes.HOME)
+      window.location.replace(NAV_ROUTES.HOME)
     } catch {
       showMessageError('Error de conexión. Intenta más tarde.')
     }
@@ -45,7 +45,7 @@ export default function Login() {
 
   const handleGithubLogin = () => {
     console.log('Iniciar sesión con GitHub')
-    window.location.href = urls.GITHUB
+    window.location.href = API_URLS.AUTH_GITHUB_OAUTH
 
     // Poner información en el localStorage
     // login(data);

@@ -1,4 +1,4 @@
-import { routes, urls } from '@/configs/constant'
+import { API_URLS, NAV_ROUTES } from '@/configs/constant'
 import { fetchGet } from '@/utils/fetchGet'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
@@ -16,14 +16,18 @@ export default function ReservaCard({ reserva }) {
   useEffect(() => {
     const getInfo = async () => {
       try {
-        const reservaDTO = await fetchGet(urls.RESERVAS_DET(reserva.id))
+        const reservaDTO = await fetchGet(API_URLS.RESERVAS_DETALLE(reserva.id))
 
-        const evento = await fetchGet(urls.EVENTOS_DET(reservaDTO.evento))
+        const evento = await fetchGet(
+          API_URLS.EVENTOS_DETALLE(reservaDTO.evento)
+        )
 
         let espacio = null
 
         if (!reserva.cancelada) {
-          espacio = await fetchGet(urls.ESPACIOS_DET(evento.espacioFisico))
+          espacio = await fetchGet(
+            API_URLS.ESPACIOS_DETALLE(evento.espacioFisico)
+          )
         }
 
         setInfo({
@@ -43,7 +47,7 @@ export default function ReservaCard({ reserva }) {
       <div className="my-card-header">
         {info.evento && (
           <Link
-            to={routes.EVENTOS(info.evento.idEvento)}
+            to={NAV_ROUTES.EVENTOS_DET(info.evento.idEvento)}
             className="text-decoration-none"
           >
             <h2 title={info.evento.nombre} className="m-0">
@@ -60,7 +64,7 @@ export default function ReservaCard({ reserva }) {
           <span>
             <i className="bi bi-pin-map-fill my-card-espacio" />
             <Link
-              to={routes.ESPACIOS(info.espacio.id)}
+              to={NAV_ROUTES.ESPACIOS_DET(info.espacio.id)}
               className="text-decoration-none"
             >
               {info.espacio.nombre}

@@ -1,4 +1,4 @@
-import { urls } from '@/configs/constant'
+import { API_URLS } from '@/configs/constant'
 import { AuthContext } from '@context/AuthContext'
 import { useEffect, useState } from 'react'
 
@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
   }
 
   async function logout() {
-    const response = await fetch(urls.LOGOUT, {
+    const response = await fetch(API_URLS.AUTH_LOGOUT, {
       method: 'POST',
       credentials: 'include'
     })

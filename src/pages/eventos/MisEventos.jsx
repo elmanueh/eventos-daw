@@ -1,4 +1,4 @@
-import { tipoTarjeta } from '@/configs/constant'
+import { TARJETA_TIPOS } from '@/configs/constant'
 import GroupCards from '@components/GroupCards'
 import { useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
@@ -26,14 +26,14 @@ export default function MisEventos() {
       <h3>Activos</h3>
       <GroupCards
         objetos={eventosActivos}
-        tipo={tipoTarjeta.EVENTOS}
+        tipo={TARJETA_TIPOS.EVENTOS}
         visible={true}
       ></GroupCards>
 
       <h3>Cancelados</h3>
       <GroupCards
         objetos={eventosCancelados}
-        tipo={tipoTarjeta.EVENTOS}
+        tipo={TARJETA_TIPOS.EVENTOS}
         visible={true}
       ></GroupCards>
     </Container>

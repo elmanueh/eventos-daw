@@ -1,4 +1,4 @@
-import { tipoTarjeta, urls } from '@/configs/constant'
+import { API_URLS, TARJETA_TIPOS } from '@/configs/constant'
 import { hideMessageError, showMessageError } from '@/utils/error'
 import { fetchGet } from '@/utils/fetchGet'
 import GroupCards from '@components/GroupCards'
@@ -27,7 +27,7 @@ export default function Espacios() {
     }
 
     try {
-      const data = await fetchGet(urls.ESPACIOS)
+      const data = await fetchGet(API_URLS.ESPACIOS_LISTAR)
       setEspacios(data.espacio?.map((espacio) => espacio.espacioDTO) || [])
 
       setIsEspaciosLoaded(true)
@@ -61,7 +61,7 @@ export default function Espacios() {
 
     try {
       const data = await fetchGet(
-        urls.ESPACIOS_FILTRADOS(
+        API_URLS.ESPACIOS_FILTRADOS(
           fechaInicioISO,
           fechaFinISO,
           parseInt(capacidad)
@@ -160,10 +160,7 @@ export default function Espacios() {
         />
       </section>
 
-      <GroupCards
-        objetos={espacios}
-        tipo={tipoTarjeta.ESPACIOS}
-      ></GroupCards>
+      <GroupCards objetos={espacios} tipo={TARJETA_TIPOS.ESPACIOS}></GroupCards>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { routes } from '@/configs/constant'
+import { NAV_ROUTES } from '@/configs/constant'
 import Footer from '@components/layout/Footer'
 import Header from '@components/layout/Header'
 import UserInfoCard from '@components/UserInfoCard'
@@ -12,7 +12,7 @@ export default function Layout() {
 
   useEffect(() => {
     if (!user) {
-      navigate(routes.LOGIN)
+      navigate(NAV_ROUTES.LOGIN)
     }
   }, [user, navigate])
 

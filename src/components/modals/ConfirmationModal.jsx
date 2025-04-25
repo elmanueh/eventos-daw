@@ -1,4 +1,4 @@
-import { estado, tipoTarjeta } from '@/configs/constant'
+import { ESTADOS, TARJETA_TIPOS } from '@/configs/constant'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 
@@ -11,8 +11,8 @@ export default function ConfirmationModal({
   tipo
 }) {
   const message =
-    tipo === tipoTarjeta.ESPACIOS
-      ? status === estado.ACTIVO
+    tipo === TARJETA_TIPOS.ESPACIOS
+      ? status === ESTADOS.ACTIVO
         ? 'Estás a punto de cerrar este espacio. Una vez cerrado, no estará disponible para la creación de nuevos eventos hasta que se vuelva a activar.'
         : 'Estás a punto de activar este espacio. Una vez activado, estará disponible nuevamente para la creación de eventos en la plataforma.'
       : 'Estás a punto de cancelar este evento. Una vez cancelado, no podrás volver a activarlo.'
@@ -24,7 +24,7 @@ export default function ConfirmationModal({
           {' '}
           <i
             className={`bi ${
-              status === estado.ACTIVO
+              status === ESTADOS.ACTIVO
                 ? 'bi-x-circle-fill'
                 : 'bi-check-circle-fill'
             }`}

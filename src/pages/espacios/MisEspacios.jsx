@@ -1,4 +1,4 @@
-import { tipoTarjeta, urls } from '@/configs/constant'
+import { API_URLS, TARJETA_TIPOS } from '@/configs/constant'
 import { fetchPost } from '@/utils/fetchPost'
 import GroupCards from '@components/GroupCards'
 import EspacioModal from '@components/modals/EspacioModal'
@@ -22,7 +22,7 @@ export default function MisEspacios() {
 
   const handleCrearEspacio = async (data) => {
     console.log('Espacio creado:', data)
-    const response = await fetchPost(urls.CREAR_ESPACIO, data)
+    const response = await fetchPost(API_URLS.ESPACIOS_CREAR, data)
     console.log(response.status)
     if (response.ok) {
       const newEspacio = await response.json()
@@ -51,14 +51,14 @@ export default function MisEspacios() {
       <h3>Activos</h3>
       <GroupCards
         objetos={espaciosActivos}
-        tipo={tipoTarjeta.ESPACIOS}
+        tipo={TARJETA_TIPOS.ESPACIOS}
         visible={true}
       ></GroupCards>
 
       <h3>Cerrados Temporalmente</h3>
       <GroupCards
         objetos={espaciosCerrados}
-        tipo={tipoTarjeta.ESPACIOS}
+        tipo={TARJETA_TIPOS.ESPACIOS}
         visible={true}
       ></GroupCards>
     </Container>

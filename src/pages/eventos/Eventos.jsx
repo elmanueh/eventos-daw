@@ -1,4 +1,4 @@
-import { tipoTarjeta, urls } from '@/configs/constant'
+import { API_URLS, TARJETA_TIPOS } from '@/configs/constant'
 import { hideMessageError, showMessageError } from '@/utils/error'
 import { fetchGet } from '@/utils/fetchGet'
 import GroupCards from '@components/GroupCards'
@@ -21,7 +21,7 @@ const Eventos = () => {
     }
 
     try {
-      const data = await fetchGet(urls.EVENTOS)
+      const data = await fetchGet(API_URLS.EVENTOS_LISTAR)
       setEventos(data._embedded?.eventoResumenList || [])
 
       hideMessageError()
@@ -43,7 +43,7 @@ const Eventos = () => {
 
     try {
       const data = await fetchGet(
-        urls.EVENTOS_FILTRADOS(mesAnio.split('-')[1], mesAnio.split('-')[0])
+        API_URLS.EVENTOS_FILTRADOS(mesAnio.split('-')[1], mesAnio.split('-')[0])
       )
       setEventos(data._embedded?.eventoResumenList || [])
       hideMessageError()
@@ -102,10 +102,7 @@ const Eventos = () => {
         />
       </section>
 
-      <GroupCards
-        objetos={eventos}
-        tipo={tipoTarjeta.EVENTOS}
-      ></GroupCards>
+      <GroupCards objetos={eventos} tipo={TARJETA_TIPOS.EVENTOS}></GroupCards>
     </div>
   )
 }

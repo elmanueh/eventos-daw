@@ -1,4 +1,10 @@
-import { estado, roles, routes, tipoTarjeta, urls } from '@/configs/constant'
+import {
+  API_URLS,
+  AUTH_ROLES,
+  ESTADOS,
+  NAV_ROUTES,
+  TARJETA_TIPOS
+} from '@/configs/constant'
 import { fetchGet } from '@/utils/fetchGet'
 import {
   handleDesactivarEvento,
@@ -26,11 +32,11 @@ const EventoDetalle = () => {
   }, [loaderData, evento.id])
 
   const { user } = useContext(AuthContext)
-  const isUser = user.roles.includes(roles.USUARIO)
+  const isUser = user.roles.includes(AUTH_ROLES.USUARIO)
   const esMio = evento.organizador == user.username
 
   const [showConfirmation, setShowConfirmation] = useState(false)
-  const status = evento.cancelado ? estado.CERRADO : estado.ACTIVO
+  const status = evento.cancelado ? ESTADOS.CERRADO : ESTADOS.ACTIVO
 
   const [espacio, setEspacio] = useState(null)
 
@@ -39,7 +45,9 @@ const EventoDetalle = () => {
 
     async function fetchEspacio() {
       try {
-        const data = await fetchGet(urls.ESPACIOS_DET(evento.espacioFisico))
+        const data = await fetchGet(
+          API_URLS.ESPACIOS_DETALLE(evento.espacioFisico)
+        )
 
         setEspacio(data)
       } catch (error) {
@@ -52,7 +60,7 @@ const EventoDetalle = () => {
   }, [evento.espacioFisico])
 
   const handleNavigate = () => {
-    window.location.href = routes.ESPACIOS(espacio.id)
+    window.location.href = NAV_ROUTES.ESPACIOS_DET(espacio.id)
   }
 
   return (
@@ -65,13 +73,13 @@ const EventoDetalle = () => {
         onHide={() => setShowConfirmation(false)}
         title={evento.nombre}
         status={status}
-        tipo={tipoTarjeta.EVENTOS}
+        tipo={TARJETA_TIPOS.EVENTOS}
       />
       <Row>
         <Col md={4}>
           <OthersCards
             otros={otrosEventos}
-            tipo={tipoTarjeta.EVENTOS}
+            tipo={TARJETA_TIPOS.EVENTOS}
           ></OthersCards>
         </Col>
 

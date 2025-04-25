@@ -1,4 +1,4 @@
-import { tipoTarjeta } from '@/configs/constant'
+import { TARJETA_TIPOS } from '@/configs/constant'
 import EspacioCard from '@components/cards/EspacioCard'
 import EventoCard from '@components/cards/EventoCard'
 import { Card } from 'react-bootstrap'
@@ -15,9 +15,9 @@ export default function OthersCards({ otros, tipo }) {
             <div key={objeto.id} className="mb-3">
               {(() => {
                 switch (tipo) {
-                  case tipoTarjeta.ESPACIOS:
+                  case TARJETA_TIPOS.ESPACIOS:
                     return <EspacioCard espacio={objeto} />
-                  case tipoTarjeta.EVENTOS:
+                  case TARJETA_TIPOS.EVENTOS:
                     return <EventoCard evento={objeto} />
                 }
               })()}
