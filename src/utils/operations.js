@@ -59,7 +59,14 @@ export const handleDesactivarEvento = async (id, setShowConfirmation) => {
   }
 }
 
-export const handleResevar = async () => {
-  // TODO: Implementar la lógica para reservar
+export const handleResevar = async (reserva, setShowReservaModal) => {
   console.log('Reservando...')
+
+  try {
+    await fetchPost(API_URLS.RESERVAS_CREAR, reserva)
+    setShowReservaModal(false)
+    window.location.reload()
+  } catch (error) {
+    console.error('Error al reservar:', error)
+  }
 }

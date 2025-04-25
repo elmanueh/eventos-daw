@@ -43,7 +43,8 @@ export const API_URLS = {
 
   // ----- RESERVAS -----
   RESERVAS_DETALLE: (id) => `http://localhost:8080/api/reservas/${id}`,
-  RESERVAS_USUARIO: (id) => `http://localhost:8080/api/reservas/usuario/${id}`
+  RESERVAS_USUARIO: (id) => `http://localhost:8080/api/reservas/usuario/${id}`,
+  RESERVAS_CREAR: 'http://localhost:8080/api/reservas',
 }
 
 // Tipos de tarjeta (cards)

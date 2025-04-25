@@ -12,6 +12,7 @@ import {
   handleResevar
 } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
+import ReservaModal from '@components/modals/ReservaModal'
 import OthersCards from '@components/OthersCards'
 import { AuthContext } from '@context/AuthContext'
 import { format } from 'date-fns'
@@ -36,6 +37,8 @@ const EventoDetalle = () => {
   const esMio = evento.organizador == user.username
 
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const [showReservaModal, setShowReservaModal] = useState(false)
+
   const status = evento.cancelado ? ESTADOS.CERRADO : ESTADOS.ACTIVO
 
   const [espacio, setEspacio] = useState(null)
@@ -65,6 +68,12 @@ const EventoDetalle = () => {
 
   return (
     <Container className="py-5">
+      <ReservaModal
+        show={showReservaModal}
+        callback={(reserva) => handleResevar(reserva, setShowReservaModal)}
+        onHide={() => setShowReservaModal(false)}
+        evento={evento}
+      />
       <ConfirmationModal
         show={showConfirmation}
         callback={() =>
@@ -200,7 +209,7 @@ const EventoDetalle = () => {
                       <button
                         type="button"
                         className="btn btn-outline-info"
-                        onClick={() => handleResevar()}
+                        onClick={() => setShowReservaModal(true)}
                       >
                         Reservar
                       </button>
