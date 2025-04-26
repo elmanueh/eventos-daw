@@ -43,6 +43,8 @@ export const API_URLS = {
     `http://localhost:8080/api/eventos?mes=${mes}&año=${ano}`,
   EVENTOS_CANCELAR: (id) => `http://localhost:8080/api/eventos/${id}/ocupacion`,
   EVENTOS_GESTOR: (name) => `http://localhost:8080/api/eventos/gestor/${name}`,
+  EVENTOS_MODIFICAR: (id) =>
+    `http://localhost:8080/api/eventos/${id}`,
 
   // ----- RESERVAS -----
   RESERVAS_CREAR: 'http://localhost:8080/api/reservas',
@@ -73,9 +75,19 @@ export const CATEGORIA_EVENTOS = {
   OTROS: 'Otros'
 };
 
-// Campos obligatorios para modificar espacios
-export const ESPACIOS_OBLIGATORIOS = [
+// Campos para modificar espacios
+export const ESPACIO_MODIFICABLE = [
   'nombre',
   'descripcion',
   'capacidad'
+]
+
+// Campos para modificar eventos
+export const EVENTO_MODIFICABLE = [
+  'descripcion',
+  'numPlazas',
+  'categoria',
+  'fechaInicio',
+  'fechaFin',
+  'espacioFisico'
 ]

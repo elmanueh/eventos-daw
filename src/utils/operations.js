@@ -58,13 +58,21 @@ export const handleCrearEvento = async (evento, setShowEventoModal) => {
   }
 }
 
-export const handleEditEvento = async () => {
-  // TODO: Implementar la lógica para editar el evento
-  console.log('Editando evento...')
+export const handleEditEvento = async (id, modificados, setShowEventoModal) => {
+  console.log('Editando evento...', modificados)
+
+  try {
+    await fetchPatch(API_URLS.EVENTOS_MODIFICAR(id), modificados)
+    setShowEventoModal(false)
+    window.location.reload()
+  } catch (error) {
+    console.error('Error al crear el espacio:', error)
+  }
 }
 
 export const handleDesactivarEvento = async (id, setShowConfirmation) => {
   console.log('Desactivando evento...')
+  
   try {
     await fetchPut(API_URLS.EVENTOS_CANCELAR(id))
     setShowConfirmation(false)

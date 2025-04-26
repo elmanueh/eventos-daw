@@ -39,6 +39,7 @@ export default function EventoDetalle() {
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showReservaModal, setShowReservaModal] = useState(false)
+  const [showEventoModal, setShowEventoModal] = useState(false)
 
   const status = evento.cancelado ? ESTADOS.CERRADO : ESTADOS.ACTIVO
 
@@ -69,6 +70,14 @@ export default function EventoDetalle() {
 
   return (
     <Container className="p-0">
+      <EventoModal
+        show={showEventoModal}
+        callback={(modificados) =>
+          handleEditEvento(evento.idEvento, modificados, setShowEventoModal)
+        }
+        onHide={() => setShowEventoModal(false)}
+        evento={evento}
+      />
       <ReservaModal
         show={showReservaModal}
         callback={(reserva) => handleResevar(reserva, setShowReservaModal)}
@@ -191,7 +200,7 @@ export default function EventoDetalle() {
                         <button
                           type="button"
                           className="btn btn-outline-primary"
-                          onClick={() => handleEditEvento()}
+                          onClick={() => setShowEventoModal(true)}
                         >
                           Editar
                         </button>

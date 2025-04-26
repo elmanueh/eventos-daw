@@ -37,7 +37,6 @@ export default function Espacios() {
       setFechaInicio('')
       setFechaFin('')
       setCapacidad('')
-      console.log(fechaInicio)
     } catch (error) {
       console.error('Error al cargar los espacios:', error)
       showMessageError('Error al cargar los espacios.')

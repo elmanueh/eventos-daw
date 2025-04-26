@@ -1,4 +1,4 @@
-import { ESPACIOS_OBLIGATORIOS } from '@/configs/constant'
+import { ESPACIO_MODIFICABLE } from '@/configs/constant'
 import { AuthContext } from '@context/AuthContext'
 import { useContext, useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
@@ -6,7 +6,6 @@ import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 
 export default function EspacioModal({ show, callback, onHide, espacio }) {
-  console.log('EspacioModal', espacio)
   const { user } = useContext(AuthContext)
 
   const [formData, setFormData] = useState({
@@ -58,14 +57,12 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
       return
     }
 
-    const camposObligatorios = ['nombre', 'capacidad', 'descripcion']
-
     setErrorMessage('')
 
     const cambios = Object.fromEntries(
-      ESPACIOS_OBLIGATORIOS
-        .filter((campo) => !espacio || formData[campo] !== espacio[campo])
-        .map((campo) => [campo, formData[campo]])
+      ESPACIO_MODIFICABLE.filter(
+        (campo) => !espacio || formData[campo] !== espacio[campo]
+      ).map((campo) => [campo, formData[campo]])
     )
 
     callback(cambios)
@@ -75,7 +72,7 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header>
         <Modal.Title className="text-primary fw-bold">
-          {espacio ? 'Modificar espacio físico' : 'Crear espacio físico'}
+          {espacio ? 'Editar espacio físico' : 'Crear espacio físico'}
         </Modal.Title>
       </Modal.Header>
 
@@ -183,7 +180,7 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
           Cancelar
         </Button>
         <Button variant="primary" onClick={espacio ? handleEdit : handleSubmit}>
-          {espacio ? 'Modificar' : 'Crear'}
+          {espacio ? 'Editar' : 'Crear'}
         </Button>
       </Modal.Footer>
     </Modal>

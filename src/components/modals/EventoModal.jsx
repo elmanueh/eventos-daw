@@ -1,4 +1,9 @@
-import { API_URLS, CATEGORIA_EVENTOS, ESTADOS } from '@/configs/constant'
+import {
+  API_URLS,
+  CATEGORIA_EVENTOS,
+  ESTADOS,
+  EVENTO_MODIFICABLE
+} from '@/configs/constant'
 import { fetchGet } from '@/utils/fetchGet'
 import { AuthContext } from '@context/AuthContext'
 import { useContext, useEffect, useState } from 'react'
@@ -6,7 +11,13 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 
-export default function EventoModal({ show, callback, onHide, espacioFisico }) {
+export default function EventoModal({
+  show,
+  callback,
+  onHide,
+  espacioFisico,
+  evento
+}) {
   const { user } = useContext(AuthContext)
 
   const [formData, setFormData] = useState({
@@ -19,6 +30,15 @@ export default function EventoModal({ show, callback, onHide, espacioFisico }) {
     fechaFin: '',
     espacioFisico: espacioFisico ? espacioFisico.id : ''
   })
+
+  useEffect(() => {
+    if (evento) {
+      const { idEvento, ...eventoSinId } = evento
+      setFormData({
+        ...eventoSinId
+      })
+    }
+  }, [evento])
 
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -34,7 +54,8 @@ export default function EventoModal({ show, callback, onHide, espacioFisico }) {
       !formData.numPlazas ||
       !formData.categoria ||
       !formData.fechaInicio ||
-      !formData.fechaFin
+      !formData.fechaFin ||
+      !formData.espacioFisico
     ) {
       setErrorMessage('Por favor, completa todos los campos obligatorios.')
       return
@@ -42,6 +63,29 @@ export default function EventoModal({ show, callback, onHide, espacioFisico }) {
 
     setErrorMessage('')
     callback(formData)
+  }
+
+  const handleEdit = () => {
+    if (
+      !formData.descripcion ||
+      !formData.numPlazas ||
+      !formData.espacioFisico ||
+      !formData.fechaInicio ||
+      !formData.fechaFin
+    ) {
+      setErrorMessage('Por favor, completa todos los campos obligatorios.')
+      return
+    }
+
+    setErrorMessage('')
+
+    const cambios = Object.fromEntries(
+      EVENTO_MODIFICABLE.filter(
+        (campo) => !evento || formData[campo] !== evento[campo]
+      ).map((campo) => [campo, formData[campo]])
+    )
+
+    callback(cambios)
   }
 
   const [espaciosList, setEspaciosList] = useState([])
@@ -64,7 +108,9 @@ export default function EventoModal({ show, callback, onHide, espacioFisico }) {
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header>
-        <Modal.Title className="text-primary fw-bold">Crear evento</Modal.Title>
+        <Modal.Title className="text-primary fw-bold">
+          {evento ? 'Editar evento' : 'Crear evento'}
+        </Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -98,13 +144,18 @@ export default function EventoModal({ show, callback, onHide, espacioFisico }) {
 
           <Form.Group className="mb-3" controlId="formNombre">
             <Form.Label>Nombre del evento</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Ej. Concierto de Rock"
-              name="nombre"
-              value={formData.nombre}
-              onChange={handleChange}
-            />
+            {evento ? (
+              <Form.Control type="text" value={formData.nombre} readOnly />
+            ) : (
+              <Form.Control
+                type="text"
+                placeholder="Ej. Concierto de Rock"
+                name="nombre"
+                value={formData.nombre}
+                onChange={handleChange}
+                required
+              />
+            )}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formNumPlazas">
@@ -120,18 +171,22 @@ export default function EventoModal({ show, callback, onHide, espacioFisico }) {
 
           <Form.Group className="mb-3" controlId="formCategoria">
             <Form.Label>Categoría</Form.Label>
-            <Form.Select
-              name="categoria"
-              value={formData.categoria}
-              onChange={handleChange}
-            >
-              <option value="">Selecciona una categoría</option>
-              {Object.entries(CATEGORIA_EVENTOS).map(([key, value]) => (
-                <option key={key} value={key}>
-                  {value}
-                </option>
-              ))}
-            </Form.Select>
+            {evento ? (
+              <Form.Control type="text" value={formData.categoria} readOnly />
+            ) : (
+              <Form.Select
+                name="categoria"
+                value={formData.categoria}
+                onChange={handleChange}
+              >
+                <option value="">Selecciona una categoría</option>
+                {Object.entries(CATEGORIA_EVENTOS).map(([key, value]) => (
+                  <option key={key} value={key}>
+                    {value}
+                  </option>
+                ))}
+              </Form.Select>
+            )}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formFechaInicio">
@@ -175,8 +230,8 @@ export default function EventoModal({ show, callback, onHide, espacioFisico }) {
         <Button variant="secondary" onClick={onHide}>
           Cancelar
         </Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          Crear
+        <Button variant="primary" onClick={evento ? handleEdit : handleSubmit}>
+          {evento ? 'Editar' : 'Crear'}
         </Button>
       </Modal.Footer>
     </Modal>

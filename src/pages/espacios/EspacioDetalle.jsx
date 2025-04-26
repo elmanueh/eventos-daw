@@ -58,7 +58,9 @@ export default function EspacioDetalle() {
     <Container className="p-0">
       <EspacioModal
         show={showEspacioModal}
-        callback={(modificados) => handleEditEspacio(espacio.id, modificados, setShowEspacioModal)}
+        callback={(modificados) =>
+          handleEditEspacio(espacio.id, modificados, setShowEspacioModal)
+        }
         onHide={() => setShowEspacioModal(false)}
         espacio={espacio}
       />

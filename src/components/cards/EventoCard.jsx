@@ -1,15 +1,34 @@
-import { ESTADOS, NAV_ROUTES, TARJETA_TIPOS } from '@/configs/constant'
+import {
+  API_URLS,
+  ESTADOS,
+  NAV_ROUTES,
+  TARJETA_TIPOS
+} from '@/configs/constant'
+import { fetchGet } from '@/utils/fetchGet'
 import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
+import EventoModal from '@components/modals/EventoModal'
 import { useState } from 'react'
 import './card.css'
 
 export default function EventoCard({ evento, visible }) {
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const [showEventoModal, setShowEventoModal] = useState(false)
+
+  const [eventoDet, setEventoDet] = useState(null)
+
   const status = evento.cancelado ? ESTADOS.CERRADO : ESTADOS.ACTIVO
 
   return (
     <div>
+      <EventoModal
+        show={showEventoModal}
+        callback={(modificados) =>
+          handleEditEvento(evento.id, modificados, setShowEventoModal)
+        }
+        onHide={() => setShowEventoModal(false)}
+        evento={eventoDet}
+      />
       <ConfirmationModal
         show={showConfirmation}
         callback={() => handleDesactivarEvento(evento.id, setShowConfirmation)}
@@ -55,7 +74,11 @@ export default function EventoCard({ evento, visible }) {
           <button
             type="button"
             className="btn btn-outline-primary"
-            onClick={() => handleEditEvento()}
+            onClick={async () => {
+              const data = await fetchGet(API_URLS.EVENTOS_DETALLE(evento.id))
+              setEventoDet(data)
+              setShowEventoModal(true)
+            }}
           >
             Editar
           </button>
