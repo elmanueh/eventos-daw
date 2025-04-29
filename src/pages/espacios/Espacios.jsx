@@ -82,7 +82,7 @@ export default function Espacios() {
             <Col md={4} className="d-flex align-items-end">
               <Form.Check
                 type="checkbox"
-                label="Activo"
+                label="Mostrar Activos"
                 checked={estadoActivo}
                 onChange={(e) => setEstadoActivo(e.target.checked)}
               />

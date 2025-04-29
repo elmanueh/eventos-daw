@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
-const Eventos = () => {
+export default function Eventos() {
   const loaderData = useLoaderData()
   const [eventos] = useState(loaderData._embedded.eventoResumenList)
 
@@ -102,7 +102,7 @@ const Eventos = () => {
             <Col md={4} className="d-flex align-items-end">
               <Form.Check
                 type="checkbox"
-                label="Activos"
+                label="Mostrar Activos"
                 checked={soloNoCancelados}
                 onChange={(e) => setSoloNoCancelados(e.target.checked)}
               />
@@ -126,5 +126,3 @@ const Eventos = () => {
     </div>
   )
 }
-
-export default Eventos

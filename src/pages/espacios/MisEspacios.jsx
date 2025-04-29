@@ -2,8 +2,9 @@ import { TARJETA_TIPOS } from '@/configs/constant'
 import { handleCrearEspacio } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
 import EspacioModal from '@components/modals/EspacioModal'
-import { useState } from 'react'
-import { Button, Container } from 'react-bootstrap'
+
+import { useMemo, useState } from 'react'
+import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function MisEspacios() {
@@ -11,12 +12,41 @@ export default function MisEspacios() {
   const initialEspacios = useLoaderData().espacio.map(
     (espacio) => espacio.espacioDTO
   )
-  const [espacios, setEspacios] = useState(initialEspacios)
+  const [espacios] = useState(initialEspacios)
 
-  const espaciosActivos = espacios.filter(
+  const [filtroNombre, setFiltroNombre] = useState('')
+  const [filtroDescripcion, setFiltroDescripcion] = useState('')
+  const [filtroCapacidad, setFiltroCapacidad] = useState('')
+  const [mostrarActivos, setMostrarActivos] = useState(true)
+  const [mostrarCerrados, setMostrarCerrados] = useState(true)
+  const [mostrarFiltros, setMostrarFiltros] = useState(false)
+
+  const resetFiltros = () => {
+    setFiltroNombre('')
+    setFiltroDescripcion('')
+    setFiltroCapacidad('')
+    setMostrarActivos(true)
+    setMostrarCerrados(true)
+  }
+
+  const espaciosFiltrados = useMemo(() => {
+    return espacios.filter((espacio) => {
+      const nombreMatch = espacio.nombre
+        .toLowerCase()
+        .includes(filtroNombre.toLowerCase())
+      const descripcionMatch = espacio.descripcion
+        ?.toLowerCase()
+        .includes(filtroDescripcion.toLowerCase())
+      const capacidadMatch =
+        filtroCapacidad === '' || espacio.capacidad >= parseInt(filtroCapacidad)
+      return nombreMatch && descripcionMatch && capacidadMatch
+    })
+  }, [espacios, filtroNombre, filtroDescripcion, filtroCapacidad])
+
+  const espaciosActivos = espaciosFiltrados.filter(
     (espacio) => espacio.estado === 'ACTIVO'
   )
-  const espaciosCerrados = espacios.filter(
+  const espaciosCerrados = espaciosFiltrados.filter(
     (espacio) => espacio.estado === 'CERRADO_TEMPORALMENTE'
   )
 
@@ -27,31 +57,106 @@ export default function MisEspacios() {
         callback={(espacio) => handleCrearEspacio(espacio, setShowEspacioModal)}
         onHide={() => setShowEspacioModal(false)}
       />
+
       <h1 className="text-center text-primary fw-bold">Mis Espacios</h1>
 
-      <Button
-        variant="primary"
-        className="ms-auto"
-        onClick={() => setShowEspacioModal(true)}
-      >
-        Crear Espacio
-      </Button>
+      <Row className="d-flex justify-content-between">
+        <Col xs="auto">
+          <i
+            className={`bi bi-filter fs-1 me-2 ${
+              mostrarFiltros ? 'text-primary' : 'text-secondary'
+            }`}
+            role="button"
+            title={mostrarFiltros ? 'Ocultar filtros' : 'Mostrar filtros'}
+            onClick={() => setMostrarFiltros((prev) => !prev)}
+          ></i>
+        </Col>
+        <Col xs="auto">
+          <Button onClick={() => setShowEventoModal(true)}>Crear Evento</Button>
+        </Col>
+      </Row>
 
-      <h3 id="titulo1-groupCards">Activos</h3>
-      <GroupCards
-        objetos={espaciosActivos}
-        tipo={TARJETA_TIPOS.ESPACIOS}
-        visible={true}
-        id="titulo1-groupCards"
-      ></GroupCards>
+      {mostrarFiltros && (
+        <Form className="mt-3 border rounded p-3">
+          <Row className="align-items-end g-3">
+            <Col md={4}>
+              <Form.Label>Nombre</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Nombre del espacio"
+                value={filtroNombre}
+                onChange={(e) => setFiltroNombre(e.target.value)}
+              />
+            </Col>
+            <Col md={4}>
+              <Form.Label>Descripción</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Descripción"
+                value={filtroDescripcion}
+                onChange={(e) => setFiltroDescripcion(e.target.value)}
+              />
+            </Col>
+            <Col md={4}>
+              <Form.Label>Capacidad</Form.Label>
+              <Form.Control
+                type="number"
+                min="0"
+                placeholder="Ej: 30"
+                value={filtroCapacidad}
+                onChange={(e) => setFiltroCapacidad(e.target.value)}
+              />
+            </Col>
 
-      <h3 id="titulo2-groupCards">Cerrados Temporalmente</h3>
-      <GroupCards
-        objetos={espaciosCerrados}
-        tipo={TARJETA_TIPOS.ESPACIOS}
-        visible={true}
-        id="titulo2-groupCards"
-      ></GroupCards>
+            <Col xs="auto">
+              <Form.Check
+                type="switch"
+                label="Mostrar Activos"
+                checked={mostrarActivos}
+                onChange={(e) => setMostrarActivos(e.target.checked)}
+              />
+            </Col>
+            <Col xs="auto">
+              <Form.Check
+                type="switch"
+                label="Mostrar Cerrados"
+                checked={mostrarCerrados}
+                onChange={(e) => setMostrarCerrados(e.target.checked)}
+              />
+            </Col>
+
+            <Col md="auto" className="ms-auto">
+              <Button variant="outline-primary" onClick={resetFiltros}>
+                Quitar filtros
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      )}
+
+      {mostrarActivos && (
+        <>
+          <h3 id="titulo1-groupCards">Activos</h3>
+          <GroupCards
+            objetos={espaciosActivos}
+            tipo={TARJETA_TIPOS.ESPACIOS}
+            visible={true}
+            id="titulo1-groupCards"
+          />
+        </>
+      )}
+
+      {mostrarCerrados && (
+        <>
+          <h3 id="titulo2-groupCards">Cerrados Temporalmente</h3>
+          <GroupCards
+            objetos={espaciosCerrados}
+            tipo={TARJETA_TIPOS.ESPACIOS}
+            visible={true}
+            id="titulo2-groupCards"
+          />
+        </>
+      )}
     </Container>
   )
 }
