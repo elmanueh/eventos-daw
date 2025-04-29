@@ -18,3 +18,5 @@
 - Poner filtros en Mis, para facilitar 
 
 - Tratar desde front cuando un evento ha sido finalizado o está en curso (igual para reservas)
+
+- Poner número de plazas disponibles en un evento. (recuperas todas las reservas de un evento, sumas las plazas, y se lo resta)
