@@ -1,59 +1,57 @@
-import { API_URLS, TARJETA_TIPOS } from '@/configs/constant'
-import { hideMessageError, showMessageError } from '@/utils/error'
-import { fetchGet } from '@/utils/fetchGet'
+import { TARJETA_TIPOS } from '@/configs/constant'
 import GroupCards from '@components/GroupCards'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 const Eventos = () => {
   const loaderData = useLoaderData()
-  const [eventos, setEventos] = useState(loaderData._embedded.eventoResumenList)
+  const [eventos] = useState(loaderData._embedded.eventoResumenList)
 
-  const [isEventosLoaded, setIsEventosLoaded] = useState(true)
+  const [filtroNombre, setFiltroNombre] = useState('')
+  const [filtroDescripcion, setFiltroDescripcion] = useState('')
+  const [soloNoCancelados, setSoloNoCancelados] = useState(false)
+  const [plazasMinimas, setPlazasMinimas] = useState('')
+  const [fechaMin, setFechaMin] = useState('')
 
-  const [mesAnio, setMesAnio] = useState('')
-
-  const updateEventos = async () => {
-    if (isEventosLoaded) {
-      setMesAnio('')
-      return hideMessageError()
-    }
-
-    try {
-      const data = await fetchGet(API_URLS.EVENTOS_LISTAR)
-      setEventos(data._embedded?.eventoResumenList || [])
-
-      hideMessageError()
-
-      setIsEventosLoaded(true)
-      setMesAnio('')
-    } catch (error) {
-      console.error('Error al cargar los espacios filtrados:', error)
-      showMessageError('Error al cargar los espacios filtrados.')
-    }
+  const resetFiltros = () => {
+    setFiltroNombre('')
+    setFiltroDescripcion('')
+    setSoloNoCancelados(false)
+    setPlazasMinimas('')
+    setFechaMin('')
   }
 
-  const loadEventos = async (e) => {
-    e.preventDefault()
+  const eventosFiltrados = useMemo(() => {
+    return eventos.filter((evento) => {
+      const nombreMatch = evento.nombre
+        ?.toLowerCase()
+        .includes(filtroNombre.toLowerCase())
+      const descripcionMatch = evento.descripcion
+        ?.toLowerCase()
+        .includes(filtroDescripcion.toLowerCase())
+      const canceladoMatch = !soloNoCancelados || !evento.cancelado
+      const plazasMatch =
+        plazasMinimas === '' || evento.numPlazas >= parseInt(plazasMinimas)
+      const fechaMatch =
+        fechaMin === '' || new Date(evento.fechaInicio) >= new Date(fechaMin)
 
-    if (mesAnio === '') {
-      return showMessageError('El mes y año son obligatorios.')
-    }
-
-    try {
-      const data = await fetchGet(
-        API_URLS.EVENTOS_FILTRADOS(mesAnio.split('-')[1], mesAnio.split('-')[0])
+      return (
+        nombreMatch &&
+        descripcionMatch &&
+        canceladoMatch &&
+        plazasMatch &&
+        fechaMatch
       )
-      setEventos(data._embedded?.eventoResumenList || [])
-      hideMessageError()
-
-      setIsEventosLoaded(false)
-    } catch (error) {
-      console.error('Error al cargar los espacios filtrados:', error)
-      showMessageError('Error al cargar los espacios filtrados.')
-    }
-  }
+    })
+  }, [
+    filtroNombre,
+    filtroDescripcion,
+    soloNoCancelados,
+    plazasMinimas,
+    fechaMin,
+    eventos
+  ])
 
   return (
     <div className="d-flex flex-column align-items-center">
@@ -63,32 +61,54 @@ const Eventos = () => {
         </h1>
       </header>
 
-      <section>
-        <Form onSubmit={loadEventos}>
-          <Row className="justify-content-start align-items-end g-3">
-            <Col xs="auto">
-              <Form.Label htmlFor="mesAnio" className="mb-1">
-                Mes y año
-              </Form.Label>
+      <section className="w-100 px-3">
+        <Form>
+          <Row className="g-3">
+            <Col md={4}>
+              <Form.Label>Nombre</Form.Label>
               <Form.Control
-                type="month"
-                id="mesAnio"
-                name="mesAnio"
-                value={mesAnio}
-                onChange={(e) => setMesAnio(e.target.value)}
+                type="text"
+                value={filtroNombre}
+                onChange={(e) => setFiltroNombre(e.target.value)}
+                placeholder="Nombre del evento"
               />
             </Col>
-
-            {/* Botón */}
-            <Col xs="auto">
-              <Button variant="primary" type="submit">
-                Buscar eventos
-              </Button>
+            <Col md={4}>
+              <Form.Label>Descripción</Form.Label>
+              <Form.Control
+                type="text"
+                value={filtroDescripcion}
+                onChange={(e) => setFiltroDescripcion(e.target.value)}
+                placeholder="Descripción del evento"
+              />
             </Col>
-
-            {/* Botón */}
-            <Col xs="auto">
-              <Button variant="outline-primary" onClick={updateEventos}>
+            <Col md={4}>
+              <Form.Label>Número de plazas</Form.Label>
+              <Form.Control
+                type="number"
+                value={plazasMinimas}
+                onChange={(e) => setPlazasMinimas(e.target.value)}
+                min="0"
+              />
+            </Col>
+            <Col md={4}>
+              <Form.Label>Fecha de inicio</Form.Label>
+              <Form.Control
+                type="datetime-local"
+                value={fechaMin}
+                onChange={(e) => setFechaMin(e.target.value)}
+              />
+            </Col>
+            <Col md={4} className="d-flex align-items-end">
+              <Form.Check
+                type="checkbox"
+                label="Activos"
+                checked={soloNoCancelados}
+                onChange={(e) => setSoloNoCancelados(e.target.checked)}
+              />
+            </Col>
+            <Col md="auto" className="d-flex align-items-end ms-auto">
+              <Button variant="outline-primary" onClick={resetFiltros}>
                 Quitar filtros
               </Button>
             </Col>
@@ -96,18 +116,13 @@ const Eventos = () => {
         </Form>
       </section>
 
-      <section className="mt-3">
-        <div
-          id="errorMessage"
-          className="alert alert-danger d-inline-block d-none"
+      <section className="mt-3 w-100 px-3">
+        <GroupCards
+          objetos={eventosFiltrados}
+          tipo={TARJETA_TIPOS.EVENTOS}
+          id={'titulo1-groupCards'}
         />
       </section>
-
-      <GroupCards
-        objetos={eventos}
-        tipo={TARJETA_TIPOS.EVENTOS}
-        id={'titulo1-groupCards'}
-      ></GroupCards>
     </div>
   )
 }
