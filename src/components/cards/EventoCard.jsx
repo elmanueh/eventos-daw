@@ -55,7 +55,7 @@ export default function EventoCard({ evento, visible }) {
         <div className="my-card-info">
           <span>
             <i className="bi bi-people-fill my-card-capacity" />
-            {evento.numPlazas} personas
+            {evento.numPlazasDisponibles} plazas
           </span>
           {!evento.cancelado && (
             <span>

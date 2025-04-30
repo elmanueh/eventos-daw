@@ -139,24 +139,24 @@ export default function MisEspacios() {
 
       {mostrarActivos && (
         <>
-          <h3 id="titulo1-groupCards">Activos</h3>
+          <h3 id="espacios-activos">Activos</h3>
           <GroupCards
             objetos={espaciosActivos}
             tipo={TARJETA_TIPOS.ESPACIOS}
             visible={true}
-            id="titulo1-groupCards"
+            id="espacios-activos"
           />
         </>
       )}
 
       {mostrarCerrados && (
         <>
-          <h3 id="titulo2-groupCards">Cerrados Temporalmente</h3>
+          <h3 id="espacios-cerrados">Cerrados Temporalmente</h3>
           <GroupCards
             objetos={espaciosCerrados}
             tipo={TARJETA_TIPOS.ESPACIOS}
             visible={true}
-            id="titulo2-groupCards"
+            id="espacios-cerrados"
           />
         </>
       )}
