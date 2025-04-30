@@ -39,8 +39,6 @@ export const API_URLS = {
   EVENTOS_CREAR: 'http://localhost:8080/api/eventos',
   EVENTOS_LISTAR: 'http://localhost:8080/api/eventos',
   EVENTOS_DETALLE: (id) => `http://localhost:8080/api/eventos/${id}`,
-  EVENTOS_FILTRADOS: (mes, ano) =>
-    `http://localhost:8080/api/eventos?mes=${mes}&año=${ano}`,
   EVENTOS_CANCELAR: (id) => `http://localhost:8080/api/eventos/${id}/ocupacion`,
   EVENTOS_GESTOR: (name) => `http://localhost:8080/api/eventos/gestor/${name}`,
   EVENTOS_MODIFICAR: (id) =>
@@ -63,7 +61,14 @@ export const TARJETA_TIPOS = {
 export const ESTADOS = {
   ACTIVO: 'ACTIVO',
   CERRADO_TEMPORALMENTE: 'CERRADO_TEMPORALMENTE',
-  CERRADO: 'CERRADO'
+  CERRADO: 'CERRADO',
+
+  EN_CURSO: 'EN CURSO',
+  FINALIZADO: 'FINALIZADO',
+  CANCELADO: 'CANCELADO',
+  
+  ACTIVA: 'ACTIVA',
+  CANCELADA: 'CANCELADA',
 }
 
 // Categorías de eventos

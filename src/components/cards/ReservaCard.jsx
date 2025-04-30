@@ -1,4 +1,4 @@
-import { API_URLS, NAV_ROUTES } from '@/configs/constant'
+import { API_URLS, ESTADOS, NAV_ROUTES } from '@/configs/constant'
 import { fetchGet } from '@/utils/fetchGet'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
@@ -11,7 +11,7 @@ export default function ReservaCard({ reserva }) {
     evento: null,
     espacio: null
   })
-  const status = reserva.cancelada ? 'CERRADO' : 'ACTIVO'
+  const status = reserva.cancelada ? ESTADOS.CANCELADA : ESTADOS.ACTIVA
 
   useEffect(() => {
     const getInfo = async () => {
@@ -48,7 +48,7 @@ export default function ReservaCard({ reserva }) {
         {info.evento && (
           <h2 title={info.evento.nombre} className="text-primary">
             <a
-              href={NAV_ROUTES.EVENTOS_DET(info.evento.id)}
+              href={NAV_ROUTES.EVENTOS_DET(info.evento.idEvento)}
               className="text-decoration-none"
             >
               {info.evento.nombre}
@@ -91,7 +91,7 @@ export default function ReservaCard({ reserva }) {
         )}
         <span>
           <i className="bi bi-people-fill my-card-capacity" />
-          {reserva.plazasReservadas} personas
+          {reserva.plazasReservadas} plazas
         </span>
       </div>
     </div>

@@ -1,9 +1,5 @@
-import {
-  API_URLS,
-  ESTADOS,
-  NAV_ROUTES,
-  TARJETA_TIPOS
-} from '@/configs/constant'
+import { API_URLS, NAV_ROUTES, TARJETA_TIPOS } from '@/configs/constant'
+import { getEstadoEvento } from '@/utils/eventoHelper'
 import { fetchGet } from '@/utils/fetchGet'
 import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
@@ -17,7 +13,7 @@ export default function EventoCard({ evento, visible }) {
 
   const [eventoDet, setEventoDet] = useState(null)
 
-  const status = evento.cancelado ? ESTADOS.CERRADO : ESTADOS.ACTIVO
+  const status = getEstadoEvento(evento)
 
   return (
     <div>
@@ -45,7 +41,11 @@ export default function EventoCard({ evento, visible }) {
       >
         <div className="my-card-header">
           <h2 title={evento.nombre}>{evento.nombre}</h2>
-          <span className={`my-card-status ${status.toLocaleLowerCase()}`}>
+          <span
+            className={`my-card-status ${status
+              .toLowerCase()
+              .replace(' ', '-')}`}
+          >
             {status}
           </span>
         </div>

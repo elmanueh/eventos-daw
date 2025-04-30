@@ -64,6 +64,7 @@
 .my-card-time,
 .my-card-espacio {
   margin-right: 5px;
+  color: var(--bs-primary);
 }
 
 .my-card-status {
@@ -78,7 +79,32 @@
   color: var(--bs-success);
 }
 
+.my-card-status.activa {
+  background-color: rgba(var(--bs-success-rgb), 0.25);
+  color: var(--bs-success);
+}
+
 .my-card-status.cerrado {
+  background-color: rgba(var(--bs-danger-rgb), 0.25);
+  color: var(--bs-danger);
+}
+
+.my-card-status.en-curso {
+  background-color: rgba(var(--bs-primary-rgb), 0.25);
+  color: var(--bs-primary);
+}
+
+.my-card-status.finalizado {
+  background-color: rgba(var(--bs-secondary-rgb), 0.25);
+  color: var(--bs-secondary);
+}
+
+.my-card-status.cancelado {
+  background-color: rgba(var(--bs-danger-rgb), 0.25);
+  color: var(--bs-danger);
+}
+
+.my-card-status.cancelada {
   background-color: rgba(var(--bs-danger-rgb), 0.25);
   color: var(--bs-danger);
 }

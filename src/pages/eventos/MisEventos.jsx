@@ -15,14 +15,18 @@ export default function MisEventos() {
   const [filtroNombre, setFiltroNombre] = useState('')
   const [filtroDescripcion, setFiltroDescripcion] = useState('')
   const [filtroPlazas, setFiltroPlazas] = useState('')
-  const [mostrarActivos, setMostrarActivos] = useState(true)
   const [mostrarCancelados, setMostrarCancelados] = useState(true)
+  const [mostrarEnCurso, setMostrarEnCurso] = useState(true)
+  const [mostrarProximos, setMostrarProximos] = useState(true)
+  const [mostrarFinalizados, setMostrarFinalizados] = useState(true)
 
   const resetFiltros = () => {
     setFiltroNombre('')
     setFiltroDescripcion('')
     setFiltroPlazas('')
-    setMostrarActivos(true)
+    setMostrarEnCurso(true)
+    setMostrarProximos(true)
+    setMostrarFinalizados(true)
     setMostrarCancelados(true)
   }
 
@@ -36,26 +40,29 @@ export default function MisEventos() {
         .includes(filtroDescripcion.toLowerCase())
       const cumplePlazas =
         filtroPlazas === '' || evento.numPlazas >= parseInt(filtroPlazas)
-      const esActivo = !evento.cancelado
-      const esCancelado = evento.cancelado
 
-      return (
-        cumpleNombre &&
-        cumpleDescripcion &&
-        cumplePlazas &&
-        ((esActivo && mostrarActivos) || (esCancelado && mostrarCancelados))
-      )
+      return cumpleNombre && cumpleDescripcion && cumplePlazas
     })
-  }, [
-    eventos,
-    filtroNombre,
-    filtroDescripcion,
-    filtroPlazas,
-    mostrarActivos,
-    mostrarCancelados
-  ])
+  }, [eventos, filtroNombre, filtroDescripcion, filtroPlazas])
 
-  const eventosActivos = eventosFiltrados.filter((e) => !e.cancelado)
+  const ahora = new Date()
+
+  const eventosEnCurso = eventosFiltrados.filter((e) => {
+    const inicio = new Date(e.fechaInicio)
+    const fin = new Date(e.fechaFin)
+    return !e.cancelado && inicio <= ahora && ahora <= fin
+  })
+
+  const eventosFinalizados = eventosFiltrados.filter((e) => {
+    const fin = new Date(e.fechaFin)
+    return !e.cancelado && fin < ahora
+  })
+
+  const eventosActivos = eventosFiltrados.filter((e) => {
+    const inicio = new Date(e.fechaInicio)
+    return !e.cancelado && inicio > ahora
+  })
+
   const eventosCancelados = eventosFiltrados.filter((e) => e.cancelado)
 
   return (
@@ -115,9 +122,25 @@ export default function MisEventos() {
             <Col xs="auto">
               <Form.Check
                 type="switch"
-                label="Mostrar Activos"
-                checked={mostrarActivos}
-                onChange={(e) => setMostrarActivos(e.target.checked)}
+                label="Mostrar En curso"
+                checked={mostrarEnCurso}
+                onChange={(e) => setMostrarEnCurso(e.target.checked)}
+              />
+            </Col>
+            <Col xs="auto">
+              <Form.Check
+                type="switch"
+                label="Mostrar Próximos"
+                checked={mostrarProximos}
+                onChange={(e) => setMostrarProximos(e.target.checked)}
+              />
+            </Col>
+            <Col xs="auto">
+              <Form.Check
+                type="switch"
+                label="Mostrar Finalizados"
+                checked={mostrarFinalizados}
+                onChange={(e) => setMostrarFinalizados(e.target.checked)}
               />
             </Col>
             <Col xs="auto">
@@ -128,6 +151,7 @@ export default function MisEventos() {
                 onChange={(e) => setMostrarCancelados(e.target.checked)}
               />
             </Col>
+
             <Col md="auto" className="ms-auto">
               <Button variant="outline-primary" onClick={resetFiltros}>
                 Quitar filtros
@@ -137,25 +161,50 @@ export default function MisEventos() {
         </Form>
       )}
 
-      {mostrarActivos && (
+      {mostrarEnCurso && eventosEnCurso.length > 0 && (
         <>
-          <h3 id="titulo1-groupCards">Activos</h3>
+          <h3 id="eventos-curso">En curso</h3>
+          <GroupCards
+            objetos={eventosEnCurso}
+            tipo={TARJETA_TIPOS.EVENTOS}
+            visible={true}
+            id="eventos-curso"
+          />
+        </>
+      )}
+
+      {mostrarProximos && eventosActivos.length > 0 && (
+        <>
+          <h3 id="eventos-activos">Próximos</h3>
           <GroupCards
             objetos={eventosActivos}
             tipo={TARJETA_TIPOS.EVENTOS}
             visible={true}
-            id={'titulo1-groupCards'}
+            id="eventos-activos"
           />
         </>
       )}
-      {mostrarCancelados && (
+
+      {mostrarFinalizados && eventosFinalizados.length > 0 && (
         <>
-          <h3 id="titulo2-groupCards">Cancelados</h3>
+          <h3 id="eventos-finalizados">Finalizados</h3>
+          <GroupCards
+            objetos={eventosFinalizados}
+            tipo={TARJETA_TIPOS.EVENTOS}
+            visible={true}
+            id="eventos-finalizados"
+          />
+        </>
+      )}
+
+      {mostrarCancelados && eventosCancelados.length > 0 && (
+        <>
+          <h3 id="eventos-cancelados">Cancelados</h3>
           <GroupCards
             objetos={eventosCancelados}
             tipo={TARJETA_TIPOS.EVENTOS}
             visible={true}
-            id={'titulo2-groupCards'}
+            id="eventos-cancelados"
           />
         </>
       )}

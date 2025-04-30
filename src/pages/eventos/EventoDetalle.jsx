@@ -1,10 +1,10 @@
 import {
   API_URLS,
   AUTH_ROLES,
-  ESTADOS,
   NAV_ROUTES,
   TARJETA_TIPOS
 } from '@/configs/constant'
+import { getEstadoColor, getEstadoEvento } from '@/utils/eventoHelper'
 import { fetchGet } from '@/utils/fetchGet'
 import {
   handleDesactivarEvento,
@@ -41,7 +41,8 @@ export default function EventoDetalle() {
   const [showReservaModal, setShowReservaModal] = useState(false)
   const [showEventoModal, setShowEventoModal] = useState(false)
 
-  const status = evento.cancelado ? ESTADOS.CERRADO : ESTADOS.ACTIVO
+  const status = getEstadoEvento(evento)
+  const colorStatus = getEstadoColor(status)
 
   const [espacio, setEspacio] = useState(null)
 
@@ -114,8 +115,8 @@ export default function EventoDetalle() {
                       {evento.nombre}
                     </Card.Title>
                     <Badge
-                      bg={evento.cancelado ? 'danger' : 'success'}
-                      text={evento.cancelado ? 'danger' : 'success'}
+                      bg={colorStatus}
+                      text={colorStatus}
                       className="fs-6 fw-medium bg-opacity-25 px-3 py-2 rounded-pill"
                     >
                       {status}
