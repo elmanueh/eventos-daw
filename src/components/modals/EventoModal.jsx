@@ -105,6 +105,41 @@ export default function EventoModal({
     fetchEspacios()
   }, [espacioFisico])
 
+  useEffect(() => {
+    const fetchEspacios = async () => {
+      const { fechaInicio, fechaFin, numPlazas } = formData
+
+      if (!fechaInicio && !fechaFin && !numPlazas) {
+        if (!espacioFisico) {
+          const data = await fetchGet(API_URLS.ESPACIOS_LISTAR)
+          setEspaciosList(
+            data.espacio
+              .map((espacio) => espacio.espacioDTO)
+              .filter((espacio) => espacio.estado === ESTADOS.ACTIVO)
+          )
+        }
+        return
+      }
+
+      if (!(fechaInicio && fechaFin && numPlazas)) {
+        return setEspaciosList([])
+      }
+
+      try {
+        const data = await fetchGet(
+          API_URLS.ESPACIOS_FILTRADOS(fechaInicio, fechaFin, numPlazas)
+        )
+        setEspaciosList(data.espacio.map((espacio) => espacio.espacioDTO))
+      } catch (error) {
+        console.error('Error al obtener espacios disponibles:', error)
+      }
+    }
+
+    if (!espacioFisico) {
+      fetchEspacios()
+    }
+  }, [formData.fechaInicio, formData.fechaFin, formData.numPlazas])
+
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header>

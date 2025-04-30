@@ -71,8 +71,11 @@ export default function MisEspacios() {
             onClick={() => setMostrarFiltros((prev) => !prev)}
           ></i>
         </Col>
+
         <Col xs="auto">
-          <Button onClick={() => setShowEventoModal(true)}>Crear Evento</Button>
+          <Button className="ms-auto" onClick={() => setShowEspacioModal(true)}>
+            Crear Espacio
+          </Button>
         </Col>
       </Row>
 
