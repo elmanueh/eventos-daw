@@ -56,7 +56,7 @@ export default function Eventos() {
   return (
     <div className="d-flex flex-column align-items-center">
       <header className="text-center">
-        <h1 className="text-primary fw-bold" id="titulo1-groupCards">
+        <h1 className="text-primary fw-bold" id="eventos">
           Eventos
         </h1>
       </header>
@@ -120,7 +120,7 @@ export default function Eventos() {
         <GroupCards
           objetos={eventosFiltrados}
           tipo={TARJETA_TIPOS.EVENTOS}
-          id={'titulo1-groupCards'}
+          id={'eventos'}
         />
       </section>
     </div>

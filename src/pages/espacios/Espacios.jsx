@@ -41,7 +41,7 @@ export default function Espacios() {
   return (
     <div className="d-flex flex-column gap-3 align-items-center">
       <header className="text-center">
-        <h1 className="text-primary fw-bold" id="titulo1-groupCards">
+        <h1 className="text-primary fw-bold" id="espacios">
           Espacios Físicos
         </h1>
       </header>
@@ -101,7 +101,7 @@ export default function Espacios() {
         <GroupCards
           objetos={espaciosFiltrados}
           tipo={TARJETA_TIPOS.ESPACIOS}
-          id={'titulo1-groupCards'}
+          id={'espacios'}
         />
       </section>
     </div>
