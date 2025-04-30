@@ -1,15 +1,18 @@
 import { TARJETA_TIPOS } from '@/configs/constant'
 import GroupCards from '@components/GroupCards'
-import { useState } from 'react'
 import { Container } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function MisReservas() {
-  const [showReservaModal, setShowReservaModal] = useState(false)
   const reservas = useLoaderData()._embedded.reservaResumenList
 
   const reservasActivas = reservas.filter((r) => !r.cancelada)
   const reservasCanceladas = reservas.filter((r) => r.cancelada)
+
+  const reservasFinalizadas = reservas.filter((r) => {
+    const fechaFin = new Date(r.fechaFin)
+    return fechaFin < new Date()
+  })
 
   return (
     <Container className="d-flex flex-column gap-3 p-0">
@@ -22,12 +25,27 @@ export default function MisReservas() {
         id={'reservas-activas'}
       ></GroupCards>
 
-      <h3 id="reservas-canceladas">Canceladas</h3>
-      <GroupCards
-        objetos={reservasCanceladas}
-        tipo={TARJETA_TIPOS.RESERVAS}
-        id={'reservas-canceladas'}
-      ></GroupCards>
+      {reservasCanceladas.length != 0 && (
+        <>
+          <h3 id="reservas-canceladas">Canceladas</h3>
+          <GroupCards
+            objetos={reservasCanceladas}
+            tipo={TARJETA_TIPOS.RESERVAS}
+            id={'reservas-canceladas'}
+          ></GroupCards>
+        </>
+      )}
+
+      {reservasFinalizadas.length != 0 && (
+        <>
+          <h3 id="reservas-finalizadas">Finalizadas</h3>
+          <GroupCards
+            objetos={reservasFinalizadas}
+            tipo={TARJETA_TIPOS.RESERVAS}
+            id={'reservas-finalizadas'}
+          ></GroupCards>
+        </>
+      )}
     </Container>
   )
 }

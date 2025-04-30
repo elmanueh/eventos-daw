@@ -69,6 +69,7 @@ export const ESTADOS = {
   
   ACTIVA: 'ACTIVA',
   CANCELADA: 'CANCELADA',
+  FINALIZADA: 'FINALIZADA',
 }
 
 // Categorías de eventos

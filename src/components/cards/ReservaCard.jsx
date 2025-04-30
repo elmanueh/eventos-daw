@@ -1,5 +1,6 @@
-import { API_URLS, ESTADOS, NAV_ROUTES } from '@/configs/constant'
+import { API_URLS, NAV_ROUTES } from '@/configs/constant'
 import { fetchGet } from '@/utils/fetchGet'
+import { getReservaStatus } from '@/utils/reservaHelper'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
 import { useEffect, useState } from 'react'
@@ -11,7 +12,8 @@ export default function ReservaCard({ reserva }) {
     evento: null,
     espacio: null
   })
-  const status = reserva.cancelada ? ESTADOS.CANCELADA : ESTADOS.ACTIVA
+
+  const status = getReservaStatus(reserva)
 
   useEffect(() => {
     const getInfo = async () => {
