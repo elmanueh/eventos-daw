@@ -19,28 +19,22 @@ export default function ConfirmationModal({
 
   return (
     <Modal show={show} onHide={onHide} backdrop={true}>
-      <Modal.Header closeButton>
-        <Modal.Title className="text-primary fw-bold">
-          {' '}
-          <i
-            className={`bi ${
-              status === ESTADOS.ACTIVO
-                ? 'bi-x-circle-fill'
-                : 'bi-check-circle-fill'
-            }`}
-          />{' '}
-          {title}
-        </Modal.Title>
+      <Modal.Header>
+        <Modal.Title className="text-primary fw-bold">{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p className="mb-3">{message}</p>
         <p className="mt-3">¿Estás seguro de que deseas continuar?</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
+        <Button variant="outline-secondary" onClick={onHide}>
           Cancelar
         </Button>
-        <Button variant="primary" onClick={callback}>
+        <Button
+          variant={status === ESTADOS.CERRADO ? 'success' : 'danger'}
+          className="text-white"
+          onClick={callback}
+        >
           Continuar
         </Button>
       </Modal.Footer>
