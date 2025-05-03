@@ -1,4 +1,9 @@
-import { API_URLS, NAV_ROUTES, TARJETA_TIPOS } from '@/configs/constant'
+import {
+  API_URLS,
+  ESTADOS,
+  NAV_ROUTES,
+  TARJETA_TIPOS
+} from '@/configs/constant'
 import { getEstadoEvento } from '@/utils/eventoHelper'
 import { fetchGet } from '@/utils/fetchGet'
 import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
@@ -69,7 +74,7 @@ export default function EventoCard({ evento, visible }) {
           )}
         </div>
       </div>
-      {visible && (
+      {visible && status == ESTADOS.ACTIVO && (
         <div className="my-card-buttons">
           <button
             type="button"

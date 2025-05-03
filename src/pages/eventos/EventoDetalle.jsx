@@ -1,6 +1,7 @@
 import {
   API_URLS,
   AUTH_ROLES,
+  ESTADOS,
   NAV_ROUTES,
   TARJETA_TIPOS
 } from '@/configs/constant'
@@ -203,7 +204,7 @@ export default function EventoDetalle() {
                   </div>
                 </div>
 
-                {(esMio || isUser) && (
+                {(esMio || isUser) && status == ESTADOS.ACTIVO && (
                   <div className="d-flex justify-content-end gap-2">
                     {esMio && (
                       <>
