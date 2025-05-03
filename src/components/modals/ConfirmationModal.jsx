@@ -14,8 +14,8 @@ export default function ConfirmationModal({
     tipo === TARJETA_TIPOS.ESPACIOS
       ? status === ESTADOS.ACTIVO
         ? 'Estás a punto de cerrar este espacio. Una vez cerrado, no estará disponible para la creación de nuevos eventos hasta que se vuelva a activar.'
-        : 'Estás a punto de activar este espacio. Una vez activado, estará disponible nuevamente para la creación de eventos en la plataforma.'
-      : 'Estás a punto de cancelar este evento. Una vez cancelado, no podrás volver a activarlo.'
+        : 'Estás a punto de activar este espacio. Una vez activado, estará disponible nuevamente para la creación de nuevos eventos.'
+      : 'Estás a punto de cancelar este evento. Una vez cancelado, no podrás volver a activarlo y se cancelarán todas las reservas asociadas.'
 
   return (
     <Modal show={show} onHide={onHide} backdrop={true}>

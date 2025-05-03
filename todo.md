@@ -17,5 +17,3 @@
 
 - En Espacios y Eventos, al filtrar de nuevo, debe cambiar el paginator a la page 1
 - ReservaModal: cuando intentas reservar mas de lo permitido, la interfaz no avisa
-- EventoCard: las plazas disponibles que salen, realmente salen las que hay reservadas
-- EspacioCard: si le das a desactivar espacio, te dice que el evento se va a cancelar

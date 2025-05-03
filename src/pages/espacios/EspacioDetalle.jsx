@@ -78,6 +78,7 @@ export default function EspacioDetalle() {
         onHide={() => setShowConfirmation(false)}
         title={espacio.nombre}
         status={status}
+        tipo={TARJETA_TIPOS.ESPACIOS}
       />
       <Row>
         <Col md={4} className="order-sm-2 order-md-1">
