@@ -109,7 +109,15 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
           <Form.Group className="mb-3" controlId="formDireccion">
             <Form.Label>Dirección</Form.Label>
             {espacio ? (
-              <Form.Control type="text" value={formData.direccion} readOnly />
+              <Form.Control
+                type="text"
+                value={formData.direccion}
+                readOnly
+                style={{
+                  pointerEvents: 'none',
+                  filter: 'brightness(0.70)'
+                }}
+              />
             ) : (
               <Form.Control
                 type="text"
@@ -127,7 +135,15 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
                 <Form.Label>Latitud (N/S)</Form.Label>
 
                 {espacio ? (
-                  <Form.Control type="text" value={formData.latitud} readOnly />
+                  <Form.Control
+                    type="text"
+                    value={formData.latitud}
+                    readOnly
+                    style={{
+                      pointerEvents: 'none',
+                      filter: 'brightness(0.70)'
+                    }}
+                  />
                 ) : (
                   <Form.Control
                     type="number"
@@ -146,6 +162,10 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
                     type="text"
                     value={formData.longitud}
                     readOnly
+                    style={{
+                      pointerEvents: 'none',
+                      filter: 'brightness(0.70)'
+                    }}
                   />
                 ) : (
                   <Form.Control

@@ -159,7 +159,15 @@ export default function EventoModal({
           <Form.Group className="mb-3" controlId="formEspacioFisico">
             <Form.Label>Espacio físico</Form.Label>
             {espacioFisico ? (
-              <Form.Control type="text" value={espacioFisico.nombre} readOnly />
+              <Form.Control
+                type="text"
+                value={espacioFisico.nombre}
+                readOnly
+                style={{
+                  pointerEvents: 'none',
+                  filter: 'brightness(0.70)'
+                }}
+              />
             ) : (
               <Form.Select
                 name="espacioFisico"
@@ -180,7 +188,15 @@ export default function EventoModal({
           <Form.Group className="mb-3" controlId="formNombre">
             <Form.Label>Nombre del evento</Form.Label>
             {evento ? (
-              <Form.Control type="text" value={formData.nombre} readOnly />
+              <Form.Control
+                type="text"
+                value={formData.nombre}
+                readOnly
+                style={{
+                  pointerEvents: 'none',
+                  filter: 'brightness(0.70)'
+                }}
+              />
             ) : (
               <Form.Control
                 type="text"
@@ -207,7 +223,15 @@ export default function EventoModal({
           <Form.Group className="mb-3" controlId="formCategoria">
             <Form.Label>Categoría</Form.Label>
             {evento ? (
-              <Form.Control type="text" value={formData.categoria} readOnly />
+              <Form.Control
+                type="text"
+                value={formData.categoria}
+                readOnly
+                style={{
+                  pointerEvents: 'none',
+                  filter: 'brightness(0.70)'
+                }}
+              />
             ) : (
               <Form.Select
                 name="categoria"

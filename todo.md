@@ -7,7 +7,6 @@
 - Crear alguna animación cuando se ha realizado una transacción o ha fallado
 - Los filtros no deberian de haber un filtro para cada "propiedad", sino un filtro general para los strings (de esto ya me encargare yo)
 - Habria que revisar que cualquier error se interprete bien en la interfaz
-- Cuando se editan los espacios/eventos, yo lo que haria seria que las propiedades que no se puedan modificar, aparezcan de un tono como mas oscuro para que parezcan que realmente estan desactivadas
 
 # Ideas Futuras
 
