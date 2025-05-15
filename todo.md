@@ -4,7 +4,7 @@
 - Hacer login github
 - Tratar los errores
 - Mirar GroupCards y el paginator (separar la lógica)
-- Crear alguna animación cuando se ha realizado una transacción o ha fallado
+- Crear alguna animación cuando se ha realizado una transacción o ha fallado (haciendose)
 - Los filtros no deberian de haber un filtro para cada "propiedad", sino un filtro general para los strings (de esto ya me encargare yo)
 - Habria que revisar que cualquier error se interprete bien en la interfaz
 

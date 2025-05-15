@@ -1,17 +1,34 @@
 import { AuthContext } from '@context/AuthContext'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 
 export default function ReservaModal({ show, callback, onHide, evento }) {
   const { user } = useContext(AuthContext)
-  const [formData, setFormData] = useState({
-    idEvento: evento.idEvento,
-    idUsuario: user.id,
-    numPlazas: ''
-  })
 
+  const initialFormData = useMemo(
+    () => ({
+      idEvento: evento.idEvento,
+      idUsuario: user.id,
+      numPlazas: ''
+    }),
+    [user, evento]
+  )
+
+  useEffect(() => {
+    if (show) {
+      setFormData({
+        idEvento: evento.idEvento,
+        idUsuario: user.id,
+        numPlazas: ''
+      })
+
+      setErrorMessage('')
+    }
+  }, [show])
+
+  const [formData, setFormData] = useState(initialFormData)
   const [errorMessage, setErrorMessage] = useState('')
 
   const handleChange = (e) => {
@@ -20,11 +37,10 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
   }
 
   const handleSubmit = () => {
-    if (!formData.numPlazas) {
-      setErrorMessage('Por favor, completa todos los campos obligatorios.')
+    if (Object.values(formData).some((value) => !value)) {
+      setErrorMessage('Este campo es obligatorio')
       return
     }
-
     setErrorMessage('')
     callback(formData)
   }
@@ -38,12 +54,6 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
       </Modal.Header>
 
       <Modal.Body>
-        {errorMessage && (
-          <div className="alert alert-danger mb-3" role="alert">
-            {errorMessage}
-          </div>
-        )}
-
         <Form>
           <Form.Group className="mb-3" controlId="formEvento">
             <Form.Label>Evento</Form.Label>
@@ -51,7 +61,12 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formNumPlazas">
-            <Form.Label>Número de plazas</Form.Label>
+            <Form.Label>
+              Número de plazas
+              {!!errorMessage && !formData.numPlazas && (
+                <span className="text-danger ms-2">({errorMessage})</span>
+              )}
+            </Form.Label>
             <Form.Control
               type="number"
               placeholder="Ej. 5"
@@ -61,6 +76,7 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
               required
               min={1}
               max={evento.numPlazasDisponibles}
+              isInvalid={!!errorMessage && formData.numPlazas == ''}
             />
           </Form.Group>
         </Form>

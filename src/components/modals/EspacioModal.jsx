@@ -1,6 +1,6 @@
 import { ESPACIO_MODIFICABLE } from '@/configs/constant'
 import { AuthContext } from '@context/AuthContext'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
@@ -8,15 +8,26 @@ import Modal from 'react-bootstrap/Modal'
 export default function EspacioModal({ show, callback, onHide, espacio }) {
   const { user } = useContext(AuthContext)
 
-  const [formData, setFormData] = useState({
-    nombre: '',
-    propietario: user.username,
-    capacidad: '',
-    direccion: '',
-    longitud: '',
-    latitud: '',
-    descripcion: ''
-  })
+  const initialFormData = useMemo(
+    () => ({
+      nombre: '',
+      propietario: user.username,
+      capacidad: '',
+      direccion: '',
+      longitud: '',
+      latitud: '',
+      descripcion: ''
+    }),
+    [user]
+  )
+
+  const [formData, setFormData] = useState(initialFormData)
+  const [errorMessage, setErrorMessage] = useState('')
+
+  useEffect(() => {
+    setFormData(espacio ? { ...espacio } : initialFormData)
+    setErrorMessage('')
+  }, [show, espacio, initialFormData])
 
   useEffect(() => {
     if (espacio) {
@@ -27,45 +38,29 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
     }
   }, [espacio])
 
-  const [errorMessage, setErrorMessage] = useState('')
-
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
   }
 
-  const handleSubmit = () => {
-    if (
-      !formData.nombre ||
-      !formData.capacidad ||
-      !formData.direccion ||
-      !formData.longitud ||
-      !formData.latitud ||
-      !formData.descripcion
-    ) {
-      setErrorMessage('Por favor, completa todos los campos obligatorios.')
-      return
-    }
-
-    setErrorMessage('')
-    callback(formData)
-  }
-
-  const handleEdit = () => {
-    if (!formData.nombre || !formData.capacidad || !formData.descripcion) {
-      setErrorMessage('Por favor, completa todos los campos obligatorios.')
+  const handleSubmit = (espacio) => {
+    if (Object.values(formData).some((value) => !value)) {
+      setErrorMessage('Este campo es obligatorio')
       return
     }
 
     setErrorMessage('')
 
-    const cambios = Object.fromEntries(
-      ESPACIO_MODIFICABLE.filter(
-        (campo) => !espacio || formData[campo] !== espacio[campo]
-      ).map((campo) => [campo, formData[campo]])
-    )
-
-    callback(cambios)
+    if (espacio) {
+      const cambios = Object.fromEntries(
+        ESPACIO_MODIFICABLE.filter(
+          (campo) => !espacio || formData[campo] !== espacio[campo]
+        ).map((campo) => [campo, formData[campo]])
+      )
+      callback(cambios)
+    } else {
+      callback(formData)
+    }
   }
 
   return (
@@ -199,7 +194,7 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
         <Button variant="secondary" onClick={onHide}>
           Cancelar
         </Button>
-        <Button variant="primary" onClick={espacio ? handleEdit : handleSubmit}>
+        <Button variant="primary" onClick={() => handleSubmit(espacio)}>
           {espacio ? 'Editar' : 'Crear'}
         </Button>
       </Modal.Footer>

@@ -58,7 +58,7 @@ export default function MisEspacios() {
         onHide={() => setShowEspacioModal(false)}
       />
 
-      <h1 className="text-center text-primary fw-bold">Mis Espacios</h1>
+      <h1 className="text-center">Mis Espacios</h1>
 
       <Row className="d-flex justify-content-between">
         <Col xs="auto">

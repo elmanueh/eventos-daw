@@ -6,7 +6,7 @@ import {
 } from '@/configs/constant'
 import { fetchGet } from '@/utils/fetchGet'
 import { AuthContext } from '@context/AuthContext'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
@@ -20,16 +20,28 @@ export default function EventoModal({
 }) {
   const { user } = useContext(AuthContext)
 
-  const [formData, setFormData] = useState({
-    nombre: '',
-    descripcion: '',
-    organizador: user.username,
-    numPlazas: '',
-    categoria: '',
-    fechaInicio: '',
-    fechaFin: '',
-    espacioFisico: espacioFisico ? espacioFisico.id : ''
-  })
+  const initialFormData = useMemo(
+    () => ({
+      nombre: '',
+      descripcion: '',
+      organizador: user?.username || '',
+      numPlazas: '',
+      categoria: '',
+      fechaInicio: '',
+      fechaFin: '',
+      espacioFisico: espacioFisico?.id || ''
+    }),
+    [user, espacioFisico]
+  )
+
+  const [formData, setFormData] = useState(initialFormData)
+  const [espaciosList, setEspaciosList] = useState([])
+  const [errorMessage, setErrorMessage] = useState('')
+
+  useEffect(() => {
+    setFormData(evento ? { ...evento } : initialFormData)
+    setErrorMessage('')
+  }, [show, evento, initialFormData])
 
   useEffect(() => {
     if (evento) {
@@ -40,55 +52,35 @@ export default function EventoModal({
     }
   }, [evento])
 
-  const [errorMessage, setErrorMessage] = useState('')
-
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (evento) => {
     if (
-      !formData.nombre ||
-      !formData.descripcion ||
-      !formData.numPlazas ||
-      !formData.categoria ||
-      !formData.fechaInicio ||
-      !formData.fechaFin ||
-      !formData.espacioFisico
+      Object.values(formData).some(
+        (value) => value === null || value === undefined || value === ''
+      )
     ) {
-      setErrorMessage('Por favor, completa todos los campos obligatorios.')
-      return
-    }
-
-    setErrorMessage('')
-    callback(formData)
-  }
-
-  const handleEdit = () => {
-    if (
-      !formData.descripcion ||
-      !formData.numPlazas ||
-      !formData.espacioFisico ||
-      !formData.fechaInicio ||
-      !formData.fechaFin
-    ) {
-      setErrorMessage('Por favor, completa todos los campos obligatorios.')
+      setErrorMessage('Este campo es obligatorio')
       return
     }
 
     setErrorMessage('')
 
-    const cambios = Object.fromEntries(
-      EVENTO_MODIFICABLE.filter(
-        (campo) => !evento || formData[campo] !== evento[campo]
-      ).map((campo) => [campo, formData[campo]])
-    )
+    if (evento) {
+      const cambios = Object.fromEntries(
+        EVENTO_MODIFICABLE.filter(
+          (campo) => formData[campo] !== evento[campo]
+        ).map((campo) => [campo, formData[campo]])
+      )
 
-    callback(cambios)
+      callback(cambios)
+    } else {
+      callback(formData)
+    }
   }
-
-  const [espaciosList, setEspaciosList] = useState([])
 
   useEffect(() => {
     const fetchEspacios = async () => {
@@ -149,15 +141,14 @@ export default function EventoModal({
       </Modal.Header>
 
       <Modal.Body>
-        {errorMessage && (
-          <div className="alert alert-danger mb-3" role="alert">
-            {errorMessage}
-          </div>
-        )}
-
         <Form>
           <Form.Group className="mb-3" controlId="formEspacioFisico">
-            <Form.Label>Espacio físico</Form.Label>
+            <Form.Label>
+              Espacio físico
+              {!!errorMessage && !formData.espacioFisico && (
+                <span className="text-danger ms-2">({errorMessage})</span>
+              )}
+            </Form.Label>
             {espacioFisico ? (
               <Form.Control
                 type="text"
@@ -173,6 +164,7 @@ export default function EventoModal({
                 name="espacioFisico"
                 value={formData.espacioFisico}
                 onChange={handleChange}
+                isInvalid={!!errorMessage && formData.espacioFisico === ''}
                 required
               >
                 <option value="">Seleccione un espacio físico</option>
@@ -186,7 +178,12 @@ export default function EventoModal({
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formNombre">
-            <Form.Label>Nombre del evento</Form.Label>
+            <Form.Label>
+              Nombre del evento
+              {!!errorMessage && !formData.nombre && (
+                <span className="text-danger ms-2">({errorMessage})</span>
+              )}
+            </Form.Label>
             {evento ? (
               <Form.Control
                 type="text"
@@ -204,24 +201,37 @@ export default function EventoModal({
                 name="nombre"
                 value={formData.nombre}
                 onChange={handleChange}
+                isInvalid={!!errorMessage && formData.nombre === ''}
                 required
               />
             )}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formNumPlazas">
-            <Form.Label>Número de plazas</Form.Label>
+            <Form.Label>
+              Número de plazas
+              {!!errorMessage && !formData.numPlazas && (
+                <span className="text-danger ms-2">({errorMessage})</span>
+              )}
+            </Form.Label>
             <Form.Control
               type="number"
               placeholder="Ej. 5"
               name="numPlazas"
               value={formData.numPlazas}
               onChange={handleChange}
+              min={1}
+              isInvalid={!!errorMessage && formData.numPlazas == ''}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formCategoria">
-            <Form.Label>Categoría</Form.Label>
+            <Form.Label>
+              Categoría
+              {!!errorMessage && !formData.categoria && (
+                <span className="text-danger ms-2">({errorMessage})</span>
+              )}
+            </Form.Label>
             {evento ? (
               <Form.Control
                 type="text"
@@ -237,6 +247,7 @@ export default function EventoModal({
                 name="categoria"
                 value={formData.categoria}
                 onChange={handleChange}
+                isInvalid={!!errorMessage && formData.categoria === ''}
               >
                 <option value="">Selecciona una categoría</option>
                 {Object.entries(CATEGORIA_EVENTOS).map(([key, value]) => (
@@ -249,7 +260,12 @@ export default function EventoModal({
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formFechaInicio">
-            <Form.Label>Fecha de inicio</Form.Label>
+            <Form.Label>
+              Fecha de inicio
+              {!!errorMessage && !formData.fechaInicio && (
+                <span className="text-danger ms-2">({errorMessage})</span>
+              )}
+            </Form.Label>
             <Form.Control
               type="datetime-local"
               name="fechaInicio"
@@ -257,22 +273,34 @@ export default function EventoModal({
               onChange={handleChange}
               min={new Date().toISOString()}
               max={formData.fechaFin}
+              isInvalid={!!errorMessage && formData.fechaInicio === ''}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formFechaFin">
-            <Form.Label>Fecha de finalización</Form.Label>
+            <Form.Label>
+              Fecha de finalización
+              {!!errorMessage && !formData.fechaFin && (
+                <span className="text-danger ms-2">({errorMessage})</span>
+              )}
+            </Form.Label>
             <Form.Control
               type="datetime-local"
               name="fechaFin"
               value={formData.fechaFin}
               onChange={handleChange}
               min={formData.fechaInicio}
+              isInvalid={!!errorMessage && formData.fechaFin === ''}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formDescripcion">
-            <Form.Label>Descripción</Form.Label>
+            <Form.Label>
+              Descripción
+              {!!errorMessage && !formData.descripcion && (
+                <span className="text-danger ms-2">({errorMessage})</span>
+              )}
+            </Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
@@ -280,6 +308,7 @@ export default function EventoModal({
               name="descripcion"
               value={formData.descripcion}
               onChange={handleChange}
+              isInvalid={!!errorMessage && formData.descripcion === ''}
             />
           </Form.Group>
         </Form>
@@ -289,7 +318,7 @@ export default function EventoModal({
         <Button variant="secondary" onClick={onHide}>
           Cancelar
         </Button>
-        <Button variant="primary" onClick={evento ? handleEdit : handleSubmit}>
+        <Button variant="primary" onClick={() => handleSubmit(evento)}>
           {evento ? 'Editar' : 'Crear'}
         </Button>
       </Modal.Footer>
