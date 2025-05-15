@@ -59,6 +59,8 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
               value={formData.numPlazas}
               onChange={handleChange}
               required
+              min={1}
+              max={evento.numPlazasDisponibles}
             />
           </Form.Group>
         </Form>
