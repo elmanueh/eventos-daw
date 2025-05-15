@@ -12,6 +12,7 @@ import {
   handleEditEvento,
   handleResevar
 } from '@/utils/operations'
+import GroupDetallesCards from '@components/GroupDetallesCards'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EventoModal from '@components/modals/EventoModal'
 import ReservaModal from '@components/modals/ReservaModal'
@@ -36,7 +37,7 @@ export default function EventoDetalle() {
 
   const { user } = useContext(AuthContext)
   const isUser = user.roles.includes(AUTH_ROLES.USUARIO)
-  const esMio = evento.organizador == user.username
+  const esMio = user.username === evento.organizador
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showReservaModal, setShowReservaModal] = useState(false)
@@ -46,6 +47,7 @@ export default function EventoDetalle() {
   const colorStatus = getEstadoColor(status)
 
   const [espacio, setEspacio] = useState(null)
+  const [reservas, setReservas] = useState(null)
 
   useEffect(() => {
     if (!evento.espacioFisico) return
@@ -65,6 +67,23 @@ export default function EventoDetalle() {
 
     fetchEspacio()
   }, [evento.espacioFisico])
+
+  useEffect(() => {
+    async function fetchReservas() {
+      if (esMio) {
+        try {
+          const data = await fetchGet(API_URLS.RESERVAS_EVENTO(evento.idEvento))
+
+          setReservas(data._embedded.reservaResumenList || [])
+        } catch (error) {
+          console.error('Error al cargar las reservas:', error)
+          alert('Error al cargar las reservas.')
+        }
+      }
+    }
+
+    fetchReservas()
+  }, [evento.idEvento, esMio])
 
   const handleNavigate = () => {
     window.location.href = NAV_ROUTES.ESPACIOS_DET(espacio.id)
@@ -108,138 +127,147 @@ export default function EventoDetalle() {
           {!evento ? (
             <h2 className="text-center">Evento no encontrado</h2>
           ) : (
-            <Card className="mb-4 bg-secondary bg-opacity-25 border border-primary">
-              <Card.Body className="d-flex flex-column gap-2">
-                <Row className="align-items-center">
-                  <Col className="d-flex justify-content-between align-items-center">
-                    <Card.Title as="h1" className="mb-0">
-                      {evento.nombre}
-                    </Card.Title>
-                    <Badge
-                      bg={colorStatus}
-                      text={colorStatus}
-                      className="fs-6 fw-medium bg-opacity-25 px-3 py-2 rounded-pill"
-                    >
-                      {status}
-                    </Badge>
-                  </Col>
-                </Row>
+            <>
+              <Card className="mb-4 bg-secondary bg-opacity-25 border border-primary">
+                <Card.Body className="d-flex flex-column gap-2">
+                  <Row className="align-items-center">
+                    <Col className="d-flex justify-content-between align-items-center">
+                      <Card.Title as="h1" className="mb-0">
+                        {evento.nombre}
+                      </Card.Title>
+                      <Badge
+                        bg={colorStatus}
+                        text={colorStatus}
+                        className="fs-6 fw-medium bg-opacity-25 px-3 py-2 rounded-pill"
+                      >
+                        {status}
+                      </Badge>
+                    </Col>
+                  </Row>
 
-                <Card.Subtitle className="mb-3 text-muted fs-5">
-                  {evento.organizador}
-                </Card.Subtitle>
+                  <Card.Subtitle className="mb-3 text-muted fs-5">
+                    {evento.organizador}
+                  </Card.Subtitle>
 
-                <Card.Text className="fs-6">{evento.descripcion}</Card.Text>
+                  <Card.Text className="fs-6">{evento.descripcion}</Card.Text>
 
-                <div className="fs-6 text-muted d-flex flex-column gap-3">
-                  {!evento.cancelado && (
-                    <>
-                      <div>
-                        <i className="bi bi-calendar-event-fill me-2 text-primary"></i>
-                        <span>
-                          <strong>Inicio:</strong>{' '}
-                          {format(
-                            new Date(evento.fechaInicio),
-                            "dd'/'MM'/'yyyy 'a las' HH:mm",
-                            { locale: es }
-                          )}
-                        </span>
-                      </div>
-                      <div>
-                        <i className="bi bi-calendar-event-fill me-2 text-primary"></i>
-                        <span>
-                          <strong>Finalización:</strong>{' '}
-                          {format(
-                            new Date(evento.fechaFin),
-                            "dd'/'MM'/'yyyy 'a las' HH:mm",
-                            { locale: es }
-                          )}
-                        </span>
-                      </div>
-                      <div>
-                        <i className="bi bi-geo-alt-fill me-2 text-primary"></i>
-                        <span>
-                          <strong>Espacio:</strong>{' '}
-                          {espacio ? (
-                            <a
-                              onClick={handleNavigate}
-                              style={{ cursor: 'pointer' }}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-decoration-none"
-                            >
-                              {espacio.nombre}
-                            </a>
-                          ) : (
-                            'No disponible'
-                          )}
-                        </span>
-                      </div>
-                    </>
-                  )}
-
-                  <div>
-                    <i className="bi bi-person-fill me-2 text-primary"></i>
-                    <span>
-                      <strong>Total de plazas:</strong> {evento.numPlazas}
-                    </span>
-                  </div>
-
-                  <div>
-                    <i className="bi bi-people-fill me-2 text-primary" />
-                    <span>
-                      <strong>Plazas disponibles:</strong>{' '}
-                      {evento.numPlazasDisponibles}
-                    </span>
-                  </div>
-
-                  <div>
-                    <i className="bi bi-tags-fill me-2 text-primary"></i>
-                    <span>
-                      <strong>Categoría:</strong>{' '}
-                      <span className="badge bg-primary bg-opacity-25 text-primary rounded-pill px-2 py-1">
-                        {evento.categoria}
-                      </span>
-                    </span>
-                  </div>
-                </div>
-
-                {(esMio || isUser) && status == ESTADOS.ACTIVO && (
-                  <div className="d-flex justify-content-end gap-2">
-                    {esMio && (
+                  <div className="fs-6 text-muted d-flex flex-column gap-3">
+                    {!evento.cancelado && (
                       <>
-                        <button
-                          type="button"
-                          className="btn btn-outline-primary"
-                          onClick={() => setShowEventoModal(true)}
-                        >
-                          Editar
-                        </button>
-                        {!evento.cancelado && (
-                          <button
-                            type="button"
-                            className="btn btn-outline-danger"
-                            onClick={() => setShowConfirmation(true)}
-                          >
-                            Desactivar
-                          </button>
-                        )}
+                        <div>
+                          <i className="bi bi-calendar-event-fill me-2 text-primary"></i>
+                          <span>
+                            <strong>Inicio:</strong>{' '}
+                            {format(
+                              new Date(evento.fechaInicio),
+                              "dd'/'MM'/'yyyy 'a las' HH:mm",
+                              { locale: es }
+                            )}
+                          </span>
+                        </div>
+                        <div>
+                          <i className="bi bi-calendar-event-fill me-2 text-primary"></i>
+                          <span>
+                            <strong>Finalización:</strong>{' '}
+                            {format(
+                              new Date(evento.fechaFin),
+                              "dd'/'MM'/'yyyy 'a las' HH:mm",
+                              { locale: es }
+                            )}
+                          </span>
+                        </div>
+                        <div>
+                          <i className="bi bi-geo-alt-fill me-2 text-primary"></i>
+                          <span>
+                            <strong>Espacio:</strong>{' '}
+                            {espacio ? (
+                              <a
+                                onClick={handleNavigate}
+                                style={{ cursor: 'pointer' }}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-decoration-none"
+                              >
+                                {espacio.nombre}
+                              </a>
+                            ) : (
+                              ''
+                            )}
+                          </span>
+                        </div>
                       </>
                     )}
-                    {isUser && !evento.cancelado && (
-                      <button
-                        type="button"
-                        className="btn btn-outline-info"
-                        onClick={() => setShowReservaModal(true)}
-                        disabled={evento.numPlazasDisponibles <= 0}
-                      >
-                        Reservar
-                      </button>
-                    )}
+
+                    <div>
+                      <i className="bi bi-person-fill me-2 text-primary"></i>
+                      <span>
+                        <strong>Total de plazas:</strong> {evento.numPlazas}
+                      </span>
+                    </div>
+
+                    <div>
+                      <i className="bi bi-people-fill me-2 text-primary" />
+                      <span>
+                        <strong>Plazas disponibles:</strong>{' '}
+                        {evento.numPlazasDisponibles}
+                      </span>
+                    </div>
+
+                    <div>
+                      <i className="bi bi-tags-fill me-2 text-primary"></i>
+                      <span>
+                        <strong>Categoría:</strong>{' '}
+                        <span className="badge bg-primary bg-opacity-25 text-primary rounded-pill px-2 py-1">
+                          {evento.categoria}
+                        </span>
+                      </span>
+                    </div>
                   </div>
-                )}
-              </Card.Body>
-            </Card>
+
+                  {(esMio || isUser) && status == ESTADOS.ACTIVO && (
+                    <div className="d-flex justify-content-end gap-2">
+                      {esMio && (
+                        <>
+                          <button
+                            type="button"
+                            className="btn btn-outline-primary"
+                            onClick={() => setShowEventoModal(true)}
+                          >
+                            Editar
+                          </button>
+                          {!evento.cancelado && (
+                            <button
+                              type="button"
+                              className="btn btn-outline-danger"
+                              onClick={() => setShowConfirmation(true)}
+                            >
+                              Desactivar
+                            </button>
+                          )}
+                        </>
+                      )}
+                      {isUser && !evento.cancelado && (
+                        <button
+                          type="button"
+                          className="btn btn-outline-info"
+                          onClick={() => setShowReservaModal(true)}
+                          disabled={evento.numPlazasDisponibles <= 0}
+                        >
+                          Reservar
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </Card.Body>
+              </Card>
+
+              {esMio && (
+                <GroupDetallesCards
+                  objetos={reservas}
+                  tipo={TARJETA_TIPOS.EVENTOS}
+                />
+              )}
+            </>
           )}
         </Col>
       </Row>

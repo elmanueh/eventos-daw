@@ -4,13 +4,14 @@ import {
   handleCrearEvento,
   handleEditEspacio
 } from '@/utils/operations'
+import GroupDetallesCards from '@components/GroupDetallesCards'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EspacioModal from '@components/modals/EspacioModal'
 import EventoModal from '@components/modals/EventoModal'
 import OthersCards from '@components/OthersCards'
 import { AuthContext } from '@context/AuthContext'
 import { useContext, useMemo, useState } from 'react'
-import { Badge, Card, Col, Container, ListGroup, Row } from 'react-bootstrap'
+import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function EspacioDetalle() {
@@ -194,50 +195,10 @@ export default function EspacioDetalle() {
                 </Card.Body>
               </Card>
 
-              <Card className="mb-4 border border-primary">
-                <Card.Header
-                  as="h3"
-                  className="bg-secondary bg-opacity-25 text-primary"
-                >
-                  Puntos de interés cercanos
-                </Card.Header>
-                <ListGroup variant="flush">
-                  {espacio.puntosInteres.length === 0 ? (
-                    <ListGroup.Item className="text-muted">
-                      No hay puntos de interés cercanos
-                    </ListGroup.Item>
-                  ) : (
-                    espacio.puntosInteres
-                      .sort((a, b) => a.distancia - b.distancia)
-                      .map((punto, index) => (
-                        <ListGroup.Item
-                          key={index}
-                          className="border-top border-primary"
-                        >
-                          <div>
-                            <div className="d-flex align-items-center gap-3">
-                              <h4 className="mb-0">
-                                <a
-                                  href={punto.url}
-                                  target="_blank"
-                                  className="text-decoration-none text-light"
-                                >
-                                  {punto.nombre}
-                                </a>
-                              </h4>
-                              <span className="badge bg-primary bg-opacity-25 text-primary rounded-pill px-2 py-1">
-                                {punto.distancia} m
-                              </span>
-                            </div>
-                            <p className="fs-6 text-muted mt-1">
-                              {punto.descripcion}
-                            </p>
-                          </div>
-                        </ListGroup.Item>
-                      ))
-                  )}
-                </ListGroup>
-              </Card>
+              <GroupDetallesCards
+                objetos={espacio.puntosInteres}
+                tipo={TARJETA_TIPOS.ESPACIOS}
+              />
             </>
           )}
         </Col>

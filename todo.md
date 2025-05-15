@@ -8,10 +8,6 @@
 - Los filtros no deberian de haber un filtro para cada "propiedad", sino un filtro general para los strings (de esto ya me encargare yo)
 - Habria que revisar que cualquier error se interprete bien en la interfaz
 
-# Ideas Futuras
-
-- Si nos sobra tiempo, no se si esta ya implemento en el backend, que los administradores pudieran ver la lista de reservas dentro de un evento especifico
-
 # Bugs
 
 - En Espacios y Eventos, al filtrar de nuevo, debe cambiar el paginator a la page 1

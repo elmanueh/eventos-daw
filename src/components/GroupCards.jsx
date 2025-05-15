@@ -1,4 +1,4 @@
-import { TARJETA_TIPOS } from '@/configs/constant'
+import { GROUP_CARDS_SIZE, TARJETA_TIPOS } from '@/configs/constant'
 import EspacioCard from '@components/cards/EspacioCard'
 import EventoCard from '@components/cards/EventoCard'
 import ReservaCard from '@components/cards/ReservaCard'
@@ -15,7 +15,7 @@ export default function GroupCards({
 }) {
   const [currentPage, setCurrentPage] = useState(1)
 
-  const pageSize = 6
+  const pageSize = GROUP_CARDS_SIZE
   const totalPages = Math.ceil(objetos.length / pageSize)
 
   const getCurrentPageEspacios = () => {

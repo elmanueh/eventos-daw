@@ -21,7 +21,7 @@ export function getEstadoColor(estado) {
       return 'success'
     case ESTADOS.FINALIZADO:
       return 'secondary'
-    case ESTADOS.FINALIZADO:
+    case ESTADOS.CANCELADO:
       return 'danger'
   }
 }
