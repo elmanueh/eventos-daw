@@ -52,6 +52,14 @@
 .my-card-info {
   display: flex;
   justify-content: space-between;
+  white-space: nowrap;
+}
+
+.my-card-info-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 20px;
 }
 
 .my-card-info.next {
