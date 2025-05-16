@@ -1,5 +1,4 @@
-import { API_URLS, NAV_ROUTES } from '@/configs/constant'
-import { fetchGet } from '@/utils/fetchGet'
+import { NAV_ROUTES } from '@/configs/constant'
 import ErrorCargandoDatos from '@pages/ErrorCargandoDatos'
 import ErrorNotFound from '@pages/ErrorNotFound'
 import HomeMain from '@pages/HomeMain'
@@ -15,20 +14,16 @@ import Home from '@pages/home/Home'
 import MisReservas from '@pages/reservas/MisReservas'
 import { createBrowserRouter, redirect } from 'react-router'
 
-function getUser() {
+function authLoader({ request }) {
   const user = localStorage.getItem('user')
-  if (!user) return null
-  return JSON.parse(user)
-}
+  const url = new URL(request.url)
 
-function authLoader() {
-  const user = localStorage.getItem('user')
-  if (!user && location.pathname !== NAV_ROUTES.LOGIN) {
-    redirect(NAV_ROUTES.LOGIN)
+  if (!user && url.pathname !== NAV_ROUTES.LOGIN) {
+    return redirect(NAV_ROUTES.LOGIN)
   }
 
-  if (user && location.pathname === NAV_ROUTES.LOGIN) {
-    redirect(NAV_ROUTES.HOME)
+  if (user && url.pathname === NAV_ROUTES.LOGIN) {
+    return redirect(NAV_ROUTES.HOME)
   }
 
   return null
@@ -49,26 +44,19 @@ const router = createBrowserRouter([
       { index: true, Component: HomeMain },
       {
         path: 'home',
-        Component: Home,
-        loader: () =>
-          fetchGet(API_URLS.ESPACIOS_LISTAR, API_URLS.EVENTOS_LISTAR)
+        Component: Home
       },
       {
         path: 'espacios',
         children: [
           {
             index: true,
-            Component: Espacios,
-            loader: () => fetchGet(API_URLS.ESPACIOS_LISTAR)
+            Component: Espacios
           },
           {
             path: ':id',
             Component: EspacioDetalle,
-            loader: ({ params }) =>
-              fetchGet(
-                API_URLS.ESPACIOS_DETALLE(params.id),
-                API_URLS.ESPACIOS_LISTAR
-              )
+            loader: ({ params }) => params.id
           }
         ]
       },
@@ -77,17 +65,12 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            Component: Eventos,
-            loader: () => fetchGet(API_URLS.EVENTOS_LISTAR)
+            Component: Eventos
           },
           {
             path: ':id',
             Component: EventoDetalle,
-            loader: ({ params }) =>
-              fetchGet(
-                API_URLS.EVENTOS_DETALLE(params.id),
-                API_URLS.EVENTOS_LISTAR
-              )
+            loader: ({ params }) => params.id
           }
         ]
       },
@@ -96,19 +79,15 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'espacios',
-            Component: MisEspacios,
-            loader: () =>
-              fetchGet(API_URLS.ESPACIOS_PROPIETARIO(getUser().username))
+            Component: MisEspacios
           },
           {
             path: 'eventos',
-            Component: MisEventos,
-            loader: () => fetchGet(API_URLS.EVENTOS_GESTOR(getUser().username))
+            Component: MisEventos
           },
           {
             path: 'reservas',
-            Component: MisReservas,
-            loader: () => fetchGet(API_URLS.RESERVAS_USUARIO(getUser().id))
+            Component: MisReservas
           }
         ]
       }
