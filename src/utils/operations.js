@@ -1,29 +1,46 @@
 import { API_URLS, ESTADOS } from '@/configs/constant'
-import { fetchPatch } from '@/utils/fetchPatch'
-import { fetchPost } from '@/utils/fetchPost'
-import { fetchPut } from '@/utils/fetchPut'
+import { HttpService } from '@/services/httpService'
 
-export const handleCrearEspacio = async (espacio, setShowEspacioModal, addToast) => {
+export const handleCrearEspacio = async (
+  espacio,
+  setShowEspacioModal,
+  addToast
+) => {
   console.log('Creando espacio...')
 
   try {
-    await fetchPost(API_URLS.ESPACIOS_CREAR, espacio)
+    await HttpService.post(API_URLS.ESPACIOS_CREAR, espacio)
     setShowEspacioModal(false)
-    addToast('Espacio creado', 'Tu espacio se ha creado con éxito.', true, 'success');
+    addToast(
+      'Espacio creado',
+      'Tu espacio se ha creado con éxito.',
+      true,
+      'success'
+    )
   } catch (error) {
-    addToast('Error al crear espacio', error.message);
+    addToast('Error al crear espacio', error.message)
   }
 }
 
-export const handleEditEspacio = async (id, modificados, setShowEspacioModal, addToast) => {
+export const handleEditEspacio = async (
+  id,
+  modificados,
+  setShowEspacioModal,
+  addToast
+) => {
   console.log('Editando espacio...', modificados)
 
   try {
-    await fetchPatch(API_URLS.ESPACIOS_MODIFICAR(id), modificados)
+    await HttpService.patch(API_URLS.ESPACIOS_MODIFICAR(id), modificados)
     setShowEspacioModal(false)
-    addToast('Espacio modificado', 'Tu espacio se ha modificado con éxito.', true, 'success');
+    addToast(
+      'Espacio modificado',
+      'Tu espacio se ha modificado con éxito.',
+      true,
+      'success'
+    )
   } catch (error) {
-    addToast('Error al modificar espacio', error.message);
+    addToast('Error al modificar espacio', error.message)
   }
 }
 
@@ -39,14 +56,23 @@ export const handleCambiarEstadoEspacio = async (
   console.log('Cambiando estado del espacio a ', estadoNuevo)
 
   try {
-    await fetchPut(API_URLS.ESPACIOS_CAMBIAR_ESTADO(espacio.id), estadoNuevo)
+    await HttpService.put(
+      API_URLS.ESPACIOS_CAMBIAR_ESTADO(espacio.id),
+      estadoNuevo
+    )
     setShowConfirmation(false)
-    const mensaje = estadoNuevo === ESTADOS.ACTIVO 
-      ? { titulo: 'Espacio activado', descripcion: 'El espacio ha sido activado con éxito.' } 
-      : { titulo: 'Espacio cerrado temporalmente', descripcion: 'El espacio ha sido cerrado temporalmente con éxito.' };
+    const mensaje =
+      estadoNuevo === ESTADOS.ACTIVO
+        ? {
+            titulo: 'Espacio activado',
+            descripcion: 'El espacio ha sido activado con éxito.'
+          }
+        : {
+            titulo: 'Espacio cerrado temporalmente',
+            descripcion: 'El espacio ha sido cerrado temporalmente con éxito.'
+          }
 
-    addToast(mensaje.titulo, mensaje.descripcion, true, 'success');
-
+    addToast(mensaje.titulo, mensaje.descripcion, true, 'success')
   } catch (error) {
     setShowConfirmation(false)
     addToast(
@@ -58,40 +84,68 @@ export const handleCambiarEstadoEspacio = async (
   }
 }
 
-export const handleCrearEvento = async (evento, setShowEventoModal, addToast) => {
+export const handleCrearEvento = async (
+  evento,
+  setShowEventoModal,
+  addToast
+) => {
   console.log('Creando evento...', evento)
 
   try {
-    await fetchPost(API_URLS.EVENTOS_CREAR, evento)
+    await HttpService.post(API_URLS.EVENTOS_CREAR, evento)
     setShowEventoModal(false)
-    addToast('Evento creado', 'Tu evento se ha creado con éxito.', true, 'success');
+    addToast(
+      'Evento creado',
+      'Tu evento se ha creado con éxito.',
+      true,
+      'success'
+    )
   } catch (error) {
-    addToast('Error al crear evento', error.message);
+    addToast('Error al crear evento', error.message)
   }
 }
 
-export const handleEditEvento = async (id, modificados, setShowEventoModal, addToast) => {
+export const handleEditEvento = async (
+  id,
+  modificados,
+  setShowEventoModal,
+  addToast
+) => {
   console.log('Editando evento...', modificados)
 
   try {
-    await fetchPatch(API_URLS.EVENTOS_MODIFICAR(id), modificados)
+    await HttpService.patch(API_URLS.EVENTOS_MODIFICAR(id), modificados)
     setShowEventoModal(false)
-    addToast('Evento modificado', 'Tu evento se ha modificado con éxito.', true, 'success');
+    addToast(
+      'Evento modificado',
+      'Tu evento se ha modificado con éxito.',
+      true,
+      'success'
+    )
   } catch (error) {
-    addToast('Error al modificar evento', error.message);
+    addToast('Error al modificar evento', error.message)
   }
 }
 
-export const handleDesactivarEvento = async (id, setShowConfirmation, addToast) => {
+export const handleDesactivarEvento = async (
+  id,
+  setShowConfirmation,
+  addToast
+) => {
   console.log('Desactivando evento...')
-  
+
   try {
-    await fetchPut(API_URLS.EVENTOS_CANCELAR(id))
+    await HttpService.put(API_URLS.EVENTOS_CANCELAR(id))
     setShowConfirmation(false)
-    addToast('Evento cancelado', 'Tu evento se ha cancelado con éxito.', true, 'success');
+    addToast(
+      'Evento cancelado',
+      'Tu evento se ha cancelado con éxito.',
+      true,
+      'success'
+    )
   } catch (error) {
     setShowConfirmation(false)
-    addToast('Error al cancelar evento', error.message);
+    addToast('Error al cancelar evento', error.message)
   }
 }
 
@@ -99,12 +153,16 @@ export const handleResevar = async (reserva, setShowReservaModal, addToast) => {
   console.log('Reservando...')
 
   try {
-    await fetchPost(API_URLS.RESERVAS_CREAR, reserva)
+    await HttpService.post(API_URLS.RESERVAS_CREAR, reserva)
     setShowReservaModal(false)
 
-    addToast('Reserva realizada', 'Tu reserva se ha realizado correctamente.', true, 'success');
-    
+    addToast(
+      'Reserva realizada',
+      'Tu reserva se ha realizado correctamente.',
+      true,
+      'success'
+    )
   } catch (error) {
-    addToast('Error al reservar', error.message);
+    addToast('Error al reservar', error.message)
   }
 }
