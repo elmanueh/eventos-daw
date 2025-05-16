@@ -1,15 +1,14 @@
 import { TARJETA_TIPOS } from '@/configs/constant'
+import { useEspacios } from '@/hooks/useEspacios'
+import { useEventos } from '@/hooks/useEventos'
 import GroupCards from '@components/GroupCards'
 import { AuthContext } from '@context/AuthContext'
 import { useContext } from 'react'
-import { useLoaderData } from 'react-router'
 
 export default function Home() {
   const { user } = useContext(AuthContext)
-  const eventos = useLoaderData()[1]._embedded.eventoResumenList.slice(0, 8)
-  const espacios = useLoaderData()[0]
-    .espacio.map((espacio) => espacio.espacioDTO)
-    .slice(0, 8)
+  const { eventos } = useEventos()
+  const { espacios } = useEspacios()
 
   return (
     <div className="d-flex flex-lg-col flex-column gap-5">
