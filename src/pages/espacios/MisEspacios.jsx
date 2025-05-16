@@ -2,21 +2,25 @@ import { TARJETA_TIPOS } from '@/configs/constant'
 import { handleCrearEspacio } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
 import EspacioModal from '@components/modals/EspacioModal'
+import MyToast, { useToast } from '@components/toast/MyToast'
 
 import { useMemo, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function MisEspacios() {
-  const [showEspacioModal, setShowEspacioModal] = useState(false)
   const initialEspacios = useLoaderData().espacio.map(
     (espacio) => espacio.espacioDTO
   )
   const [espacios] = useState(initialEspacios)
 
+  const [showEspacioModal, setShowEspacioModal] = useState(false)
+  const { addToast, toasts, removeToast } = useToast()
+
   const [filtroNombre, setFiltroNombre] = useState('')
   const [filtroDescripcion, setFiltroDescripcion] = useState('')
   const [filtroCapacidad, setFiltroCapacidad] = useState('')
+
   const [mostrarActivos, setMostrarActivos] = useState(true)
   const [mostrarCerrados, setMostrarCerrados] = useState(true)
   const [mostrarFiltros, setMostrarFiltros] = useState(false)
@@ -52,9 +56,13 @@ export default function MisEspacios() {
 
   return (
     <Container className="d-flex flex-column p-0 gap-3">
+      <MyToast toasts={toasts} removeToast={removeToast} />
+
       <EspacioModal
         show={showEspacioModal}
-        callback={(espacio) => handleCrearEspacio(espacio, setShowEspacioModal)}
+        callback={(espacio) =>
+          handleCrearEspacio(espacio, setShowEspacioModal, addToast)
+        }
         onHide={() => setShowEspacioModal(false)}
       />
 

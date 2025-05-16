@@ -9,6 +9,7 @@ import { fetchGet } from '@/utils/fetchGet'
 import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EventoModal from '@components/modals/EventoModal'
+import MyToast, { useToast } from '@components/toast/MyToast'
 import { useState } from 'react'
 import './card.css'
 
@@ -20,19 +21,25 @@ export default function EventoCard({ evento, visible }) {
 
   const status = getEstadoEvento(evento)
 
+  const { addToast, toasts, removeToast } = useToast()
+
   return (
     <div>
+      <MyToast toasts={toasts} removeToast={removeToast} />
+
       <EventoModal
         show={showEventoModal}
         callback={(modificados) =>
-          handleEditEvento(evento.id, modificados, setShowEventoModal)
+          handleEditEvento(evento.id, modificados, setShowEventoModal, addToast)
         }
         onHide={() => setShowEventoModal(false)}
         evento={eventoDet}
       />
       <ConfirmationModal
         show={showConfirmation}
-        callback={() => handleDesactivarEvento(evento.id, setShowConfirmation)}
+        callback={() =>
+          handleDesactivarEvento(evento.id, setShowConfirmation, addToast)
+        }
         onHide={() => setShowConfirmation(false)}
         title={evento.nombre}
         status={status}

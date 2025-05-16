@@ -9,6 +9,7 @@ import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EspacioModal from '@components/modals/EspacioModal'
 import EventoModal from '@components/modals/EventoModal'
 import OthersCards from '@components/OthersCards'
+import MyToast, { useToast } from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
 import { useContext, useMemo, useState } from 'react'
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
@@ -30,6 +31,8 @@ export default function EspacioDetalle() {
   const isUser = user.roles.includes(AUTH_ROLES.GESTOR_EVENTOS)
   const esMio = espacio.propietario == user.username
 
+  const { addToast, toasts, removeToast } = useToast()
+
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showEventoModal, setShowEventoModal] = useState(false)
   const [showEspacioModal, setShowEspacioModal] = useState(false)
@@ -37,6 +40,7 @@ export default function EspacioDetalle() {
   const status =
     espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO
 
+  // TODO: Cambiar a un hook
   function decimalToDMS(coordinate, isLongitude = false) {
     const degrees = Math.floor(coordinate)
     const minutes = Math.floor((coordinate - degrees) * 60)
@@ -57,24 +61,38 @@ export default function EspacioDetalle() {
 
   return (
     <Container className="p-0">
+      <MyToast toasts={toasts} removeToast={removeToast} />
+
       <EspacioModal
         show={showEspacioModal}
         callback={(modificados) =>
-          handleEditEspacio(espacio.id, modificados, setShowEspacioModal)
+          handleEditEspacio(
+            espacio.id,
+            modificados,
+            setShowEspacioModal,
+            addToast
+          )
         }
         onHide={() => setShowEspacioModal(false)}
         espacio={espacio}
       />
       <EventoModal
         show={showEventoModal}
-        callback={(evento) => handleCrearEvento(evento, setShowEventoModal)}
+        callback={(evento) =>
+          handleCrearEvento(evento, setShowEventoModal, addToast)
+        }
         onHide={() => setShowEventoModal(false)}
         espacioFisico={espacio}
       />
       <ConfirmationModal
         show={showConfirmation}
         callback={() =>
-          handleCambiarEstadoEspacio(espacio, status, setShowConfirmation)
+          handleCambiarEstadoEspacio(
+            espacio,
+            status,
+            setShowConfirmation,
+            addToast
+          )
         }
         onHide={() => setShowConfirmation(false)}
         title={espacio.nombre}

@@ -2,6 +2,7 @@ import { TARJETA_TIPOS } from '@/configs/constant'
 import { handleCrearEvento } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
 import EventoModal from '@components/modals/EventoModal'
+import MyToast, { useToast } from '@components/toast/MyToast'
 import { useMemo, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
@@ -9,16 +10,19 @@ import { useLoaderData } from 'react-router'
 export default function MisEventos() {
   const initialEventos = useLoaderData()._embedded.eventoResumenList
   const [eventos] = useState(initialEventos)
+
   const [showEventoModal, setShowEventoModal] = useState(false)
-  const [mostrarFiltros, setMostrarFiltros] = useState(false)
+  const { addToast, toasts, removeToast } = useToast()
 
   const [filtroNombre, setFiltroNombre] = useState('')
   const [filtroDescripcion, setFiltroDescripcion] = useState('')
   const [filtroPlazas, setFiltroPlazas] = useState('')
+
   const [mostrarCancelados, setMostrarCancelados] = useState(true)
   const [mostrarEnCurso, setMostrarEnCurso] = useState(true)
   const [mostrarProximos, setMostrarProximos] = useState(true)
   const [mostrarFinalizados, setMostrarFinalizados] = useState(true)
+  const [mostrarFiltros, setMostrarFiltros] = useState(false)
 
   const resetFiltros = () => {
     setFiltroNombre('')
@@ -45,31 +49,33 @@ export default function MisEventos() {
     })
   }, [eventos, filtroNombre, filtroDescripcion, filtroPlazas])
 
-  const ahora = new Date()
-
   const eventosEnCurso = eventosFiltrados.filter((e) => {
     const inicio = new Date(e.fechaInicio)
     const fin = new Date(e.fechaFin)
-    return !e.cancelado && inicio <= ahora && ahora <= fin
+    return !e.cancelado && inicio <= new Date() && new Date() <= fin
   })
 
   const eventosFinalizados = eventosFiltrados.filter((e) => {
     const fin = new Date(e.fechaFin)
-    return !e.cancelado && fin < ahora
+    return !e.cancelado && fin < new Date()
   })
 
   const eventosActivos = eventosFiltrados.filter((e) => {
     const inicio = new Date(e.fechaInicio)
-    return !e.cancelado && inicio > ahora
+    return !e.cancelado && inicio > new Date()
   })
 
   const eventosCancelados = eventosFiltrados.filter((e) => e.cancelado)
 
   return (
     <Container className="d-flex flex-column gap-3 p-0">
+      <MyToast toasts={toasts} removeToast={removeToast} />
+
       <EventoModal
         show={showEventoModal}
-        callback={(evento) => handleCrearEvento(evento, setShowEventoModal)}
+        callback={(evento) =>
+          handleCrearEvento(evento, setShowEventoModal, addToast)
+        }
         onHide={() => setShowEventoModal(false)}
       />
 

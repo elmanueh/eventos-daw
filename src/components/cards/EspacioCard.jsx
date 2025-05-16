@@ -11,6 +11,7 @@ import {
 } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EspacioModal from '@components/modals/EspacioModal'
+import MyToast, { useToast } from '@components/toast/MyToast'
 import { useState } from 'react'
 import './card.css'
 
@@ -23,12 +24,21 @@ export default function EspacioCard({ espacio, visible }) {
   const status =
     espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO
 
+  const { addToast, toasts, removeToast } = useToast()
+
   return (
     <div>
+      <MyToast toasts={toasts} removeToast={removeToast} />
+
       <EspacioModal
         show={showEspacioModal}
         callback={(modificados) =>
-          handleEditEspacio(espacio.id, modificados, setShowEspacioModal)
+          handleEditEspacio(
+            espacio.id,
+            modificados,
+            setShowEspacioModal,
+            addToast
+          )
         }
         onHide={() => setShowEspacioModal(false)}
         espacio={espacioDet}
@@ -36,7 +46,12 @@ export default function EspacioCard({ espacio, visible }) {
       <ConfirmationModal
         show={showConfirmation}
         callback={() =>
-          handleCambiarEstadoEspacio(espacio, status, setShowConfirmation)
+          handleCambiarEstadoEspacio(
+            espacio,
+            status,
+            setShowConfirmation,
+            addToast
+          )
         }
         onHide={() => setShowConfirmation(false)}
         title={espacio.nombre}

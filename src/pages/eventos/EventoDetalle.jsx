@@ -17,6 +17,7 @@ import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EventoModal from '@components/modals/EventoModal'
 import ReservaModal from '@components/modals/ReservaModal'
 import OthersCards from '@components/OthersCards'
+import MyToast, { useToast } from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
@@ -38,6 +39,8 @@ export default function EventoDetalle() {
   const { user } = useContext(AuthContext)
   const isUser = user.roles.includes(AUTH_ROLES.USUARIO)
   const esMio = user.username === evento.organizador
+
+  const { addToast, toasts, removeToast } = useToast()
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showReservaModal, setShowReservaModal] = useState(false)
@@ -91,30 +94,40 @@ export default function EventoDetalle() {
 
   return (
     <Container className="p-0">
+      <MyToast toasts={toasts} removeToast={removeToast} />
+
       <EventoModal
         show={showEventoModal}
         callback={(modificados) =>
-          handleEditEvento(evento.idEvento, modificados, setShowEventoModal)
+          handleEditEvento(
+            evento.idEvento,
+            modificados,
+            setShowEventoModal,
+            addToast
+          )
         }
         onHide={() => setShowEventoModal(false)}
         evento={evento}
       />
       <ReservaModal
         show={showReservaModal}
-        callback={(reserva) => handleResevar(reserva, setShowReservaModal)}
+        callback={(reserva) =>
+          handleResevar(reserva, setShowReservaModal, addToast)
+        }
         onHide={() => setShowReservaModal(false)}
         evento={evento}
       />
       <ConfirmationModal
         show={showConfirmation}
         callback={() =>
-          handleDesactivarEvento(evento.idEvento, setShowConfirmation)
+          handleDesactivarEvento(evento.idEvento, setShowConfirmation, addToast)
         }
         onHide={() => setShowConfirmation(false)}
         title={evento.nombre}
         status={status}
         tipo={TARJETA_TIPOS.EVENTOS}
       />
+
       <Row>
         <Col md={4} className="order-sm-2 order-md-1">
           <OthersCards

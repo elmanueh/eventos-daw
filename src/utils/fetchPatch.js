@@ -15,11 +15,17 @@ export async function fetchPatch(url, data) {
     const response = await fetch(url, options)
 
     if (!response.ok) {
-      throw new Error('Error al enviar los datos')
+      const errorData = await response.json().catch(() => ({}));
+      const message = errorData.message || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(message);
     }
 
     return response
-  } catch {
-    throw new Error('Error de conexión o servidor')
+  } catch (error){
+    if (error.message.includes('Failed to fetch')) {
+      throw new Error('Error de conexión. Verifica tu red.');
+    }
+    throw new Error(error.message || 'Error de conexión o servidor');
+
   }
 }
