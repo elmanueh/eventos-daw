@@ -1,5 +1,7 @@
-import { API_URLS, AUTH_ROLES, NAV_ROUTES } from '@/configs/constant'
-import { fetchGet } from '@/utils/fetchGet'
+import { AUTH_ROLES, NAV_ROUTES } from '@/configs/constant'
+import { useEspacios } from '@/hooks/useEspacios'
+import { useEventos } from '@/hooks/useEventos'
+import { useReservas } from '@/hooks/useReservas'
 import { AuthContext } from '@context/AuthContext'
 import format from 'date-fns/format'
 import es from 'date-fns/locale/es'
@@ -8,6 +10,9 @@ import { Link } from 'react-router'
 
 export default function UserInfoCard() {
   const { user } = useContext(AuthContext)
+  const { espacios, loading: loadingEspacios } = useEspacios()
+  const { eventos, loading: loadingEventos } = useEventos()
+  const { reservas, loading: loadingReservas } = useReservas()
   const [info, setInfo] = useState({
     evento: null,
     espacio: null
@@ -16,38 +21,38 @@ export default function UserInfoCard() {
   useEffect(() => {
     const getInfo = async () => {
       try {
-        const reservasDto = await fetchGet(API_URLS.RESERVAS_USUARIO(user.id))
-        const reservas = await Promise.all(
-          reservasDto._embedded.reservaResumenList
-            .filter((reserva) => !reserva.cancelada)
-            .map((reserva) => fetchGet(API_URLS.RESERVAS_DETALLE(reserva.id)))
-        )
-        if (reservas.length === 0) return null
+        if (loadingEspacios && loadingEventos && loadingReservas) return
 
-        const eventos = await Promise.all(
-          reservas.map((reserva) =>
-            fetchGet(API_URLS.EVENTOS_DETALLE(reserva.evento))
+        const reservasActivas = reservas.filter((r) => !r.cancelada)
+        if (reservasActivas.length === 0) return
+
+        const eventosActivos = eventos
+          .filter((e) =>
+            reservasActivas.map((r) => r.evento).includes(e.idEvento)
           )
-        )
-        const evento = eventos.sort((a, b) => {
-          const fechaA = new Date(a.fechaInicio)
-          const fechaB = new Date(b.fechaInicio)
-          return fechaA - fechaB
-        })[0]
-        const espacio = await fetchGet(
-          API_URLS.ESPACIOS_DETALLE(evento.espacioFisico)
-        )
+          .sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio))
+        if (eventosActivos.length === 0) return
+
+        const evento = eventosActivos[0]
+        const espacio = espacios.find((e) => e.id == evento.espacioFisico)
 
         setInfo({
-          evento: evento,
-          espacio: espacio
+          evento,
+          espacio
         })
       } catch (error) {
         console.error('Error fetching reservas:', error)
       }
     }
     getInfo()
-  }, [user])
+  }, [
+    espacios,
+    eventos,
+    reservas,
+    loadingEspacios,
+    loadingEventos,
+    loadingReservas
+  ])
 
   return (
     <aside className="bg-dark rounded p-4 d-flex flex-column text-center align-items-center gap-3 border border-secondary align-self-start">

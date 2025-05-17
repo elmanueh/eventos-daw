@@ -1,11 +1,5 @@
-import {
-  API_URLS,
-  ESTADOS,
-  NAV_ROUTES,
-  TARJETA_TIPOS
-} from '@/configs/constant'
+import { ESTADOS, NAV_ROUTES, TARJETA_TIPOS } from '@/configs/constant'
 import { getEstadoEvento } from '@/utils/eventoHelper'
-import { fetchGet } from '@/utils/fetchGet'
 import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EventoModal from '@components/modals/EventoModal'
@@ -48,7 +42,7 @@ export default function EventoCard({ evento, visible }) {
       <div
         className="my-card"
         onClick={() =>
-          (window.location.href = NAV_ROUTES.EVENTOS_DET(evento.id))
+          (window.location.href = NAV_ROUTES.EVENTOS_DET(evento.idEvento))
         }
       >
         <div className="my-card-header">
@@ -87,8 +81,7 @@ export default function EventoCard({ evento, visible }) {
             type="button"
             className="btn btn-outline-primary"
             onClick={async () => {
-              const data = await fetchGet(API_URLS.EVENTOS_DETALLE(evento.id))
-              setEventoDet(data)
+              setEventoDet(evento)
               setShowEventoModal(true)
             }}
           >

@@ -1,4 +1,5 @@
 import { AUTH_ROLES, ESTADOS, TARJETA_TIPOS } from '@/configs/constant'
+import { useEspacios } from '@/hooks/useEspacios'
 import {
   handleCambiarEstadoEspacio,
   handleCrearEvento,
@@ -11,31 +12,31 @@ import EventoModal from '@components/modals/EventoModal'
 import OthersCards from '@components/OthersCards'
 import MyToast, { useToast } from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
-import { useContext, useMemo, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function EspacioDetalle() {
-  const loaderData = useLoaderData()
-  const espacio = loaderData[0]
-
-  const otrosEspacios = useMemo(() => {
-    return loaderData[1].espacio
-      .map((espacio) => espacio.espacioDTO)
-      .filter((e) => e.id !== espacio.id)
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 3)
-  }, [loaderData, espacio.id])
-
   const { user } = useContext(AuthContext)
-  const isUser = user.roles.includes(AUTH_ROLES.GESTOR_EVENTOS)
-  const esMio = espacio.propietario == user.username
-
+  const espacioId = useLoaderData()
+  const { espacios } = useEspacios()
   const { addToast, toasts, removeToast } = useToast()
-
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showEventoModal, setShowEventoModal] = useState(false)
   const [showEspacioModal, setShowEspacioModal] = useState(false)
+
+  if (espacios.length === 0) {
+    return <h2 className="text-center">Cargando...</h2>
+  }
+
+  const espacio = espacios.find((e) => e.id === espacioId)
+  const otrosEspacios = espacios
+    .filter((e) => e.id !== espacioId)
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 3)
+
+  const isUser = user.roles.includes(AUTH_ROLES.GESTOR_EVENTOS)
+  const esMio = espacio.propietario == user.username
 
   const status =
     espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO

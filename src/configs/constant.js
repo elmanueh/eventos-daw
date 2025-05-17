@@ -21,6 +21,7 @@ export const API_URLS = {
   AUTH_LOGIN: 'http://localhost:8080/api/auth/login',
   AUTH_LOGOUT: 'http://localhost:8080/api/auth/logout',
   AUTH_GITHUB_OAUTH: 'http://localhost:8080/api/oauth2/authorization/github',
+  AUTH_GET_USER: 'http://localhost:8080/api/auth/user',
 
   // ----- ESPACIOS -----
   ESPACIOS_CREAR: 'http://localhost:8080/api/espaciosfisicos',
@@ -32,8 +33,7 @@ export const API_URLS = {
     `http://localhost:8080/api/espaciosfisicos/${id}/estado`,
   ESPACIOS_PROPIETARIO: (name) =>
     `http://localhost:8080/api/espaciosfisicos/propietario/${name}`,
-  ESPACIOS_MODIFICAR: (id) =>
-    `http://localhost:8080/api/espaciosfisicos/${id}`,
+  ESPACIOS_MODIFICAR: (id) => `http://localhost:8080/api/espaciosfisicos/${id}`,
 
   // ----- EVENTOS -----
   EVENTOS_CREAR: 'http://localhost:8080/api/eventos',
@@ -41,14 +41,13 @@ export const API_URLS = {
   EVENTOS_DETALLE: (id) => `http://localhost:8080/api/eventos/${id}`,
   EVENTOS_CANCELAR: (id) => `http://localhost:8080/api/eventos/${id}/ocupacion`,
   EVENTOS_GESTOR: (name) => `http://localhost:8080/api/eventos/gestor/${name}`,
-  EVENTOS_MODIFICAR: (id) =>
-    `http://localhost:8080/api/eventos/${id}`,
+  EVENTOS_MODIFICAR: (id) => `http://localhost:8080/api/eventos/${id}`,
 
   // ----- RESERVAS -----
   RESERVAS_CREAR: 'http://localhost:8080/api/reservas',
   RESERVAS_DETALLE: (id) => `http://localhost:8080/api/reservas/${id}`,
   RESERVAS_USUARIO: (id) => `http://localhost:8080/api/reservas/usuario/${id}`,
-  RESERVAS_EVENTO: (id) => `http://localhost:8080/api/reservas/evento/${id}`,
+  RESERVAS_EVENTO: (id) => `http://localhost:8080/api/reservas/evento/${id}`
 }
 
 // Tipos de tarjeta (cards)
@@ -67,10 +66,10 @@ export const ESTADOS = {
   EN_CURSO: 'EN CURSO',
   FINALIZADO: 'FINALIZADO',
   CANCELADO: 'CANCELADO',
-  
+
   ACTIVA: 'ACTIVA',
   CANCELADA: 'CANCELADA',
-  FINALIZADA: 'FINALIZADA',
+  FINALIZADA: 'FINALIZADA'
 }
 
 // Categorías de eventos
@@ -80,14 +79,10 @@ export const CATEGORIA_EVENTOS = {
   ENTRETENIMIENTO: 'Entretenimiento',
   DEPORTES: 'Deportes',
   OTROS: 'Otros'
-};
+}
 
 // Campos para modificar espacios
-export const ESPACIO_MODIFICABLE = [
-  'nombre',
-  'descripcion',
-  'capacidad'
-]
+export const ESPACIO_MODIFICABLE = ['nombre', 'descripcion', 'capacidad']
 
 // Campos para modificar eventos
 export const EVENTO_MODIFICABLE = [

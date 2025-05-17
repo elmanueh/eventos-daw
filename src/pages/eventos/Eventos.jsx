@@ -1,12 +1,11 @@
 import { TARJETA_TIPOS } from '@/configs/constant'
+import { useEventos } from '@/hooks/useEventos'
 import GroupCards from '@components/GroupCards'
 import { useMemo, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
-import { useLoaderData } from 'react-router'
 
 export default function Eventos() {
-  const loaderData = useLoaderData()
-  const [eventos] = useState(loaderData._embedded.eventoResumenList)
+  const { eventos } = useEventos()
 
   const [filtroNombre, setFiltroNombre] = useState('')
   const [filtroDescripcion, setFiltroDescripcion] = useState('')

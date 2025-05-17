@@ -1,4 +1,5 @@
 import { TARJETA_TIPOS } from '@/configs/constant'
+import { useEspacios } from '@/hooks/useEspacios'
 import { handleCrearEspacio } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
 import EspacioModal from '@components/modals/EspacioModal'
@@ -6,13 +7,9 @@ import MyToast, { useToast } from '@components/toast/MyToast'
 
 import { useMemo, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
-import { useLoaderData } from 'react-router'
 
 export default function MisEspacios() {
-  const initialEspacios = useLoaderData().espacio.map(
-    (espacio) => espacio.espacioDTO
-  )
-  const [espacios] = useState(initialEspacios)
+  const { espacios } = useEspacios()
 
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()

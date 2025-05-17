@@ -1,18 +1,17 @@
 import {
-  API_URLS,
   AUTH_ROLES,
   ESTADOS,
   NAV_ROUTES,
   TARJETA_TIPOS
 } from '@/configs/constant'
+import { useEspacios } from '@/hooks/useEspacios'
+import { useEventos } from '@/hooks/useEventos'
 import { getEstadoColor, getEstadoEvento } from '@/utils/eventoHelper'
-import { fetchGet } from '@/utils/fetchGet'
 import {
   handleDesactivarEvento,
   handleEditEvento,
   handleResevar
 } from '@/utils/operations'
-import GroupDetallesCards from '@components/GroupDetallesCards'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EventoModal from '@components/modals/EventoModal'
 import ReservaModal from '@components/modals/ReservaModal'
@@ -21,72 +20,35 @@ import MyToast, { useToast } from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
 export default function EventoDetalle() {
-  const loaderData = useLoaderData()
-  const evento = loaderData[0]
-
-  const otrosEventos = useMemo(() => {
-    return loaderData[1]._embedded.eventoResumenList
-      .filter((e) => e.id !== evento.id)
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 3)
-  }, [loaderData, evento.id])
-
   const { user } = useContext(AuthContext)
-  const isUser = user.roles.includes(AUTH_ROLES.USUARIO)
-  const esMio = user.username === evento.organizador
-
-  const { addToast, toasts, removeToast } = useToast()
+  const eventoId = useLoaderData()
+  const { eventos, loading } = useEventos()
+  const { espacios, loading: loadingEspacios } = useEspacios()
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showReservaModal, setShowReservaModal] = useState(false)
   const [showEventoModal, setShowEventoModal] = useState(false)
+  const { addToast, toasts, removeToast } = useToast()
+
+  if (loading || loadingEspacios) return
+  const evento = eventos.find((e) => e.idEvento === eventoId)
+  const espacio = espacios.find((e) => e.id === evento.espacioFisico)
+  console.log(evento)
+  const otrosEventos = eventos
+    .filter((e) => e.id !== eventoId)
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 3)
+
+  const isUser = user.roles.includes(AUTH_ROLES.USUARIO)
+  const esMio = user.username === evento.organizador
 
   const status = getEstadoEvento(evento)
   const colorStatus = getEstadoColor(status)
-
-  const [espacio, setEspacio] = useState(null)
-  const [reservas, setReservas] = useState(null)
-
-  useEffect(() => {
-    if (!evento.espacioFisico) return
-
-    async function fetchEspacio() {
-      try {
-        const data = await fetchGet(
-          API_URLS.ESPACIOS_DETALLE(evento.espacioFisico)
-        )
-
-        setEspacio(data)
-      } catch (error) {
-        console.error('Error al cargar los espacios filtrados:', error)
-        alert('Error al cargar los espacios filtrados.')
-      }
-    }
-
-    fetchEspacio()
-  }, [evento.espacioFisico])
-
-  useEffect(() => {
-    async function fetchReservas() {
-      if (esMio) {
-        try {
-          const data = await fetchGet(API_URLS.RESERVAS_EVENTO(evento.idEvento))
-
-          setReservas(data._embedded.reservaResumenList || [])
-        } catch (error) {
-          console.error('Error al cargar las reservas:', error)
-          alert('Error al cargar las reservas.')
-        }
-      }
-    }
-
-    fetchReservas()
-  }, [evento.idEvento, esMio])
 
   const handleNavigate = () => {
     window.location.href = NAV_ROUTES.ESPACIOS_DET(espacio.id)
@@ -273,13 +235,6 @@ export default function EventoDetalle() {
                   )}
                 </Card.Body>
               </Card>
-
-              {esMio && (
-                <GroupDetallesCards
-                  objetos={reservas}
-                  tipo={TARJETA_TIPOS.EVENTOS}
-                />
-              )}
             </>
           )}
         </Col>

@@ -15,7 +15,11 @@ const createEvento = async (evento) => {
 const getEventos = async () => {
   try {
     const response = await HttpService.get(API_URLS.EVENTOS_LISTAR)
-    const eventos = response._embedded.eventoResumenList
+    const eventos = await Promise.all(
+      response._embedded.eventoResumenList.map((e) =>
+        HttpService.get(API_URLS.EVENTOS_DETALLE(e.id))
+      )
+    )
     return eventos
   } catch {
     throw new Error('Error al obtener los eventos')

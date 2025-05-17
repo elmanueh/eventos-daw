@@ -87,7 +87,6 @@ export default function EspacioCard({ espacio, visible }) {
             className="btn btn-outline-primary"
             onClick={async () => {
               const data = await fetchGet(API_URLS.ESPACIOS_DETALLE(espacio.id))
-              console.log('Espacio Detalle:', data)
               setEspacioDet(data)
               setShowEspacioModal(true)
             }}

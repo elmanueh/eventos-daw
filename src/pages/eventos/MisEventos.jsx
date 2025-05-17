@@ -1,15 +1,14 @@
 import { TARJETA_TIPOS } from '@/configs/constant'
+import { useEventos } from '@/hooks/useEventos'
 import { handleCrearEvento } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
 import EventoModal from '@components/modals/EventoModal'
 import MyToast, { useToast } from '@components/toast/MyToast'
 import { useMemo, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
-import { useLoaderData } from 'react-router'
 
 export default function MisEventos() {
-  const initialEventos = useLoaderData()._embedded.eventoResumenList
-  const [eventos] = useState(initialEventos)
+  const { eventos } = useEventos()
 
   const [showEventoModal, setShowEventoModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()

@@ -1,10 +1,10 @@
 import { TARJETA_TIPOS } from '@/configs/constant'
+import { useReservas } from '@/hooks/useReservas'
 import GroupCards from '@components/GroupCards'
 import { Container } from 'react-bootstrap'
-import { useLoaderData } from 'react-router'
 
 export default function MisReservas() {
-  const reservas = useLoaderData()._embedded.reservaResumenList
+  const { reservas } = useReservas()
 
   const reservasActivas = reservas.filter((r) => !r.cancelada)
   const reservasCanceladas = reservas.filter((r) => r.cancelada)

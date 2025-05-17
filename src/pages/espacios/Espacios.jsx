@@ -1,14 +1,11 @@
 import { TARJETA_TIPOS } from '@/configs/constant'
+import { useEspacios } from '@/hooks/useEspacios'
 import GroupCards from '@components/GroupCards'
 import { useMemo, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
-import { useLoaderData } from 'react-router'
 
 export default function Espacios() {
-  const loaderData = useLoaderData()
-  const [espacios] = useState(
-    loaderData.espacio?.map((espacio) => espacio.espacioDTO) || []
-  )
+  const { espacios } = useEspacios()
 
   const [nombre, setNombre] = useState('')
   const [descripcion, setDescripcion] = useState('')

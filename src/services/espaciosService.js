@@ -13,7 +13,11 @@ const createEspacio = async (espacio) => {
 const getEspacios = async () => {
   try {
     const response = await HttpService.get(API_URLS.ESPACIOS_LISTAR)
-    const espacios = response.espacio.map((espacio) => espacio.espacioDTO)
+    const espacios = await Promise.all(
+      response.espacio.map((e) =>
+        HttpService.get(API_URLS.ESPACIOS_DETALLE(e.espacioDTO.id))
+      )
+    )
     return espacios
   } catch {
     throw new Error('Error al obtener los espacios')
