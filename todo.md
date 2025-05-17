@@ -17,3 +17,4 @@
 # Bugs
 
 - En Espacios y Eventos, al filtrar de nuevo, debe cambiar el paginator a la page 1
+- Cuando se usan los filtros, el paginator deberia de resetearse a la page 1

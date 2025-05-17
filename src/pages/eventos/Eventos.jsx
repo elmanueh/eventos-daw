@@ -1,56 +1,50 @@
 import { TARJETA_TIPOS } from '@/configs/constant'
 import { useEventos } from '@/hooks/useEventos'
 import GroupCards from '@components/GroupCards'
-import { useMemo, useState } from 'react'
+import Loading from '@pages/Loading'
+import { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 
 export default function Eventos() {
-  const { eventos } = useEventos()
-
-  const [filtroNombre, setFiltroNombre] = useState('')
-  const [filtroDescripcion, setFiltroDescripcion] = useState('')
-  const [soloNoCancelados, setSoloNoCancelados] = useState(false)
-  const [plazasMinimas, setPlazasMinimas] = useState('')
-  const [fechaMin, setFechaMin] = useState('')
+  const { eventos, loading } = useEventos()
+  const [filtro, setFiltro] = useState({
+    nombre: '',
+    descripcion: '',
+    estadoActivo: false,
+    plazasMinimas: '',
+    fechaMin: ''
+  })
 
   const resetFiltros = () => {
-    setFiltroNombre('')
-    setFiltroDescripcion('')
-    setSoloNoCancelados(false)
-    setPlazasMinimas('')
-    setFechaMin('')
+    setFiltro({
+      nombre: '',
+      descripcion: '',
+      estadoActivo: false,
+      plazasMinimas: '',
+      fechaMin: ''
+    })
   }
 
-  const eventosFiltrados = useMemo(() => {
-    return eventos.filter((evento) => {
-      const nombreMatch = evento.nombre
-        ?.toLowerCase()
-        .includes(filtroNombre.toLowerCase())
-      const descripcionMatch = evento.descripcion
-        ?.toLowerCase()
-        .includes(filtroDescripcion.toLowerCase())
-      const canceladoMatch = !soloNoCancelados || !evento.cancelado
-      const plazasMatch =
-        plazasMinimas === '' || evento.numPlazas >= parseInt(plazasMinimas)
-      const fechaMatch =
-        fechaMin === '' || new Date(evento.fechaInicio) >= new Date(fechaMin)
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setFiltro((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }))
+  }
 
-      return (
-        nombreMatch &&
-        descripcionMatch &&
-        canceladoMatch &&
-        plazasMatch &&
-        fechaMatch
-      )
-    })
-  }, [
-    filtroNombre,
-    filtroDescripcion,
-    soloNoCancelados,
-    plazasMinimas,
-    fechaMin,
-    eventos
-  ])
+  if (loading) return <Loading />
+  const eventosFiltrados = eventos.filter((evento) => {
+    return (
+      evento.nombre.toLowerCase().includes(filtro.nombre.toLowerCase()) &&
+      evento.descripcion
+        .toLowerCase()
+        .includes(filtro.descripcion.toLowerCase()) &&
+      evento.numPlazas >= filtro.plazasMinimas &&
+      evento.fechaInicio >= filtro.fechaMin &&
+      (filtro.estadoActivo ? evento.cancelado === false : true)
+    )
+  })
 
   return (
     <div className="d-flex flex-column align-items-center">
@@ -66,44 +60,50 @@ export default function Eventos() {
             <Col md={4}>
               <Form.Label>Nombre</Form.Label>
               <Form.Control
+                name="nombre"
                 type="text"
-                value={filtroNombre}
-                onChange={(e) => setFiltroNombre(e.target.value)}
-                placeholder="Nombre del evento"
+                value={filtro.nombre}
+                onChange={handleInputChange}
+                placeholder="Maratón Internacional"
               />
             </Col>
             <Col md={4}>
               <Form.Label>Descripción</Form.Label>
               <Form.Control
+                name="descripcion"
                 type="text"
-                value={filtroDescripcion}
-                onChange={(e) => setFiltroDescripcion(e.target.value)}
-                placeholder="Descripción del evento"
+                value={filtro.descripcion}
+                onChange={handleInputChange}
+                placeholder="Maratón con corredores de todo el mundo"
               />
             </Col>
             <Col md={4}>
               <Form.Label>Número de plazas</Form.Label>
               <Form.Control
+                name="plazasMinimas"
                 type="number"
-                value={plazasMinimas}
-                onChange={(e) => setPlazasMinimas(e.target.value)}
+                value={filtro.plazasMinimas}
+                onChange={handleInputChange}
                 min="0"
+                placeholder="50"
               />
             </Col>
             <Col md={4}>
               <Form.Label>Fecha de inicio</Form.Label>
               <Form.Control
+                name="fechaMin"
                 type="datetime-local"
-                value={fechaMin}
-                onChange={(e) => setFechaMin(e.target.value)}
+                value={filtro.fechaMin}
+                onChange={handleInputChange}
               />
             </Col>
             <Col md={4} className="d-flex align-items-end">
               <Form.Check
+                name="estadoActivo"
                 type="checkbox"
                 label="Mostrar Activos"
-                checked={soloNoCancelados}
-                onChange={(e) => setSoloNoCancelados(e.target.checked)}
+                checked={filtro.estadoActivo}
+                onChange={handleInputChange}
               />
             </Col>
             <Col md="auto" className="d-flex align-items-end ms-auto">
