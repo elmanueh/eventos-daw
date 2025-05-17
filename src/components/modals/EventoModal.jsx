@@ -38,10 +38,14 @@ export default function EventoModal({
   const [espaciosList, setEspaciosList] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
 
+  const [maxPlazas, setMaxPlazas] = useState(0)
+
+  const plazasOcupadas = evento?.numPlazas - evento?.numPlazasDisponibles
+
   useEffect(() => {
     setFormData(evento ? { ...evento } : initialFormData)
     setErrorMessage('')
-  }, [show, evento, initialFormData])
+  }, [show])
 
   useEffect(() => {
     if (evento) {
@@ -50,7 +54,7 @@ export default function EventoModal({
         ...eventoSinId
       })
     }
-  }, [evento])
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -84,53 +88,30 @@ export default function EventoModal({
 
   useEffect(() => {
     const fetchEspacios = async () => {
-      if (!espacioFisico) {
-        const data = await fetchGet(API_URLS.ESPACIOS_LISTAR)
-        setEspaciosList(
-          data.espacio
-            .map((espacio) => espacio.espacioDTO)
-            .filter((espacio) => espacio.estado === ESTADOS.ACTIVO)
-        )
-      }
-    }
-
-    fetchEspacios()
-  }, [espacioFisico])
-
-  useEffect(() => {
-    const fetchEspacios = async () => {
-      const { fechaInicio, fechaFin, numPlazas } = formData
-
-      if (!fechaInicio && !fechaFin && !numPlazas) {
-        if (!espacioFisico) {
-          const data = await fetchGet(API_URLS.ESPACIOS_LISTAR)
-          setEspaciosList(
-            data.espacio
-              .map((espacio) => espacio.espacioDTO)
-              .filter((espacio) => espacio.estado === ESTADOS.ACTIVO)
-          )
-        }
-        return
-      }
-
-      if (!(fechaInicio && fechaFin && numPlazas)) {
-        return setEspaciosList([])
-      }
-
-      try {
-        const data = await fetchGet(
-          API_URLS.ESPACIOS_FILTRADOS(fechaInicio, fechaFin, numPlazas)
-        )
-        setEspaciosList(data.espacio.map((espacio) => espacio.espacioDTO))
-      } catch (error) {
-        console.error('Error al obtener espacios disponibles:', error)
-      }
+      const data = await fetchGet(API_URLS.ESPACIOS_LISTAR)
+      setEspaciosList(
+        data.espacio
+          .map((espacio) => espacio.espacioDTO)
+          .filter((espacio) => espacio.estado === ESTADOS.ACTIVO)
+      )
     }
 
     if (!espacioFisico) {
       fetchEspacios()
     }
-  }, [formData.fechaInicio, formData.fechaFin, formData.numPlazas])
+  }, [])
+
+  useEffect(() => {
+    if (espacioFisico) {
+      setMaxPlazas(espacioFisico.capacidad)
+    } else {
+      const espacioSeleccionado = espaciosList.find(
+        (espacio) => espacio.id === formData.espacioFisico
+      )
+
+      setMaxPlazas(espacioSeleccionado?.capacidad || Number.MAX_SAFE_INTEGER)
+    }
+  }, [formData.espacioFisico, espaciosList])
 
   return (
     <Modal show={show} onHide={onHide} centered>
@@ -213,15 +194,27 @@ export default function EventoModal({
               {!!errorMessage && !formData.numPlazas && (
                 <span className="text-danger ms-2">({errorMessage})</span>
               )}
+              {!!evento && (
+                <span className="text-muted ms-2">
+                  (Plazas disponibles: {formData.numPlazas - plazasOcupadas})
+                </span>
+              )}
             </Form.Label>
             <Form.Control
               type="number"
               placeholder="Ej. 5"
               name="numPlazas"
               value={formData.numPlazas}
-              onChange={handleChange}
-              min={1}
-              isInvalid={!!errorMessage && formData.numPlazas == ''}
+              onChange={(e) => {
+                const value = Math.max(
+                  plazasOcupadas || 1,
+                  Math.min(e.target.value, maxPlazas)
+                )
+                handleChange({ target: { name: e.target.name, value } })
+              }}
+              min={plazasOcupadas || 1}
+              max={maxPlazas}
+              isInvalid={!!errorMessage && formData.numPlazas === ''}
             />
           </Form.Group>
 

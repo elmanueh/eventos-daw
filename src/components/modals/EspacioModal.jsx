@@ -97,7 +97,12 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
               placeholder="Ej. 15000"
               name="capacidad"
               value={formData.capacidad}
-              onChange={handleChange}
+              min={1}
+              max={Number.MAX_SAFE_INTEGER}
+              onChange={(e) => {
+                const value = Math.min(e.target.value, Number.MAX_SAFE_INTEGER)
+                handleChange({ target: { name: e.target.name, value } })
+              }}
             />
           </Form.Group>
 
@@ -142,11 +147,20 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
                 ) : (
                   <Form.Control
                     type="number"
-                    step="any"
+                    step="0.0000001"
                     placeholder="Ej. 37.9861"
                     name="latitud"
                     value={formData.latitud}
-                    onChange={handleChange}
+                    min={-90}
+                    max={90}
+                    onChange={(e) => {
+                      let value = parseFloat(e.target.value)
+                      if (value > 90) value = 90
+                      if (value < -90) value = -90
+                      handleChange({
+                        target: { name: e.target.name, value: value.toFixed(7) }
+                      })
+                    }}
                   />
                 )}
               </div>
@@ -165,11 +179,20 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
                 ) : (
                   <Form.Control
                     type="number"
-                    step="any"
+                    step="0.0000001"
                     placeholder="Ej. -1.1295"
                     name="longitud"
                     value={formData.longitud}
-                    onChange={handleChange}
+                    min={-180}
+                    max={180}
+                    onChange={(e) => {
+                      let value = parseFloat(e.target.value)
+                      if (value > 180) value = 180
+                      if (value < -180) value = -180
+                      handleChange({
+                        target: { name: e.target.name, value: value.toFixed(7) }
+                      })
+                    }}
                   />
                 )}
               </div>

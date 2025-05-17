@@ -57,7 +57,15 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
         <Form>
           <Form.Group className="mb-3" controlId="formEvento">
             <Form.Label>Evento</Form.Label>
-            <Form.Control type="text" value={evento.nombre} readOnly />
+            <Form.Control
+              type="text"
+              value={evento.nombre}
+              readOnly
+              style={{
+                pointerEvents: 'none',
+                filter: 'brightness(0.70)'
+              }}
+            />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formNumPlazas">
@@ -72,7 +80,13 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
               placeholder="Ej. 5"
               name="numPlazas"
               value={formData.numPlazas}
-              onChange={handleChange}
+              onChange={(e) => {
+                const value = Math.min(
+                  e.target.value,
+                  evento.numPlazasDisponibles
+                )
+                handleChange({ target: { name: e.target.name, value } })
+              }}
               required
               min={1}
               max={evento.numPlazasDisponibles}
