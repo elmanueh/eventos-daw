@@ -29,10 +29,9 @@ export default function Home() {
           <i className="bi bi-houses-fill" /> Espacios físicos disponibles
         </h2>
         {espacios.length === 0 ? (
-          <div className="d-flex flex-column align-items-center justify-content-center gap-3">
-            <i className="bi bi-house-door-fill fs-1 text-primary" />
-            <h2 className="text-muted">No hay espacios disponibles</h2>
-          </div>
+          <h2 className="text-center text-muted">
+            No se han encontrado espacios disponibles por ahora.
+          </h2>
         ) : (
           <GroupCards
             objetos={espacios}
@@ -48,10 +47,9 @@ export default function Home() {
           <i className="bi bi-calendar-event-fill" /> Próximos eventos
         </h2>
         {eventos.length === 0 ? (
-          <div className="d-flex flex-column align-items-center justify-content-center gap-3">
-            <i className="bi bi-calendar-x-fill fs-1 text-primary" />
-            <h2 className="text-muted">No hay eventos disponibles</h2>
-          </div>
+          <h2 className="text-center text-muted">
+            Todavía no hay eventos, pero ¡estate atento!
+          </h2>
         ) : (
           <GroupCards
             objetos={eventos}

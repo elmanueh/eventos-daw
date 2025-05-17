@@ -1,7 +1,7 @@
 import Footer from '@components/layout/Footer'
 import Header from '@components/layout/Header'
 import PrivateRoute from '@components/PrivateRoute'
-import UserInfoCard from '@components/UserInfoCard'
+import UserCard from '@components/UserCard'
 import { Outlet } from 'react-router'
 
 export default function Layout() {
@@ -13,7 +13,7 @@ export default function Layout() {
           <Outlet />
         </div>
         <div className="d-none d-xl-block" style={{ minWidth: '350px' }}>
-          <UserInfoCard />
+          <UserCard />
         </div>
       </div>
       <Footer />

@@ -1,5 +1,5 @@
 import { NAV_ROUTES } from '@/configs/constant'
-import UserInfoCard from '@components/UserInfoCard'
+import UserCard from '@components/UserCard'
 import { AuthContext } from '@context/AuthContext'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router'
@@ -67,7 +67,7 @@ export default function Header() {
           />
         </div>
         <div className="offcanvas-body">
-          <UserInfoCard user={user} />
+          <UserCard />
           <button className="btn btn-danger mt-4 w-100" onClick={handleLogout}>
             Cerrar sesión
           </button>

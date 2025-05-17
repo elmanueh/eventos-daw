@@ -1,39 +1,47 @@
-import { TARJETA_TIPOS } from '@/configs/constant'
+import { ESTADOS, TARJETA_TIPOS } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
 import GroupCards from '@components/GroupCards'
-import { useMemo, useState } from 'react'
+import Loading from '@pages/Loading'
+import { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 
 export default function Espacios() {
-  const { espacios } = useEspacios()
-
-  const [nombre, setNombre] = useState('')
-  const [descripcion, setDescripcion] = useState('')
-  const [estadoActivo, setEstadoActivo] = useState(false)
-  const [capacidadMinima, setCapacidadMinima] = useState('')
+  const { espacios, loading } = useEspacios()
+  const [filtro, setFiltro] = useState({
+    nombre: '',
+    descripcion: '',
+    estadoActivo: false,
+    capacidadMinima: ''
+  })
 
   const resetFiltros = () => {
-    setNombre('')
-    setDescripcion('')
-    setEstadoActivo(false)
-    setCapacidadMinima('')
+    setFiltro({
+      nombre: '',
+      descripcion: '',
+      estadoActivo: false,
+      capacidadMinima: ''
+    })
   }
 
-  const espaciosFiltrados = useMemo(() => {
-    return espacios.filter((espacio) => {
-      const nombreMatch = espacio.nombre
-        ?.toLowerCase()
-        .includes(nombre.toLowerCase())
-      const descripcionMatch = espacio.descripcion
-        ?.toLowerCase()
-        .includes(descripcion.toLowerCase())
-      const estadoMatch = !estadoActivo || espacio.estado === 'ACTIVO'
-      const capacidadMatch =
-        capacidadMinima === '' || espacio.capacidad >= parseInt(capacidadMinima)
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setFiltro((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }))
+  }
 
-      return nombreMatch && descripcionMatch && estadoMatch && capacidadMatch
-    })
-  }, [nombre, descripcion, estadoActivo, capacidadMinima, espacios])
+  if (loading) return <Loading />
+  const espaciosFiltrados = espacios.filter((espacio) => {
+    return (
+      espacio.nombre.toLowerCase().includes(filtro.nombre.toLowerCase()) &&
+      espacio.descripcion
+        .toLowerCase()
+        .includes(filtro.descripcion.toLowerCase()) &&
+      espacio.capacidad >= filtro.capacidadMinima &&
+      (filtro.estadoActivo ? espacio.estado === ESTADOS.ACTIVO : true)
+    )
+  })
 
   return (
     <div className="d-flex flex-column gap-3 align-items-center">
@@ -49,39 +57,44 @@ export default function Espacios() {
             <Col md={4}>
               <Form.Label>Nombre</Form.Label>
               <Form.Control
+                name="nombre"
                 type="text"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-                placeholder="Nombre del espacio"
+                value={filtro.nombre}
+                onChange={handleInputChange}
+                placeholder="Business Center Valencia"
               />
             </Col>
 
             <Col md={4}>
               <Form.Label>Descripción</Form.Label>
               <Form.Control
+                name="descripcion"
                 type="text"
-                value={descripcion}
-                onChange={(e) => setDescripcion(e.target.value)}
-                placeholder="Descripción"
+                value={filtro.descripcion}
+                onChange={handleInputChange}
+                placeholder="Espacio elegante y moderno"
               />
             </Col>
 
             <Col md={4}>
               <Form.Label>Capacidad</Form.Label>
               <Form.Control
+                name="capacidadMinima"
                 type="number"
-                value={capacidadMinima}
-                onChange={(e) => setCapacidadMinima(e.target.value)}
+                value={filtro.capacidadMinima}
+                onChange={handleInputChange}
                 min="0"
+                placeholder="200"
               />
             </Col>
 
             <Col md={4} className="d-flex align-items-end">
               <Form.Check
+                name="estadoActivo"
                 type="checkbox"
-                label="Mostrar Activos"
-                checked={estadoActivo}
-                onChange={(e) => setEstadoActivo(e.target.checked)}
+                label="Mostrar activos"
+                checked={filtro.estadoActivo}
+                onChange={handleInputChange}
               />
             </Col>
 

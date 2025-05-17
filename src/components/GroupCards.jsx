@@ -39,7 +39,7 @@ export default function GroupCards({
     <section className="d-flex flex-column gap-4">
       {getCurrentPageEspacios().length === 0 ? (
         <div style={{ marginBottom: '100px' }}>
-          <p>No hay {tipo} disponibles.</p>
+          <p>No hay {tipo} disponibles para mostrar.</p>
         </div>
       ) : (
         <>
