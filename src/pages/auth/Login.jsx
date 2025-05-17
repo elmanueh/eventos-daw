@@ -20,35 +20,31 @@ export default function Login() {
     }
 
     try {
-      const response = await fetch(API_URLS.AUTH_LOGIN, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ usuario: username, contraseña: password }),
-        credentials: 'include'
-      })
-
-      if (!response.ok) {
-        const errorMessage =
-          response.status === 401
-            ? 'Credenciales incorrectas.'
-            : 'Error en el servidor.'
-        return showMessageError(errorMessage)
-      }
-
-      const userData = await response.json()
-      login(userData)
+      await login(username, password)
       window.location.replace(NAV_ROUTES.HOME)
-    } catch {
-      showMessageError('Error de conexión. Intenta más tarde.')
+    } catch (error) {
+      showMessageError(error.message)
     }
   }
 
   const handleGithubLogin = () => {
-    console.log('Iniciar sesión con GitHub')
-    window.location.href = API_URLS.AUTH_GITHUB_OAUTH
+    const width = 450
+    const height = 550
+    const left = window.screenX + (window.outerWidth - width) / 2
+    const top = window.screenY + (window.outerHeight - height) / 2
 
-    // Poner información en el localStorage
-    // login(data);
+    const popup = window.open(
+      API_URLS.AUTH_GITHUB_OAUTH,
+      '_blank',
+      `width=${width},height=${height},left=${left},top=${top}`
+    )
+
+    const interval = setInterval(() => {
+      if (popup?.closed) {
+        clearInterval(interval)
+        window.location.href = NAV_ROUTES.HOME
+      }
+    }, 500)
   }
 
   return (
@@ -69,7 +65,7 @@ export default function Login() {
         <hr className="flex-grow-1" />
       </div>
 
-      <form className="d-grid gap-3">
+      <form className="d-grid gap-3" onSubmit={handleLogin}>
         <div className="form-group" id="formUsername">
           <label htmlFor="username">Nombre de usuario</label>
           <input type="text" id="username" className="form-control" />
@@ -82,11 +78,7 @@ export default function Login() {
 
         <div id="errorMessage" className="alert alert-danger d-none" />
 
-        <button
-          type="button"
-          className="btn btn-primary mt-1"
-          onClick={handleLogin}
-        >
+        <button type="submit" className="btn btn-primary mt-1">
           Iniciar sesión
         </button>
       </form>

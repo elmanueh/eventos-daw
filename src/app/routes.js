@@ -1,4 +1,3 @@
-import { NAV_ROUTES } from '@/configs/constant'
 import ErrorCargandoDatos from '@pages/ErrorCargandoDatos'
 import ErrorNotFound from '@pages/ErrorNotFound'
 import HomeMain from '@pages/HomeMain'
@@ -12,33 +11,16 @@ import Eventos from '@pages/eventos/Eventos'
 import MisEventos from '@pages/eventos/MisEventos'
 import Home from '@pages/home/Home'
 import MisReservas from '@pages/reservas/MisReservas'
-import { createBrowserRouter, redirect } from 'react-router'
-
-function authLoader({ request }) {
-  const user = localStorage.getItem('user')
-  const url = new URL(request.url)
-
-  if (!user && url.pathname !== NAV_ROUTES.LOGIN) {
-    return redirect(NAV_ROUTES.LOGIN)
-  }
-
-  if (user && url.pathname === NAV_ROUTES.LOGIN) {
-    return redirect(NAV_ROUTES.HOME)
-  }
-
-  return null
-}
+import { createBrowserRouter } from 'react-router'
 
 const router = createBrowserRouter([
   {
     path: '/login',
-    Component: Login,
-    loader: authLoader
+    Component: Login
   },
   {
     path: '/',
     Component: Layout,
-    loader: authLoader,
     ErrorBoundary: ErrorCargandoDatos,
     children: [
       { index: true, Component: HomeMain },

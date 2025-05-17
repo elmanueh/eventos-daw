@@ -1,44 +1,38 @@
-import { API_URLS } from '@/configs/constant'
+import { AuthService } from '@/services/authService'
 import { AuthContext } from '@context/AuthContext'
 import { useEffect, useState } from 'react'
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user')
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
+    const fetchUser = async () => {
+      try {
+        const user = await AuthService.getUser()
+        setUser(user)
+      } catch {
+        setUser(null)
+      } finally {
+        setLoading(false)
+      }
     }
+
+    fetchUser()
   }, [])
 
-  function login(userData) {
-    const userInfo = {
-      id: userData.idUsuario,
-      username: userData.nombreUsuario,
-      roles: userData.rolesUsuario
-    }
-
-    localStorage.setItem('user', JSON.stringify(userInfo))
-    setUser(userInfo)
+  const login = async (username, password) => {
+    const user = await AuthService.login(username, password)
+    setUser(user)
   }
 
-  async function logout() {
-    const response = await fetch(API_URLS.AUTH_LOGOUT, {
-      method: 'POST',
-      credentials: 'include'
-    })
-
-    if (!response.ok) {
-      throw new Error('Error al cerrar sesión')
-    }
-
-    localStorage.removeItem('user')
+  const logout = async () => {
+    await AuthService.logout()
     setUser(null)
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   )
