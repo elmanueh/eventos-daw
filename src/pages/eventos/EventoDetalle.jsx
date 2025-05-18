@@ -1,5 +1,6 @@
 import {
   AUTH_ROLES,
+  ESPACIOS_REDUCER,
   ESTADOS,
   GROUP_DETALLES_CARDS_TIPOS,
   NAV_ROUTES,
@@ -32,7 +33,9 @@ export default function EventoDetalle() {
   const { user } = useContext(AuthContext)
   const eventoId = useLoaderData()
   const { eventos, loading } = useEventos()
-  const { espacios, loading: loadingEspacios } = useEspacios()
+  const { espacios, loading: loadingEspacios } = useEspacios(
+    ESPACIOS_REDUCER.ALL
+  )
   const { reservas, loading: loadingReservas } = useReservas(eventoId)
 
   const [showConfirmation, setShowConfirmation] = useState(false)

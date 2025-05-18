@@ -104,3 +104,22 @@ export const GROUP_DETALLES_CARDS_TIPOS = {
   RESERVAS: 'reservas',
   EVENTOS: 'eventos'
 }
+
+export const ESPACIOS_REDUCER = {
+  ALL: 'ALL',
+  PROPIETARIO: 'PROPIETARIO',
+  FIRST: 'FIRST ',
+  RANDOM: 'RANDOM ',
+  BY_ID: 'BY_ID '
+}
+
+export const EVENTOS_REDUCER = {
+  ALL: 'ALL',
+  GESTOR: 'GESTOR',
+  BY_ESPACIO: 'BY_ESPACIO'
+}
+
+export const RESERVAS_REDUCER = {
+  BY_EVENTO: 'BY_EVENTO',
+  BY_USUARIO: 'BY_USUARIO'
+}

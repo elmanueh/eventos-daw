@@ -1,4 +1,4 @@
-import { NAV_ROUTES } from '@/configs/constant'
+import { ESPACIOS_REDUCER, NAV_ROUTES } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
 import { useEventos } from '@/hooks/useEventos'
 import { useReservas } from '@/hooks/useReservas'
@@ -8,7 +8,9 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 
 export default function UserInfoCard() {
-  const { espacios, loading: loadingEspacios } = useEspacios()
+  const { espacios, loading: loadingEspacios } = useEspacios(
+    ESPACIOS_REDUCER.ALL
+  )
   const { eventos, loading: loadingEventos } = useEventos()
   const { reservas, loading: loadingReservas } = useReservas()
   const [info, setInfo] = useState({

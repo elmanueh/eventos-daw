@@ -1,17 +1,16 @@
-import { TARJETA_TIPOS } from '@/configs/constant'
+import { ESPACIOS_REDUCER, TARJETA_TIPOS } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
 import { handleCrearEspacio } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
 import EspacioModal from '@components/modals/EspacioModal'
 import MyToast, { useToast } from '@components/toast/MyToast'
-import { AuthContext } from '@context/AuthContext'
 import Loading from '@pages/Loading'
 
-import { useContext, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 export default function MisEspacios() {
-  const { espacios, loading } = useEspacios(true)
+  const { espacios, loading } = useEspacios(ESPACIOS_REDUCER.PROPIETARIO)
 
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()

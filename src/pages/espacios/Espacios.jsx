@@ -1,4 +1,4 @@
-import { ESTADOS, TARJETA_TIPOS } from '@/configs/constant'
+import { ESPACIOS_REDUCER, ESTADOS, TARJETA_TIPOS } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
 import GroupCards from '@components/GroupCards'
 import Loading from '@pages/Loading'
@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 
 export default function Espacios() {
-  const { espacios, loading } = useEspacios()
+  const { espacios, loading } = useEspacios(ESPACIOS_REDUCER.ALL)
   const [filtro, setFiltro] = useState({
     nombre: '',
     descripcion: '',
