@@ -25,9 +25,7 @@ export default function UserInfoCard() {
         if (reservasActivas.length === 0) return
 
         const eventosActivos = eventos
-          .filter((e) =>
-            reservasActivas.map((r) => r.evento).includes(e.idEvento)
-          )
+          .filter((e) => reservasActivas.map((r) => r.evento).includes(e.id))
           .sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio))
         if (eventosActivos.length === 0) return
 
