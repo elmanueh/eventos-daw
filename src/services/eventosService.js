@@ -14,10 +14,10 @@ const createEvento = async (evento) => {
 
 const getEventos = async () => {
   try {
-    const response = await HttpService.get(API_URLS.EVENTOS_LISTAR)
+    const response = await HttpService.fetchAllPagesIfNeeded(API_URLS.EVENTOS_LISTAR)
     const eventos = await Promise.all(
       response._embedded.eventoResumenList.map((e) =>
-        HttpService.get(API_URLS.EVENTOS_DETALLE(e.id))
+        HttpService.fetchAllPagesIfNeeded(API_URLS.EVENTOS_DETALLE(e.id))
       )
     )
     return eventos
@@ -27,7 +27,7 @@ const getEventos = async () => {
 }
 
 const getEventosById = async (id) => {
-  const response = await HttpService.get(API_URLS.EVENTOS_DETALLE(id))
+  const response = await HttpService.fetchAllPagesIfNeeded(API_URLS.EVENTOS_DETALLE(id))
 
   if (!response.ok) {
     throw new Error('Error al obtener el evento por ID' + id)
