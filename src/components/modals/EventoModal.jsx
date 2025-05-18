@@ -4,7 +4,7 @@ import {
   ESTADOS,
   EVENTO_MODIFICABLE
 } from '@/configs/constant'
-import { fetchGet } from '@/utils/fetchGet'
+import { HttpService } from '@/services/httpService'
 import { AuthContext } from '@context/AuthContext'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import Button from 'react-bootstrap/Button'
@@ -88,7 +88,7 @@ export default function EventoModal({
 
   useEffect(() => {
     const fetchEspacios = async () => {
-      const data = await fetchGet(API_URLS.ESPACIOS_LISTAR)
+      const data = await HttpService.get(API_URLS.ESPACIOS_LISTAR)
       setEspaciosList(
         data.espacio
           .map((espacio) => espacio.espacioDTO)

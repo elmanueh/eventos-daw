@@ -14,7 +14,7 @@ const createEvento = async (evento) => {
 
 const getEventos = async () => {
   try {
-    const response = await HttpService.fetchAllPagesIfNeeded(API_URLS.EVENTOS_LISTAR)
+    const response = await HttpService.get(API_URLS.EVENTOS_LISTAR)
     const eventos = await Promise.all(
       response._embedded.eventoResumenList.map((e) =>
         HttpService.get(API_URLS.EVENTOS_DETALLE(e.id))
@@ -39,7 +39,7 @@ const getEventosById = async (id) => {
 
 const getEventosByGestor = async (gestor) => {
   try {
-    const response = await HttpService.fetchAllPagesIfNeeded(API_URLS.EVENTOS_GESTOR(gestor))
+    const response = await HttpService.get(API_URLS.EVENTOS_GESTOR(gestor))
     return response._embedded.eventoResumenList
   } catch {
     throw new Error('Error al obtener los eventos por gestor')

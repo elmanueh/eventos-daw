@@ -4,7 +4,7 @@ import {
   NAV_ROUTES,
   TARJETA_TIPOS
 } from '@/configs/constant'
-import { fetchGet } from '@/utils/fetchGet'
+import { HttpService } from '@/services/httpService'
 import {
   handleCambiarEstadoEspacio,
   handleEditEspacio
@@ -86,7 +86,9 @@ export default function EspacioCard({ espacio, visible }) {
             type="button"
             className="btn btn-outline-primary"
             onClick={async () => {
-              const data = await fetchGet(API_URLS.ESPACIOS_DETALLE(espacio.id))
+              const data = await HttpService.get(
+                API_URLS.ESPACIOS_DETALLE(espacio.id)
+              )
               setEspacioDet(data)
               setShowEspacioModal(true)
             }}

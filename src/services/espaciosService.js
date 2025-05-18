@@ -12,7 +12,7 @@ const createEspacio = async (espacio) => {
 
 const getEspacios = async () => {
   try {
-    const response = await HttpService.fetchAllPagesIfNeeded(API_URLS.ESPACIOS_LISTAR)
+    const response = await HttpService.get(API_URLS.ESPACIOS_LISTAR(number))
     const espacios = await Promise.all(
       response.espacio.map((e) =>
         HttpService.get(API_URLS.ESPACIOS_DETALLE(e.espacioDTO.id))

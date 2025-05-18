@@ -30,36 +30,6 @@ async function post(url, data) {
   }
 }
 
-async function fetchAllPagesIfNeeded(url) {
-  const firstResponse = await get(url)
-
-  if (!firstResponse.page) return firstResponse
-
-  let allItems = []
-  const embeddedKey = firstResponse._embedded && Object.keys(firstResponse._embedded)[0]
-  const items = embeddedKey ? firstResponse._embedded[embeddedKey] : []
-
-  allItems = allItems.concat(items)
-
-  const totalPages = firstResponse.page.totalPages || 1
-
-  for (let page = 1; page < totalPages; page++) {
-    const pagedUrl = new URL(url)
-    pagedUrl.searchParams.set('page', page)
-    pagedUrl.searchParams.set('size', firstResponse.page.size || 20)
-
-    const pageResponse = await get(pagedUrl.toString())
-    const moreItems = embeddedKey ? pageResponse._embedded[embeddedKey] : []
-    allItems = allItems.concat(moreItems)
-  }
-
-  return {
-    _embedded: {
-      [embeddedKey]: allItems
-    }
-  }
-}
-
 async function get(url) {
   const response = await fetch(url, {
     method: 'GET',
@@ -154,4 +124,4 @@ async function put(url, data) {
   }
 }
 
-export const HttpService = { get, patch, post, put, fetchAllPagesIfNeeded }
+export const HttpService = { get, patch, post, put }

@@ -1,5 +1,5 @@
 import { API_URLS, NAV_ROUTES } from '@/configs/constant'
-import { fetchGet } from '@/utils/fetchGet'
+import { HttpService } from '@/services/httpService'
 import { getReservaStatus } from '@/utils/reservaHelper'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
@@ -18,16 +18,18 @@ export default function ReservaCard({ reserva }) {
   useEffect(() => {
     const getInfo = async () => {
       try {
-        const reservaDTO = await fetchGet(API_URLS.RESERVAS_DETALLE(reserva.id))
+        const reservaDTO = await HttpService.get(
+          API_URLS.RESERVAS_DETALLE(reserva.id)
+        )
 
-        const evento = await fetchGet(
+        const evento = await HttpService.get(
           API_URLS.EVENTOS_DETALLE(reservaDTO.evento)
         )
 
         let espacio = null
 
         if (!reserva.cancelada) {
-          espacio = await fetchGet(
+          espacio = await HttpService.get(
             API_URLS.ESPACIOS_DETALLE(evento.espacioFisico)
           )
         }
