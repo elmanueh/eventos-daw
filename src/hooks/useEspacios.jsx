@@ -22,7 +22,7 @@ function espaciosReducer(state, action) {
   }
 }
 
-export function useEspacios(type, param = 0) {
+export function useEspacios(type, value = 0) {
   const { user } = useContext(AuthContext)
   const [state, dispatch] = useReducer(espaciosReducer, initialState)
 
@@ -36,18 +36,18 @@ export function useEspacios(type, param = 0) {
           espacios = await ServicioEspacios.getEspacios()
           break
         case ESPACIOS_REDUCER.BY_ID:
-          espacios = await ServicioEspacios.getEspacioById(param)
+          espacios = await ServicioEspacios.getEspacioById(value)
           break
-        case ESPACIOS_REDUCER.PROPIETARIO:
+        case ESPACIOS_REDUCER.BY_PROPIETARIO:
           espacios = await ServicioEspacios.getEspaciosByPropietario(
             user.username
           )
           break
         case ESPACIOS_REDUCER.FIRST:
-          espacios = await ServicioEspacios.getEspaciosFirst(param)
+          espacios = await ServicioEspacios.getEspaciosFirst(value)
           break
         case ESPACIOS_REDUCER.RANDOM:
-          espacios = await ServicioEspacios.getEspaciosRandom(param)
+          espacios = await ServicioEspacios.getEspaciosRandom(value)
           break
         default:
           throw new Error('Tipo de espacios no válido')
@@ -55,10 +55,9 @@ export function useEspacios(type, param = 0) {
 
       dispatch({ type: 'FETCH_SUCCESS', payload: espacios })
     } catch (error) {
-      console.error('Error fetching espacios:', error)
       dispatch({ type: 'FETCH_ERROR', payload: error.message })
     }
-  }, [type, user?.username, param])
+  }, [type, user?.username, value])
 
   useEffect(() => {
     fetchEspacios()

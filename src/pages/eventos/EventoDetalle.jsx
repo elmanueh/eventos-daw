@@ -2,8 +2,10 @@ import {
   AUTH_ROLES,
   ESPACIOS_REDUCER,
   ESTADOS,
+  EVENTOS_REDUCER,
   GROUP_DETALLES_CARDS_TIPOS,
   NAV_ROUTES,
+  RESERVAS_REDUCER,
   TARJETA_TIPOS
 } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
@@ -32,25 +34,27 @@ import { useLoaderData } from 'react-router'
 export default function EventoDetalle() {
   const { user } = useContext(AuthContext)
   const eventoId = useLoaderData()
-  const { eventos, loading } = useEventos()
+  const { eventos: evento, loading: loadingEventos } = useEventos(
+    EVENTOS_REDUCER.BY_ID,
+    eventoId
+  )
+  const { eventos: otrosEventos } = useEventos(EVENTOS_REDUCER.RANDOM, 4)
   const { espacios, loading: loadingEspacios } = useEspacios(
     ESPACIOS_REDUCER.ALL
   )
-  const { reservas, loading: loadingReservas } = useReservas(eventoId)
+  const { reservas, loading: loadingReservas } = useReservas(
+    RESERVAS_REDUCER.BY_EVENTO,
+    eventoId
+  )
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showReservaModal, setShowReservaModal] = useState(false)
   const [showEventoModal, setShowEventoModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
 
-  if (loading || loadingEspacios || loadingReservas) return <Loading />
-  const evento = eventos.find((e) => e.id === eventoId)
-  const espacio = espacios.find((e) => e.id === evento.espacioFisico)
-  const otrosEventos = eventos
-    .filter((e) => e.id !== eventoId)
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 4)
+  if (loadingEventos || loadingEspacios || loadingReservas) return <Loading />
 
+  const espacio = espacios.find((e) => e.id === evento.espacioFisico)
   const isUser = user.roles.includes(AUTH_ROLES.USUARIO)
   const esMio = user.username === evento.organizador
 

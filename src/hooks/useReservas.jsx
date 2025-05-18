@@ -1,47 +1,60 @@
+import { RESERVAS_REDUCER } from '@/configs/constant'
 import { ServicioReservas } from '@/services/reservasService'
 import { AuthContext } from '@context/AuthContext'
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useReducer } from 'react'
 
-export function useReservas(idEvento) {
+const initialState = {
+  reservas: [],
+  loading: true,
+  error: null
+}
+
+function reservasReducer(state, action) {
+  switch (action.type) {
+    case 'FETCH_START':
+      return { ...state, loading: true, error: null }
+    case 'FETCH_SUCCESS':
+      return { ...state, loading: false, reservas: action.payload }
+    case 'FETCH_ERROR':
+      return { ...state, loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export function useReservas(type, value = 0) {
   const { user } = useContext(AuthContext)
-  const [reservas, setReservas] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [state, dispatch] = useReducer(reservasReducer, initialState)
 
-  const fetchReservas = async () => {
-    try {
-      const reservas = await ServicioReservas.getReservasByUsuario(user.id)
-      setReservas(reservas)
-    } catch (error) {
-      setError(error.message)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const fetchReservas = useCallback(async () => {
+    dispatch({ type: 'FETCH_START' })
 
-  const fetchReservasByEvento = async (idEvento) => {
     try {
-      const reservas = await ServicioReservas.getReservasByEvento(idEvento)
-      setReservas(reservas)
+      let eventos
+      switch (type) {
+        case RESERVAS_REDUCER.BY_USUARIO:
+          eventos = await ServicioReservas.getReservasByIdUsuario(user.id)
+          break
+        case RESERVAS_REDUCER.BY_EVENTO:
+          eventos = await ServicioReservas.getReservasByEvento(value)
+          break
+        default:
+          throw new Error('Tipo de reservas no válido')
+      }
+      dispatch({ type: 'FETCH_SUCCESS', payload: eventos })
     } catch (error) {
-      setError(error.message)
-    } finally {
-      setLoading(false)
+      dispatch({ type: 'FETCH_ERROR', payload: error.message })
     }
-  }
+  }, [type, user?.id, value])
 
   useEffect(() => {
-    if (idEvento) {
-      fetchReservasByEvento(idEvento)
-    } else {
-      fetchReservas()
-    }
-  }, [])
+    fetchReservas()
+  }, [fetchReservas])
 
   return {
-    reservas,
-    loading,
-    error,
+    reservas: state.reservas,
+    loading: state.loading,
+    error: state.error,
     refetch: fetchReservas
   }
 }

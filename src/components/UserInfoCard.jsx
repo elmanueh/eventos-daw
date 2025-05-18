@@ -1,4 +1,9 @@
-import { ESPACIOS_REDUCER, NAV_ROUTES } from '@/configs/constant'
+import {
+  ESPACIOS_REDUCER,
+  EVENTOS_REDUCER,
+  NAV_ROUTES,
+  RESERVAS_REDUCER
+} from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
 import { useEventos } from '@/hooks/useEventos'
 import { useReservas } from '@/hooks/useReservas'
@@ -11,8 +16,10 @@ export default function UserInfoCard() {
   const { espacios, loading: loadingEspacios } = useEspacios(
     ESPACIOS_REDUCER.ALL
   )
-  const { eventos, loading: loadingEventos } = useEventos()
-  const { reservas, loading: loadingReservas } = useReservas()
+  const { eventos, loading: loadingEventos } = useEventos(EVENTOS_REDUCER.ALL)
+  const { reservas, loading: loadingReservas } = useReservas(
+    RESERVAS_REDUCER.BY_USUARIO
+  )
   const [info, setInfo] = useState({
     evento: null,
     espacio: null

@@ -1,4 +1,4 @@
-import { TARJETA_TIPOS } from '@/configs/constant'
+import { EVENTOS_REDUCER, TARJETA_TIPOS } from '@/configs/constant'
 import { useEventos } from '@/hooks/useEventos'
 import { handleCrearEvento } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
@@ -9,7 +9,7 @@ import { useMemo, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 export default function MisEventos() {
-  const { eventos, loading } = useEventos(true)
+  const { eventos, loading } = useEventos(EVENTOS_REDUCER.BY_GESTOR)
 
   const [showEventoModal, setShowEventoModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()

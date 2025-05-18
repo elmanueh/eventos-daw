@@ -10,7 +10,7 @@ import { useMemo, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 export default function MisEspacios() {
-  const { espacios, loading } = useEspacios(ESPACIOS_REDUCER.PROPIETARIO)
+  const { espacios, loading } = useEspacios(ESPACIOS_REDUCER.BY_PROPIETARIO)
 
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()

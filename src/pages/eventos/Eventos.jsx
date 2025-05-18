@@ -1,4 +1,4 @@
-import { ESTADOS, TARJETA_TIPOS } from '@/configs/constant'
+import { ESTADOS, EVENTOS_REDUCER, TARJETA_TIPOS } from '@/configs/constant'
 import { useEventos } from '@/hooks/useEventos'
 import { getEstadoEvento } from '@/utils/eventoHelper'
 import GroupCards from '@components/GroupCards'
@@ -6,30 +6,23 @@ import Loading from '@pages/Loading'
 import { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 
+const defaultFiltro = {
+  nombre: '',
+  descripcion: '',
+  plazasMinimas: '',
+  fechaMin: '',
+  mostrarActivo: true,
+  mostrarCancelado: false,
+  mostrarFinalizado: false,
+  mostrarEnCurso: false
+}
+
 export default function Eventos() {
-  const { eventos, loading } = useEventos()
-  const [filtro, setFiltro] = useState({
-    nombre: '',
-    descripcion: '',
-    plazasMinimas: '',
-    fechaMin: '',
-    mostrarActivo: true,
-    mostrarCancelado: false,
-    mostrarFinalizado: false,
-    mostrarEnCurso: false
-  })
+  const { eventos, loading } = useEventos(EVENTOS_REDUCER.ALL)
+  const [filtro, setFiltro] = useState(defaultFiltro)
 
   const resetFiltros = () => {
-    setFiltro({
-      nombre: '',
-      descripcion: '',
-      plazasMinimas: '',
-      fechaMin: '',
-      mostrarActivo: true,
-      mostrarCancelado: false,
-      mostrarFinalizado: false,
-      mostrarEnCurso: false
-    })
+    setFiltro(defaultFiltro)
   }
 
   const handleInputChange = (e) => {
@@ -54,7 +47,6 @@ export default function Eventos() {
   }
 
   if (loading) return <Loading />
-  const hoy = new Date()
 
   const eventosFiltrados = eventos.filter((evento) => {
     const estado = getEstadoEvento(evento)

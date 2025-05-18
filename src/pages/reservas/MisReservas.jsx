@@ -1,11 +1,11 @@
-import { TARJETA_TIPOS } from '@/configs/constant'
+import { RESERVAS_REDUCER, TARJETA_TIPOS } from '@/configs/constant'
 import { useReservas } from '@/hooks/useReservas'
 import GroupCards from '@components/GroupCards'
 import Loading from '@pages/Loading'
 import { Container } from 'react-bootstrap'
 
 export default function MisReservas() {
-  const { reservas, loading } = useReservas()
+  const { reservas, loading } = useReservas(RESERVAS_REDUCER.BY_USUARIO)
 
   if (loading) return <Loading />
 

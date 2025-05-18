@@ -37,7 +37,8 @@ export const API_URLS = {
 
   // ----- EVENTOS -----
   EVENTOS_CREAR: 'http://localhost:8080/api/eventos',
-  EVENTOS_LISTAR: 'http://localhost:8080/api/eventos',
+  EVENTOS_LISTAR: (number) =>
+    'http://localhost:8080/api/eventos?size=' + number,
   EVENTOS_DETALLE: (id) => `http://localhost:8080/api/eventos/${id}`,
   EVENTOS_CANCELAR: (id) => `http://localhost:8080/api/eventos/${id}/ocupacion`,
   EVENTOS_GESTOR: (name) => `http://localhost:8080/api/eventos/gestor/${name}`,
@@ -107,16 +108,19 @@ export const GROUP_DETALLES_CARDS_TIPOS = {
 
 export const ESPACIOS_REDUCER = {
   ALL: 'ALL',
-  PROPIETARIO: 'PROPIETARIO',
   FIRST: 'FIRST ',
   RANDOM: 'RANDOM ',
-  BY_ID: 'BY_ID '
+  BY_ID: 'BY_ID ',
+  BY_PROPIETARIO: 'BY_PROPIETARIO'
 }
 
 export const EVENTOS_REDUCER = {
   ALL: 'ALL',
-  GESTOR: 'GESTOR',
-  BY_ESPACIO: 'BY_ESPACIO'
+  FIRST: 'FIRST',
+  RANDOM: 'RANDOM',
+  BY_ID: 'BY_ID',
+  BY_ESPACIO: 'BY_ESPACIO',
+  BY_GESTOR: 'BY_GESTOR'
 }
 
 export const RESERVAS_REDUCER = {

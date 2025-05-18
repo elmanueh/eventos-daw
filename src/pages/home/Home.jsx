@@ -1,4 +1,8 @@
-import { ESPACIOS_REDUCER, TARJETA_TIPOS } from '@/configs/constant'
+import {
+  ESPACIOS_REDUCER,
+  EVENTOS_REDUCER,
+  TARJETA_TIPOS
+} from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
 import { useEventos } from '@/hooks/useEventos'
 import GroupCards from '@components/GroupCards'
@@ -8,7 +12,7 @@ import { useContext, useId } from 'react'
 export default function Home() {
   const { user } = useContext(AuthContext)
   const { espacios } = useEspacios(ESPACIOS_REDUCER.RANDOM, 6)
-  const { eventos } = useEventos()
+  const { eventos } = useEventos(EVENTOS_REDUCER.RANDOM, 6)
   const idGroupEspacios = useId()
   const idGroupEventos = useId()
 
