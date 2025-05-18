@@ -4,11 +4,14 @@ import { handleCrearEvento } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
 import EventoModal from '@components/modals/EventoModal'
 import MyToast, { useToast } from '@components/toast/MyToast'
-import { useMemo, useState } from 'react'
+import { AuthContext } from '@context/AuthContext'
+import Loading from '@pages/Loading'
+import { useContext, useMemo, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 export default function MisEventos() {
-  const { eventos } = useEventos()
+  const { user } = useContext(AuthContext)
+  const { eventos: eventosAll, loading } = useEventos()
 
   const [showEventoModal, setShowEventoModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
@@ -33,6 +36,8 @@ export default function MisEventos() {
     setMostrarCancelados(true)
   }
 
+  const eventos = eventosAll.filter((e) => e.organizador === user.username)
+
   const eventosFiltrados = useMemo(() => {
     return eventos.filter((evento) => {
       const cumpleNombre = evento.nombre
@@ -47,6 +52,8 @@ export default function MisEventos() {
       return cumpleNombre && cumpleDescripcion && cumplePlazas
     })
   }, [eventos, filtroNombre, filtroDescripcion, filtroPlazas])
+
+  if (loading) return <Loading />
 
   const eventosEnCurso = eventosFiltrados.filter((e) => {
     const inicio = new Date(e.fechaInicio)

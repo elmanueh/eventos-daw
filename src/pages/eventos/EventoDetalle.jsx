@@ -1,23 +1,27 @@
 import {
   AUTH_ROLES,
   ESTADOS,
+  GROUP_DETALLES_CARDS_TIPOS,
   NAV_ROUTES,
   TARJETA_TIPOS
 } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
 import { useEventos } from '@/hooks/useEventos'
+import { useReservas } from '@/hooks/useReservas'
 import { getEstadoColor, getEstadoEvento } from '@/utils/eventoHelper'
 import {
   handleDesactivarEvento,
   handleEditEvento,
   handleResevar
 } from '@/utils/operations'
+import GroupDetallesCards from '@components/GroupDetallesCards'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EventoModal from '@components/modals/EventoModal'
 import ReservaModal from '@components/modals/ReservaModal'
 import OthersCards from '@components/OthersCards'
 import MyToast, { useToast } from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
+import Loading from '@pages/Loading'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
 import { useContext, useState } from 'react'
@@ -29,20 +33,20 @@ export default function EventoDetalle() {
   const eventoId = useLoaderData()
   const { eventos, loading } = useEventos()
   const { espacios, loading: loadingEspacios } = useEspacios()
+  const { reservas, loading: loadingReservas } = useReservas(eventoId)
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showReservaModal, setShowReservaModal] = useState(false)
   const [showEventoModal, setShowEventoModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
 
-  if (loading || loadingEspacios) return
+  if (loading || loadingEspacios || loadingReservas) return <Loading />
   const evento = eventos.find((e) => e.idEvento === eventoId)
   const espacio = espacios.find((e) => e.id === evento.espacioFisico)
-  console.log(evento)
   const otrosEventos = eventos
     .filter((e) => e.id !== eventoId)
     .sort(() => 0.5 - Math.random())
-    .slice(0, 3)
+    .slice(0, 4)
 
   const isUser = user.roles.includes(AUTH_ROLES.USUARIO)
   const esMio = user.username === evento.organizador
@@ -235,6 +239,13 @@ export default function EventoDetalle() {
                   )}
                 </Card.Body>
               </Card>
+
+              {esMio && (
+                <GroupDetallesCards
+                  objetos={reservas}
+                  tipo={GROUP_DETALLES_CARDS_TIPOS.RESERVAS}
+                />
+              )}
             </>
           )}
         </Col>

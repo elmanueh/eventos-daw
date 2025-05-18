@@ -10,6 +10,12 @@ const getReservasByUsuario = async (id) => {
   return reservas
 }
 
+const getReservasByEvento = async (id) => {
+  const data = await HttpService.get(API_URLS.RESERVAS_EVENTO(id))
+  return data._embedded.reservaResumenList
+}
+
 export const ServicioReservas = {
-  getReservasByUsuario
+  getReservasByUsuario,
+  getReservasByEvento
 }

@@ -2,7 +2,7 @@ import { ServicioReservas } from '@/services/reservasService'
 import { AuthContext } from '@context/AuthContext'
 import { useContext, useEffect, useState } from 'react'
 
-export function useReservas() {
+export function useReservas(idEvento) {
   const { user } = useContext(AuthContext)
   const [reservas, setReservas] = useState([])
   const [loading, setLoading] = useState(true)
@@ -19,8 +19,23 @@ export function useReservas() {
     }
   }
 
+  const fetchReservasByEvento = async (idEvento) => {
+    try {
+      const reservas = await ServicioReservas.getReservasByEvento(idEvento)
+      setReservas(reservas)
+    } catch (error) {
+      setError(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
-    fetchReservas()
+    if (idEvento) {
+      fetchReservasByEvento(idEvento)
+    } else {
+      fetchReservas()
+    }
   }, [])
 
   return {

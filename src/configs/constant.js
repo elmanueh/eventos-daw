@@ -96,4 +96,11 @@ export const EVENTO_MODIFICABLE = [
 
 // Número de elementos por página
 export const GROUP_CARDS_SIZE = 6
-export const GROUP_DETALLES_CARDS_SIZE = 5
+export const GROUP_DETALLES_CARDS_SIZE = 4
+
+// Tipos de tarjetas para el componente GroupDetallesCards
+export const GROUP_DETALLES_CARDS_TIPOS = {
+  PUNTOS_INTERES: 'puntosInteres',
+  RESERVAS: 'reservas',
+  EVENTOS: 'eventos'
+}

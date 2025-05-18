@@ -1,17 +1,24 @@
 import { TARJETA_TIPOS } from '@/configs/constant'
 import { useReservas } from '@/hooks/useReservas'
 import GroupCards from '@components/GroupCards'
+import Loading from '@pages/Loading'
 import { Container } from 'react-bootstrap'
 
 export default function MisReservas() {
-  const { reservas } = useReservas()
+  const { reservas, loading } = useReservas()
 
-  const reservasActivas = reservas.filter((r) => !r.cancelada)
+  if (loading) return <Loading />
+
+  const reservasActivas = reservas.filter((r) => {
+    const fechaFin = new Date(r.fechaFin)
+    return !r.cancelada && fechaFin >= new Date()
+  })
+
   const reservasCanceladas = reservas.filter((r) => r.cancelada)
 
   const reservasFinalizadas = reservas.filter((r) => {
     const fechaFin = new Date(r.fechaFin)
-    return fechaFin < new Date()
+    return !r.cancelada && fechaFin < new Date()
   })
 
   return (
