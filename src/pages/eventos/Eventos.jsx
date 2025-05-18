@@ -1,5 +1,6 @@
-import { TARJETA_TIPOS } from '@/configs/constant'
+import { ESTADOS, TARJETA_TIPOS } from '@/configs/constant'
 import { useEventos } from '@/hooks/useEventos'
+import { getEstadoEvento } from '@/utils/eventoHelper'
 import GroupCards from '@components/GroupCards'
 import Loading from '@pages/Loading'
 import { useState } from 'react'
@@ -10,31 +11,54 @@ export default function Eventos() {
   const [filtro, setFiltro] = useState({
     nombre: '',
     descripcion: '',
-    estadoActivo: false,
     plazasMinimas: '',
-    fechaMin: ''
+    fechaMin: '',
+    mostrarActivo: true,
+    mostrarCancelado: false,
+    mostrarFinalizado: false,
+    mostrarEnCurso: false
   })
 
   const resetFiltros = () => {
     setFiltro({
       nombre: '',
       descripcion: '',
-      estadoActivo: false,
       plazasMinimas: '',
-      fechaMin: ''
+      fechaMin: '',
+      mostrarActivo: true,
+      mostrarCancelado: false,
+      mostrarFinalizado: false,
+      mostrarEnCurso: false
     })
   }
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target
-    setFiltro((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }))
+    setFiltro((prev) => {
+      const nuevoFiltro = {
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value
+      }
+
+      if (name === 'plazasMinimas' || name === 'fechaMin') {
+        nuevoFiltro.mostrarCancelado = false
+      }
+
+      if (name === 'mostrarCancelado' && checked) {
+        nuevoFiltro.plazasMinimas = ''
+        nuevoFiltro.fechaMin = ''
+      }
+
+      return nuevoFiltro
+    })
   }
 
   if (loading) return <Loading />
+  const hoy = new Date()
+
   const eventosFiltrados = eventos.filter((evento) => {
+    const estado = getEstadoEvento(evento)
+
     return (
       evento.nombre.toLowerCase().includes(filtro.nombre.toLowerCase()) &&
       evento.descripcion
@@ -42,7 +66,10 @@ export default function Eventos() {
         .includes(filtro.descripcion.toLowerCase()) &&
       evento.numPlazas >= filtro.plazasMinimas &&
       evento.fechaInicio >= filtro.fechaMin &&
-      (filtro.estadoActivo ? evento.cancelado === false : true)
+      ((filtro.mostrarCancelado && estado === ESTADOS.CANCELADO) ||
+        (filtro.mostrarActivo && estado === ESTADOS.ACTIVO) ||
+        (filtro.mostrarFinalizado && estado === ESTADOS.FINALIZADO) ||
+        (filtro.mostrarEnCurso && estado === ESTADOS.EN_CURSO))
     )
   })
 
@@ -97,12 +124,39 @@ export default function Eventos() {
                 onChange={handleInputChange}
               />
             </Col>
-            <Col md={4} className="d-flex align-items-end">
+            <Col xs="auto" className="d-flex align-items-end">
               <Form.Check
-                name="estadoActivo"
-                type="checkbox"
+                name="mostrarActivo"
+                type="switch"
                 label="Mostrar Activos"
-                checked={filtro.estadoActivo}
+                checked={filtro.mostrarActivo}
+                onChange={handleInputChange}
+              />
+            </Col>
+            <Col xs="auto" className="d-flex align-items-end">
+              <Form.Check
+                name="mostrarFinalizado"
+                type="switch"
+                label="Mostrar Finalizados"
+                checked={filtro.mostrarFinalizado}
+                onChange={handleInputChange}
+              />
+            </Col>
+            <Col xs="auto" className="d-flex align-items-end">
+              <Form.Check
+                name="mostrarEnCurso"
+                type="switch"
+                label="Mostrar En Curso"
+                checked={filtro.mostrarEnCurso}
+                onChange={handleInputChange}
+              />
+            </Col>
+            <Col xs="auto" className="d-flex align-items-end">
+              <Form.Check
+                name="mostrarCancelado"
+                type="switch"
+                label="Mostrar Cancelados"
+                checked={filtro.mostrarCancelado}
                 onChange={handleInputChange}
               />
             </Col>

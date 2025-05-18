@@ -183,14 +183,15 @@ export default function EventoDetalle() {
                         <strong>Total de plazas:</strong> {evento.numPlazas}
                       </span>
                     </div>
-
-                    <div>
-                      <i className="bi bi-people-fill me-2 text-primary" />
-                      <span>
-                        <strong>Plazas disponibles:</strong>{' '}
-                        {evento.numPlazasDisponibles}
-                      </span>
-                    </div>
+                    {!evento.cancelado && (
+                      <div>
+                        <i className="bi bi-people-fill me-2 text-primary" />
+                        <span>
+                          <strong>Plazas disponibles:</strong>{' '}
+                          {evento.numPlazasDisponibles}
+                        </span>
+                      </div>
+                    )}
 
                     <div>
                       <i className="bi bi-tags-fill me-2 text-primary"></i>

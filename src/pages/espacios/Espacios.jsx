@@ -10,7 +10,8 @@ export default function Espacios() {
   const [filtro, setFiltro] = useState({
     nombre: '',
     descripcion: '',
-    estadoActivo: false,
+    mostrarActivo: true,
+    mostrarCerrado: true,
     capacidadMinima: ''
   })
 
@@ -18,7 +19,8 @@ export default function Espacios() {
     setFiltro({
       nombre: '',
       descripcion: '',
-      estadoActivo: false,
+      mostrarActivo: true,
+      mostrarCerrado: true,
       capacidadMinima: ''
     })
   }
@@ -39,7 +41,9 @@ export default function Espacios() {
         .toLowerCase()
         .includes(filtro.descripcion.toLowerCase()) &&
       espacio.capacidad >= filtro.capacidadMinima &&
-      (filtro.estadoActivo ? espacio.estado === ESTADOS.ACTIVO : true)
+      ((filtro.mostrarActivo && espacio.estado === ESTADOS.ACTIVO) ||
+        (filtro.mostrarCerrado &&
+          espacio.estado === ESTADOS.CERRADO_TEMPORALMENTE))
     )
   })
 
@@ -88,12 +92,21 @@ export default function Espacios() {
               />
             </Col>
 
-            <Col md={4} className="d-flex align-items-end">
+            <Col xs="auto">
               <Form.Check
-                name="estadoActivo"
-                type="checkbox"
-                label="Mostrar activos"
-                checked={filtro.estadoActivo}
+                name="mostrarActivo"
+                type="switch"
+                label="Mostrar Activos"
+                checked={filtro.mostrarActivo}
+                onChange={handleInputChange}
+              />
+            </Col>
+            <Col xs="auto">
+              <Form.Check
+                name="mostrarCerrado"
+                type="switch"
+                label="Mostrar Cerrados"
+                checked={filtro.mostrarCerrado}
                 onChange={handleInputChange}
               />
             </Col>

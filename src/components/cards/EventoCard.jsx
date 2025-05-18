@@ -58,12 +58,13 @@ export default function EventoCard({ evento, visible }) {
 
         <p className="my-card-description">{evento.descripcion}</p>
 
-        <div className="my-card-info">
-          <span className="my-card-info-truncate">
-            <i className="bi bi-people-fill my-card-capacity" />
-            {evento.numPlazasDisponibles} plazas disponibles
-          </span>
-          {!evento.cancelado && (
+        {!evento.cancelado ? (
+          <div className="my-card-info">
+            <span className="my-card-info-truncate">
+              <i className="bi bi-people-fill my-card-capacity" />
+              {evento.numPlazasDisponibles} plazas disponibles
+            </span>
+
             <span>
               <i className="bi bi-calendar my-card-date" />
               {new Date(evento.fechaInicio).toLocaleDateString('es-ES', {
@@ -72,8 +73,15 @@ export default function EventoCard({ evento, visible }) {
                 day: '2-digit'
               })}
             </span>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="my-card-info">
+            <span className="my-card-info-truncate">
+              <i className="bi bi-people-fill my-card-capacity" />
+              {evento.numPlazas} plazas
+            </span>
+          </div>
+        )}
       </div>
       {visible && status == ESTADOS.ACTIVO && (
         <div className="my-card-buttons">
