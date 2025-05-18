@@ -1,29 +1,66 @@
 import { API_URLS, NAV_ROUTES } from '@/configs/constant'
-import { showMessageError } from '@/utils/error'
+import MyToast, { useToast } from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
 import '@pages/auth/login.css'
-import { useContext } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 
 export default function Login() {
   const { login } = useContext(AuthContext)
+  const { addToast, toasts, removeToast } = useToast()
 
-  const handleLogin = async () => {
-    const username = document.getElementById('username').value
-    const password = document.getElementById('password').value
+  const [errorMessage, setErrorMessage] = useState('')
+  const [invalidFields, setInvalidFields] = useState({
+    username: false,
+    password: false
+  })
+
+  const usernameRef = useRef(null)
+  const passwordRef = useRef(null)
+
+  useEffect(() => {
+    if (usernameRef.current) {
+      if (invalidFields.username)
+        usernameRef.current.classList.add('is-invalid')
+      else usernameRef.current.classList.remove('is-invalid')
+    }
+    if (passwordRef.current) {
+      if (invalidFields.password)
+        passwordRef.current.classList.add('is-invalid')
+      else passwordRef.current.classList.remove('is-invalid')
+    }
+  }, [invalidFields])
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    const username = document.getElementById('username').value.trim()
+    const password = document.getElementById('password').value.trim()
+
+    let hasError = false
+    const newInvalidFields = { username: false, password: false }
 
     if (!username) {
-      return showMessageError('El nombre de usuario es obligatorio.')
+      newInvalidFields.username = true
+      setErrorMessage('Este campo es obligatorio')
+      hasError = true
     }
 
     if (!password) {
-      return showMessageError('La contraseña es obligatoria.')
+      newInvalidFields.password = true
+      setErrorMessage('Este campo es obligatorio')
+      hasError = true
     }
+
+    setInvalidFields(newInvalidFields)
+
+    if (hasError) return
+
+    setErrorMessage('')
 
     try {
       await login(username, password)
       window.location.replace(NAV_ROUTES.HOME)
     } catch (error) {
-      showMessageError(error.message)
+      addToast('Error al iniciar sesión', error.message)
     }
   }
 
@@ -49,11 +86,13 @@ export default function Login() {
 
   return (
     <div className="login">
+      <MyToast toasts={toasts} removeToast={removeToast} />
+
       <h2>Inicia sesión</h2>
 
       <button
         type="button"
-        className="btn btn-secondary "
+        className="btn btn-secondary"
         onClick={handleGithubLogin}
       >
         <i className="bi bi-github" /> Continuar con GitHub
@@ -67,18 +106,36 @@ export default function Login() {
 
       <form className="d-grid gap-3" onSubmit={handleLogin}>
         <div className="form-group" id="formUsername">
-          <label htmlFor="username">Nombre de usuario</label>
-          <input type="text" id="username" className="form-control" />
+          <label htmlFor="username">
+            Nombre de usuario
+            {invalidFields.username && (
+              <span className="text-danger ms-2">({errorMessage})</span>
+            )}
+          </label>
+          <input
+            type="text"
+            id="username"
+            className="form-control"
+            ref={usernameRef}
+          />
         </div>
 
         <div className="form-group" id="formPassword">
-          <label htmlFor="password">Contraseña</label>
-          <input type="password" id="password" className="form-control" />
+          <label htmlFor="password">
+            Contraseña
+            {invalidFields.password && (
+              <span className="text-danger ms-2">({errorMessage})</span>
+            )}
+          </label>
+          <input
+            type="password"
+            id="password"
+            className="form-control"
+            ref={passwordRef}
+          />
         </div>
 
-        <div id="errorMessage" className="alert alert-danger d-none" />
-
-        <button type="submit" className="btn btn-primary mt-1">
+        <button type="submit" className="btn btn-primary">
           Iniciar sesión
         </button>
       </form>
