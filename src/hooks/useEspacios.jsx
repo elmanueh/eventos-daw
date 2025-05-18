@@ -45,7 +45,6 @@ export function useEspacios(type, param = 0) {
           break
         case ESPACIOS_REDUCER.FIRST:
           espacios = await ServicioEspacios.getEspaciosFirst(param)
-          console.log('espacios', espacios)
           break
         case ESPACIOS_REDUCER.RANDOM:
           espacios = await ServicioEspacios.getEspaciosRandom(param)
