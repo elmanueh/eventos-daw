@@ -15,7 +15,7 @@ const getEspacios = async () => {
     const response = await HttpService.fetchAllPagesIfNeeded(API_URLS.ESPACIOS_LISTAR)
     const espacios = await Promise.all(
       response.espacio.map((e) =>
-        HttpService.fetchAllPagesIfNeeded(API_URLS.ESPACIOS_DETALLE(e.espacioDTO.id))
+        HttpService.get(API_URLS.ESPACIOS_DETALLE(e.espacioDTO.id))
       )
     )
     return espacios
@@ -25,7 +25,7 @@ const getEspacios = async () => {
 }
 
 const getEspaciosById = async (id) => {
-  const response = await HttpService.fetchAllPagesIfNeeded(API_URLS.ESPACIOS_DETALLE(id))
+  const response = await HttpService.get(API_URLS.ESPACIOS_DETALLE(id))
   if (!response.ok) {
     throw new Error('Error al obtener el espacio por ID' + id)
   }
@@ -45,9 +45,21 @@ const updateEspacio = async (id, espacio) => {
   return data
 }
 
+const getEspaciosByPropietario = async (propietario) => {
+  try {
+    const response = await HttpService.fetchAllPagesIfNeeded(
+      API_URLS.ESPACIOS_PROPIETARIO(propietario)
+    )
+    return response.espacio.map((e) => e.espacioDTO)
+  } catch {
+    throw new Error('Error al obtener los espacios por propietario')
+  }
+}
+
 export const ServicioEspacios = {
   createEspacio,
   getEspacios,
   getEspaciosById,
-  updateEspacio
+  updateEspacio,
+  getEspaciosByPropietario,
 }

@@ -1,7 +1,9 @@
 import { ServicioEventos } from '@/services/eventosService'
-import { useEffect, useState } from 'react'
+import { AuthContext } from '@context/AuthContext'
+import { useContext, useEffect, useState } from 'react'
 
-export function useEventos(username) {
+export function useEventos(isGestor) {
+  const { user } = useContext(AuthContext)
   const [eventos, setEventos] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -19,7 +21,7 @@ export function useEventos(username) {
 
   const fetchEventosByGestor = async () => {
     try {
-      const eventos = await ServicioEventos.getEventosByGestor(username)
+      const eventos = await ServicioEventos.getEventosByGestor(user.username)
       setEventos(eventos)
     } catch (error) {
       setError(error.message)
@@ -38,12 +40,12 @@ export function useEventos(username) {
   }
 
   useEffect(() => {
-    if (username) {
+    if (isGestor) {
       fetchEventosByGestor()
     } else {
       fetchEventos()
     }
-  }, [])
+  }, [isGestor, user?.username])
 
   return {
     eventos,

@@ -4,12 +4,14 @@ import { handleCrearEspacio } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
 import EspacioModal from '@components/modals/EspacioModal'
 import MyToast, { useToast } from '@components/toast/MyToast'
+import { AuthContext } from '@context/AuthContext'
+import Loading from '@pages/Loading'
 
-import { useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 export default function MisEspacios() {
-  const { espacios } = useEspacios()
+  const { espacios, loading } = useEspacios(true)
 
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
@@ -43,6 +45,8 @@ export default function MisEspacios() {
       return nombreMatch && descripcionMatch && capacidadMatch
     })
   }, [espacios, filtroNombre, filtroDescripcion, filtroCapacidad])
+
+  if (loading) return <Loading />
 
   const espaciosActivos = espaciosFiltrados.filter(
     (espacio) => espacio.estado === 'ACTIVO'

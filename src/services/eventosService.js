@@ -17,7 +17,7 @@ const getEventos = async () => {
     const response = await HttpService.fetchAllPagesIfNeeded(API_URLS.EVENTOS_LISTAR)
     const eventos = await Promise.all(
       response._embedded.eventoResumenList.map((e) =>
-        HttpService.fetchAllPagesIfNeeded(API_URLS.EVENTOS_DETALLE(e.id))
+        HttpService.get(API_URLS.EVENTOS_DETALLE(e.id))
       )
     )
     return eventos
@@ -27,7 +27,7 @@ const getEventos = async () => {
 }
 
 const getEventosById = async (id) => {
-  const response = await HttpService.fetchAllPagesIfNeeded(API_URLS.EVENTOS_DETALLE(id))
+  const response = await HttpService.get(API_URLS.EVENTOS_DETALLE(id))
 
   if (!response.ok) {
     throw new Error('Error al obtener el evento por ID' + id)
@@ -37,8 +37,18 @@ const getEventosById = async (id) => {
   return data
 }
 
+const getEventosByGestor = async (gestor) => {
+  try {
+    const response = await HttpService.fetchAllPagesIfNeeded(API_URLS.EVENTOS_GESTOR(gestor))
+    return response._embedded.eventoResumenList
+  } catch {
+    throw new Error('Error al obtener los eventos por gestor')
+  }
+}
+
 export const ServicioEventos = {
   createEvento,
   getEventos,
-  getEventosById
+  getEventosById,
+  getEventosByGestor
 }
