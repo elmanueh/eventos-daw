@@ -64,7 +64,7 @@ export default function UserInfoCard() {
               <i className="bi bi-star-fill text-primary" />
               <strong> Evento: </strong>
               <Link
-                to={NAV_ROUTES.EVENTOS_DET(info.evento.idEvento)}
+                to={NAV_ROUTES.EVENTOS_DET(info.evento.id)}
                 className="text-decoration-none"
               >
                 {info.evento.nombre}

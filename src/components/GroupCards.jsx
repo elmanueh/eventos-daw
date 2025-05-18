@@ -60,7 +60,7 @@ export default function GroupCards({
                   )
                 case TARJETA_TIPOS.EVENTOS:
                   return (
-                    <Col key={objeto.idEvento} sm={12} md={6} xl={6} xxl={4}>
+                    <Col key={objeto.id} sm={12} md={6} xl={6} xxl={4}>
                       <EventoCard evento={objeto} visible={visible} />
                     </Col>
                   )

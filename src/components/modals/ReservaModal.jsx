@@ -9,7 +9,7 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
 
   const initialFormData = useMemo(
     () => ({
-      idEvento: evento.idEvento,
+      idEvento: evento.id,
       idUsuario: user.id,
       numPlazas: ''
     }),
@@ -19,7 +19,7 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
   useEffect(() => {
     if (show) {
       setFormData({
-        idEvento: evento.idEvento,
+        idEvento: evento.id,
         idUsuario: user.id,
         numPlazas: ''
       })

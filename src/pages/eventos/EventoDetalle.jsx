@@ -41,7 +41,7 @@ export default function EventoDetalle() {
   const { addToast, toasts, removeToast } = useToast()
 
   if (loading || loadingEspacios || loadingReservas) return <Loading />
-  const evento = eventos.find((e) => e.idEvento === eventoId)
+  const evento = eventos.find((e) => e.id === eventoId)
   const espacio = espacios.find((e) => e.id === evento.espacioFisico)
   const otrosEventos = eventos
     .filter((e) => e.id !== eventoId)
@@ -65,12 +65,7 @@ export default function EventoDetalle() {
       <EventoModal
         show={showEventoModal}
         callback={(modificados) =>
-          handleEditEvento(
-            evento.idEvento,
-            modificados,
-            setShowEventoModal,
-            addToast
-          )
+          handleEditEvento(evento.id, modificados, setShowEventoModal, addToast)
         }
         onHide={() => setShowEventoModal(false)}
         evento={evento}
@@ -86,7 +81,7 @@ export default function EventoDetalle() {
       <ConfirmationModal
         show={showConfirmation}
         callback={() =>
-          handleDesactivarEvento(evento.idEvento, setShowConfirmation, addToast)
+          handleDesactivarEvento(evento.id, setShowConfirmation, addToast)
         }
         onHide={() => setShowConfirmation(false)}
         title={evento.nombre}

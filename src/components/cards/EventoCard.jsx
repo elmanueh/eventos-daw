@@ -42,7 +42,7 @@ export default function EventoCard({ evento, visible }) {
       <div
         className="my-card"
         onClick={() =>
-          (window.location.href = NAV_ROUTES.EVENTOS_DET(evento.idEvento))
+          (window.location.href = NAV_ROUTES.EVENTOS_DET(evento.id))
         }
       >
         <div className="my-card-header">

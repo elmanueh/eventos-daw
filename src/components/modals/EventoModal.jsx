@@ -49,7 +49,7 @@ export default function EventoModal({
 
   useEffect(() => {
     if (evento) {
-      const { idEvento, ...eventoSinId } = evento
+      const { id, ...eventoSinId } = evento
       setFormData({
         ...eventoSinId
       })

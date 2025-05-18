@@ -50,7 +50,7 @@ export default function ReservaCard({ reserva }) {
         {info.evento && (
           <h2 title={info.evento.nombre} className="text-primary">
             <a
-              href={NAV_ROUTES.EVENTOS_DET(info.evento.idEvento)}
+              href={NAV_ROUTES.EVENTOS_DET(info.evento.id)}
               className="text-decoration-none"
             >
               {info.evento.nombre}
