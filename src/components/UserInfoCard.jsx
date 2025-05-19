@@ -1,67 +1,24 @@
-import {
-  ESPACIOS_REDUCER,
-  EVENTOS_REDUCER,
-  NAV_ROUTES,
-  RESERVAS_REDUCER
-} from '@/configs/constant'
-import { useEspacios } from '@/hooks/useEspacios'
-import { useEventos } from '@/hooks/useEventos'
+import { NAV_ROUTES, RESERVAS_REDUCER } from '@/configs/constant'
 import { useReservas } from '@/hooks/useReservas'
+import { obtenerReservaReciente } from '@/utils/reservaHelper'
 import format from 'date-fns/format'
 import es from 'date-fns/locale/es'
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 
 export default function UserInfoCard() {
-  const { espacios, loading: loadingEspacios } = useEspacios(
-    ESPACIOS_REDUCER.ALL
-  )
-  const { eventos, loading: loadingEventos } = useEventos(EVENTOS_REDUCER.ALL)
   const { reservas, loading: loadingReservas } = useReservas(
     RESERVAS_REDUCER.BY_USUARIO
   )
-  const [info, setInfo] = useState({
-    evento: null,
-    espacio: null
-  })
 
-  useEffect(() => {
-    const getInfo = async () => {
-      try {
-        if (loadingEspacios || loadingEventos || loadingReservas) return
+  if (loadingReservas) return
 
-        const reservasActivas = reservas.filter((r) => !r.cancelada)
-        if (reservasActivas.length === 0) return
+  const reservaReciente = obtenerReservaReciente(reservas)
 
-        const eventosActivos = eventos
-          .filter((e) => reservasActivas.map((r) => r.evento).includes(e.id))
-          .sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio))
-        if (eventosActivos.length === 0) return
-
-        const evento = eventosActivos[0]
-        const espacio = espacios.find((e) => e.id == evento.espacioFisico)
-
-        setInfo({
-          evento,
-          espacio
-        })
-      } catch (error) {
-        console.error('Error fetching reservas:', error)
-      }
-    }
-    getInfo()
-  }, [
-    espacios,
-    eventos,
-    reservas,
-    loadingEspacios,
-    loadingEventos,
-    loadingReservas
-  ])
+  if (!reservaReciente) return
 
   return (
     <>
-      {info.evento ? (
+      {reservaReciente.evento ? (
         <div className="px-3 py-2 rounded w-100 mt-3 border border-secondary text-start">
           <h6 className="text-center text-primary fw-bold mt-2 mb-3 fs-5">
             Próxima Reserva
@@ -71,10 +28,10 @@ export default function UserInfoCard() {
               <i className="bi bi-star-fill text-primary" />
               <strong> Evento: </strong>
               <Link
-                to={NAV_ROUTES.EVENTOS_DET(info.evento.id)}
+                to={NAV_ROUTES.EVENTOS_DET(reservaReciente.evento.id)}
                 className="text-decoration-none"
               >
-                {info.evento.nombre}
+                {reservaReciente.evento.nombre}
               </Link>
             </li>
 
@@ -82,17 +39,19 @@ export default function UserInfoCard() {
               <i className="bi bi-pin-map-fill text-primary" />
               <strong> Lugar: </strong>
               <Link
-                to={NAV_ROUTES.ESPACIOS_DET(info.espacio.id)}
+                to={NAV_ROUTES.ESPACIOS_DET(
+                  reservaReciente.evento.espacioFisico.id
+                )}
                 className="text-decoration-none"
               >
-                {info.espacio.nombre}
+                {reservaReciente.evento.espacioFisico.nombre}
               </Link>
             </li>
             <li>
               <i className="bi bi-clock-fill text-primary " />
               <strong> Fecha: </strong>
               {format(
-                new Date(info.evento.fechaInicio),
+                new Date(reservaReciente.evento.fechaInicio),
                 "dd'/'MM'/'yyyy 'a las' HH:mm",
                 { locale: es }
               )}

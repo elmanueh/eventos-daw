@@ -8,6 +8,10 @@
 
 - Añadir eventos en el espacioDetalles
 
+- EventoDetalle -> mirar para no obtener todos los espacios, introducir el espacio al cargar evento o algo, con alguna variable
+
+- Home y Detalles se recegar 2 veces los randoms
+
 # Bugs
 
 - En Espacios y Eventos, al filtrar de nuevo, debe cambiar el paginator a la page 1
@@ -16,3 +20,10 @@
 # Segurencia
 
 - En AuthProvider al hacer login creo que el setUser es innecesario
+
+# Cambiar de hook
+
+- Eventos no necesito los detalles de eventos
+- Mis Eventos no necesita los detalles de eventos
+
+-

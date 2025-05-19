@@ -2,6 +2,7 @@ import {
   AUTH_ROLES,
   ESPACIOS_REDUCER,
   ESTADOS,
+  GROUP_DETALLES_CARDS_TIPOS,
   TARJETA_TIPOS
 } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
@@ -221,7 +222,7 @@ export default function EspacioDetalle() {
 
               <GroupDetallesCards
                 objetos={espacio.puntosInteres}
-                tipo={TARJETA_TIPOS.ESPACIOS}
+                tipo={GROUP_DETALLES_CARDS_TIPOS.PUNTOS_INTERES}
               />
             </>
           )}
