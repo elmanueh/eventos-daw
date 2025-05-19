@@ -9,10 +9,12 @@ const getEventos = async () => {
 const getEventoById = async (id) => {
   try {
     const response = await HttpService.get(API_URLS.EVENTOS_DETALLE(id))
-    response.espacioFisico = await HttpService.get(
-      API_URLS.ESPACIOS_DETALLE(response.espacioFisico)
-    )
-    return response
+    if (!response.cancelado) {
+      response.espacioFisico = await HttpService.get(
+        API_URLS.ESPACIOS_DETALLE(response.espacioFisico)
+      )
+    }
+    return [response]
   } catch {
     throw new Error('Error al obtener el evento por ID')
   }
@@ -69,6 +71,14 @@ const getEventosByEspacio = async (espacio) => {
   }
 }
 
+const toggleEstado = async (id) => {
+  try {
+    await HttpService.put(API_URLS.EVENTOS_CANCELAR(id))
+  } catch {
+    throw new Error('Error al cancelar el evento')
+  }
+}
+
 export const ServicioEventos = {
   getEventos,
   getEventoById,
@@ -77,4 +87,5 @@ export const ServicioEventos = {
   getEventosRandom,
   getEventosRandomSinEvento,
   getEventosByEspacio,
+  toggleEstado,
 }

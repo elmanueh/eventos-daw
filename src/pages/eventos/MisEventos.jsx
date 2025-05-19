@@ -15,7 +15,9 @@ import { useId, useMemo, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 export default function MisEventos() {
-  const { eventos, loading } = useEventos(EVENTOS_REDUCER.BY_GESTOR)
+  const { eventos, loading, toggleEstado } = useEventos(
+    EVENTOS_REDUCER.BY_GESTOR
+  )
   const idGroupEventosEnCurso = useId()
   const idGroupEventosFinalizados = useId()
   const idGroupEventosActivos = useId()
@@ -186,6 +188,8 @@ export default function MisEventos() {
             tipo={TARJETA_TIPOS.EVENTOS}
             visible={true}
             id={idGroupEventosActivos}
+            action={{ toggleEstado }}
+            addToast={addToast}
           />
         </>
       )}

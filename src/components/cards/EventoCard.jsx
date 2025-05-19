@@ -1,13 +1,12 @@
 import { ESTADOS, NAV_ROUTES, TARJETA_TIPOS } from '@/configs/constant'
 import { getEstadoEvento } from '@/utils/eventoHelper'
-import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
+import { handleEditEvento } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EventoModal from '@components/modals/EventoModal'
-import MyToast, { useToast } from '@components/toast/MyToast'
 import { useState } from 'react'
 import './card.css'
 
-export default function EventoCard({ evento, visible }) {
+export default function EventoCard({ evento, visible, action, addToast }) {
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showEventoModal, setShowEventoModal] = useState(false)
 
@@ -15,12 +14,8 @@ export default function EventoCard({ evento, visible }) {
 
   const status = getEstadoEvento(evento)
 
-  const { addToast, toasts, removeToast } = useToast()
-
   return (
     <div>
-      <MyToast toasts={toasts} removeToast={removeToast} />
-
       <EventoModal
         show={showEventoModal}
         callback={(modificados) =>
@@ -31,9 +26,9 @@ export default function EventoCard({ evento, visible }) {
       />
       <ConfirmationModal
         show={showConfirmation}
-        callback={() =>
-          handleDesactivarEvento(evento.id, setShowConfirmation, addToast)
-        }
+        callback={() => {
+          action.toggleEstado(evento.id, setShowConfirmation, addToast)
+        }}
         onHide={() => setShowConfirmation(false)}
         title={evento.nombre}
         status={status}

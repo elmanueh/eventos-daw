@@ -17,6 +17,16 @@ function eventosReducer(state, action) {
       return { ...state, loading: false, eventos: action.payload }
     case 'FETCH_ERROR':
       return { ...state, loading: false, error: action.payload }
+    case 'TOGGLE_ESTADO':
+      return {
+        ...state,
+        eventos: state.eventos.map((evento) =>
+          evento.id === action.payload
+            ? { ...evento, cancelado: !evento.cancelado }
+            : evento
+        )
+      }
+
     default:
       return state
   }
@@ -65,6 +75,26 @@ export function useEventos(type, value = 0, value2 = 0) {
     }
   }, [type, user?.username, value])
 
+  const toggleEstado = useCallback(
+    async (id, setShowConfirmation, addToast) => {
+      try {
+        await ServicioEventos.toggleEstado(id)
+        setShowConfirmation(false)
+        addToast(
+          'Evento cancelado',
+          'Tu evento se ha cancelado con éxito.',
+          'success'
+        )
+
+        dispatch({ type: 'TOGGLE_ESTADO', payload: id })
+      } catch (error) {
+        setShowConfirmation(false)
+        addToast('Error al cancelar evento', error.message)
+      }
+    },
+    []
+  )
+
   useEffect(() => {
     fetchEventos()
   }, [fetchEventos])
@@ -73,6 +103,7 @@ export function useEventos(type, value = 0, value2 = 0) {
     eventos: state.eventos,
     loading: state.loading,
     error: state.error,
-    refetch: fetchEventos
+    refetch: fetchEventos,
+    toggleEstado
   }
 }

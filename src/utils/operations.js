@@ -29,7 +29,7 @@ const handleCambiarEstadoEspacio = async (
             descripcion: 'El espacio ha sido cerrado temporalmente con éxito.'
           }
 
-    addToast(mensaje.titulo, mensaje.descripcion, true, 'success')
+    addToast(mensaje.titulo, mensaje.descripcion, 'success')
   } catch (error) {
     setShowConfirmation(false)
     addToast(
@@ -47,12 +47,7 @@ const handleCrearEvento = async (evento, setShowEventoModal, addToast) => {
   try {
     await HttpService.post(API_URLS.EVENTOS_CREAR, evento)
     setShowEventoModal(false)
-    addToast(
-      'Evento creado',
-      'Tu evento se ha creado con éxito.',
-      true,
-      'success'
-    )
+    addToast('Evento creado', 'Tu evento se ha creado con éxito.', 'success')
   } catch (error) {
     addToast('Error al crear evento', error.message)
   }
@@ -72,7 +67,6 @@ const handleEditEvento = async (
     addToast(
       'Evento modificado',
       'Tu evento se ha modificado con éxito.',
-      true,
       'success'
     )
   } catch (error) {
@@ -80,30 +74,4 @@ const handleEditEvento = async (
   }
 }
 
-const handleDesactivarEvento = async (id, setShowConfirmation, addToast) => {
-  console.log('Desactivando evento...')
-
-  try {
-    await HttpService.put(API_URLS.EVENTOS_CANCELAR(id))
-    setShowConfirmation(false)
-    addToast(
-      'Evento cancelado',
-      'Tu evento se ha cancelado con éxito.',
-      true,
-      'success'
-    )
-  } catch (error) {
-    setShowConfirmation(false)
-    addToast('Error al cancelar evento', error.message)
-  }
-}
-
-const handleCrearEspacio = async () => {}
-
-export {
-  handleCambiarEstadoEspacio,
-  handleCrearEspacio,
-  handleCrearEvento,
-  handleDesactivarEvento,
-  handleEditEvento
-}
+export { handleCambiarEstadoEspacio, handleCrearEvento, handleEditEvento }
