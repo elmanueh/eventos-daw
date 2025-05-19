@@ -6,11 +6,11 @@
 - Los filtros no deberian de haber un filtro para cada "propiedad", sino un filtro general para los strings (de esto ya me encargare yo)
 - Como tratar buscarEventosDisponibles(plazas, fechaInicio, fechaFin) en EventoModal
 
-- Añadir eventos en el espacioDetalles
-
 - EventoDetalle -> mirar para no obtener todos los espacios, introducir el espacio al cargar evento o algo, con alguna variable
 
-- Home y Detalles se recegar 2 veces los randoms
+- EventosDetalles se recegar 2 veces los randoms
+
+- Usar useId()
 
 # Bugs
 

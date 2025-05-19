@@ -24,19 +24,6 @@ export default function GroupDetallesCards({ objetos, tipo }) {
     const startIndex = (currentPage - 1) * pageSize
     const endIndex = startIndex + pageSize
 
-    if (isPuntosInteres)
-      return objetos
-        .sort((a, b) => a.distancia - b.distancia)
-        .slice(startIndex, endIndex)
-
-    if (isEventos)
-      return objetos
-        .filter(
-          (e) => new Date(e.fechaInicio) >= new Date().setHours(0, 0, 0, 0)
-        )
-        .sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio))
-        .slice(startIndex, endIndex)
-
     return objetos.slice(startIndex, endIndex)
   }
 
@@ -110,24 +97,16 @@ export default function GroupDetallesCards({ objetos, tipo }) {
                 </ListGroup.Item>
               )
             } else if (isEventos) {
-              if (index % 2 !== 0) return null
-
               return (
                 <ListGroup.Item
                   key={index}
-                  className="border-top border-primary d-flex justify-content-between align-items-center py-3"
+                  className="border-top border-primary py-3"
                 >
-                  <div className="d-flex w-100 gap-3">
-                    <div className="flex-fill">
-                      <EventoCard evento={objeto} />
-                    </div>
-
-                    {getCurrentPage()[index + 1] && (
-                      <div className="flex-fill">
-                        <EventoCard evento={getCurrentPage()[index + 1]} />
-                      </div>
-                    )}
-                  </div>
+                  <EventoCard
+                    evento={objeto}
+                    isReservas={isReservas}
+                    isEventos={isEventos}
+                  />
                 </ListGroup.Item>
               )
             }

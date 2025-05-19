@@ -37,7 +37,11 @@ export function useEspacios(type, value = 0) {
           break
         case ESPACIOS_REDUCER.BY_ID:
           espacios = await ServicioEspacios.getEspacioById(value)
+          espacios.puntosInteres = espacios.puntosInteres.sort(
+            (a, b) => a.distancia - b.distancia
+          )
           break
+
         case ESPACIOS_REDUCER.BY_PROPIETARIO:
           espacios = await ServicioEspacios.getEspaciosByPropietario(
             user.username

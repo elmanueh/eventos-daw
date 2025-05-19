@@ -47,6 +47,13 @@ export function useEventos(type, value = 0) {
         case EVENTOS_REDUCER.RANDOM:
           eventos = await ServicioEventos.getEventosRandom(value)
           break
+        case EVENTOS_REDUCER.BY_ESPACIO:
+          eventos = await ServicioEventos.getEventos()
+          eventos = eventos
+            .filter((evento) => evento.espacioFisico === value)
+            .filter((e) => new Date(e.fechaInicio) >= new Date())
+            .sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio))
+          break
         default:
           throw new Error('Tipo de eventos no válido')
       }

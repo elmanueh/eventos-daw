@@ -42,7 +42,10 @@ export default function EventoDetalle() {
     EVENTOS_REDUCER.BY_ID,
     eventoId
   )
-  const { eventos: otrosEventos } = useEventos(EVENTOS_REDUCER.RANDOM, 4)
+  const { eventos: otrosEventos, loading: otrosLoading } = useEventos(
+    EVENTOS_REDUCER.RANDOM,
+    4
+  )
   const { espacios, loading: loadingEspacios } = useEspacios(
     ESPACIOS_REDUCER.ALL
   )
@@ -56,7 +59,8 @@ export default function EventoDetalle() {
   const [showEventoModal, setShowEventoModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
 
-  if (loadingEventos || loadingEspacios || loadingReservas) return <Loading />
+  if (loadingEventos || loadingEspacios || loadingReservas || otrosLoading)
+    return <Loading />
 
   const espacio = espacios.find((e) => e.id === evento.espacioFisico)
   const isUser = user.roles.includes(AUTH_ROLES.USUARIO)

@@ -2,10 +2,12 @@ import {
   AUTH_ROLES,
   ESPACIOS_REDUCER,
   ESTADOS,
+  EVENTOS_REDUCER,
   GROUP_DETALLES_CARDS_TIPOS,
   TARJETA_TIPOS
 } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
+import { useEventos } from '@/hooks/useEventos'
 import { decimalToDMS, isMio, statusEspacio } from '@/utils/espacioHelper'
 import {
   handleCambiarEstadoEspacio,
@@ -35,13 +37,17 @@ export default function EspacioDetalle() {
     ESPACIOS_REDUCER.RANDOM,
     3
   )
+  const { eventos, loading: eventosLoading } = useEventos(
+    EVENTOS_REDUCER.BY_ESPACIO,
+    espacioId
+  )
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showEventoModal, setShowEventoModal] = useState(false)
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
 
-  if (loading || otrosLoading) return <Loading />
+  if (loading || otrosLoading || eventosLoading) return <Loading />
 
   const isUser = user.roles.includes(AUTH_ROLES.GESTOR_EVENTOS)
   const esMio = isMio(espacio, user)
@@ -205,6 +211,11 @@ export default function EspacioDetalle() {
               <GroupDetallesCards
                 objetos={espacio.puntosInteres}
                 tipo={GROUP_DETALLES_CARDS_TIPOS.PUNTOS_INTERES}
+              />
+
+              <GroupDetallesCards
+                objetos={eventos}
+                tipo={GROUP_DETALLES_CARDS_TIPOS.EVENTOS}
               />
             </>
           )}
