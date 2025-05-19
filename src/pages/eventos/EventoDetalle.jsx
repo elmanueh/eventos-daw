@@ -14,7 +14,7 @@ import {
   getEstadoColor,
   getEstadoEvento
 } from '@/utils/eventoHelper'
-import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
+import { handleEditEvento } from '@/utils/operations'
 import GroupDetallesCards from '@components/GroupDetallesCards'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EventoModal from '@components/modals/EventoModal'
@@ -32,7 +32,7 @@ import { useLoaderData } from 'react-router'
 export default function EventoDetalle() {
   const { user } = useContext(AuthContext)
   const eventoId = useLoaderData()
-  const { eventos: evento, loading } = useEventos(
+  const { eventos, loading, toggleEstado } = useEventos(
     EVENTOS_REDUCER.BY_ID,
     eventoId
   )
@@ -47,6 +47,7 @@ export default function EventoDetalle() {
     reservar
   } = useReservas(RESERVAS_REDUCER.BY_EVENTO, eventoId)
   const idGroupReservas = useId()
+  const evento = eventos[0]
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showReservaModal, setShowReservaModal] = useState(false)
@@ -85,9 +86,7 @@ export default function EventoDetalle() {
       />
       <ConfirmationModal
         show={showConfirmation}
-        callback={() =>
-          handleDesactivarEvento(evento.id, setShowConfirmation, addToast)
-        }
+        callback={() => toggleEstado(evento.id, setShowConfirmation, addToast)}
         onHide={() => setShowConfirmation(false)}
         title={evento.nombre}
         status={status}

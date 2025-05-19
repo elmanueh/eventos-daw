@@ -11,7 +11,9 @@ export default function GroupCards({
   tipo,
   visible,
   noPaginator,
-  id
+  id,
+  action,
+  addToast,
 }) {
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -61,7 +63,12 @@ export default function GroupCards({
                 case TARJETA_TIPOS.EVENTOS:
                   return (
                     <Col key={objeto.id} sm={12} md={6} xl={6} xxl={4}>
-                      <EventoCard evento={objeto} visible={visible} />
+                      <EventoCard
+                        evento={objeto}
+                        visible={visible}
+                        action={action}
+                        addToast={addToast}
+                      />
                     </Col>
                   )
               }

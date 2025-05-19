@@ -33,8 +33,8 @@ export default function MyToast({ toasts, removeToast }) {
 export function useToast() {
   const [toasts, setToasts] = useState([])
 
-  const addToast = (title, message, reloadOnClose = false, type = 'danger') => {
-    setToasts([...toasts, { title, message, reloadOnClose, type }])
+  const addToast = (title, message, type = 'danger') => {
+    setToasts([...toasts, { title, message, type }])
   }
 
   const removeToast = (index) => {

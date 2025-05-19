@@ -6,10 +6,9 @@
 - Los filtros no deberian de haber un filtro para cada "propiedad", sino un filtro general para los strings (de esto ya me encargare yo)
 - Como tratar buscarEventosDisponibles(plazas, fechaInicio, fechaFin) en EventoModal
 
-- EventosDetalles, EspaciosDetalles y Home se cargar 2 veces los randoms y se ve el cambio
-  (He probado console.log en el hook y se muestra 2 veces)
-  Realmente cada componente se renderiza 2 veces
-  Si quitamos StrictMode de main.jsx no ocurre
+- Al crear un evento obligar a que sea a partir de HOY
+
+- CHEKEAR QUE NO HAYA EVENTOS CON MAS PLAZAS QUE EL ESPACIO EN LA BASE DE DATOS
 
 # Bugs
 
@@ -17,6 +16,8 @@
 - Cuando se usan los filtros, el paginator deberia de resetearse a la page 1
 
 - Al hacer una acción, mostrar cargando, para no permitir hacer la acción de nuevo
+
+- Al cancelar evento desde EventoCard no se muestra el toast
 
 # Segurencia
 

@@ -60,7 +60,6 @@ export function useReservas(type, value = 0) {
         addToast(
           'Reserva realizada',
           'Tu reserva se ha realizado correctamente.',
-          true,
           'success'
         )
         dispatch({ type: 'RESERVA_SUCCESS', payload: reserva })
