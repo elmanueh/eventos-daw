@@ -30,18 +30,18 @@ export function useReservas(type, value = 0) {
     dispatch({ type: 'FETCH_START' })
 
     try {
-      let eventos
+      let reservas
       switch (type) {
         case RESERVAS_REDUCER.BY_USUARIO:
-          eventos = await ServicioReservas.getReservasByIdUsuario(user.id)
+          reservas = await ServicioReservas.getReservasByIdUsuario(user.id)
           break
         case RESERVAS_REDUCER.BY_EVENTO:
-          eventos = await ServicioReservas.getReservasByEvento(value)
+          reservas = await ServicioReservas.getReservasByEvento(value)
           break
         default:
           throw new Error('Tipo de reservas no válido')
       }
-      dispatch({ type: 'FETCH_SUCCESS', payload: eventos })
+      dispatch({ type: 'FETCH_SUCCESS', payload: reservas })
     } catch (error) {
       dispatch({ type: 'FETCH_ERROR', payload: error.message })
     }

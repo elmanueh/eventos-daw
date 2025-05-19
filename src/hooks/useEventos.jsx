@@ -22,7 +22,7 @@ function eventosReducer(state, action) {
   }
 }
 
-export function useEventos(type, value = 0, value2) {
+export function useEventos(type, value = 0, value2 = 0) {
   const { user } = useContext(AuthContext)
   const [state, dispatch] = useReducer(eventosReducer, initialState)
 

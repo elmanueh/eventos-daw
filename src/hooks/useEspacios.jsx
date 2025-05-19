@@ -22,7 +22,7 @@ function espaciosReducer(state, action) {
   }
 }
 
-export function useEspacios(type, value = 0, value2) {
+export function useEspacios(type, value = 0, value2 = 0) {
   const { user } = useContext(AuthContext)
   const [state, dispatch] = useReducer(espaciosReducer, initialState)
 

@@ -41,7 +41,7 @@ export default function EventoDetalle() {
     eventoId
   )
   const { eventos: otrosEventos, loading: otrosLoading } = useEventos(
-    EVENTOS_REDUCER.RANDOM,
+    EVENTOS_REDUCER.RANDOM_SIN_EVENTO,
     4,
     eventoId
   )

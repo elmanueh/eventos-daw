@@ -34,7 +34,7 @@ export default function EspacioDetalle() {
     espacioId
   )
   const { espacios: otrosEspacios, loading: otrosLoading } = useEspacios(
-    ESPACIOS_REDUCER.RANDOM,
+    ESPACIOS_REDUCER.RANDOM_SIN_ESPACIO,
     4,
     espacioId
   )
