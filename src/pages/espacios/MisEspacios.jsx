@@ -4,54 +4,72 @@ import {
   obtenerEspaciosActivos,
   obtenerEspaciosCerrados
 } from '@/utils/espacioHelper'
-import { handleCrearEspacio } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
 import EspacioModal from '@components/modals/EspacioModal'
 import MyToast, { useToast } from '@components/toast/MyToast'
 import Loading from '@pages/Loading'
 
-import { useId, useMemo, useState } from 'react'
+import { useId, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
+const defaultFiltro = {
+  nombre: '',
+  descripcion: '',
+  capacidadMinima: '',
+  mostrarActivos: true,
+  mostrarCerrados: true
+}
+
 export default function MisEspacios() {
-  const { espacios, loading } = useEspacios(ESPACIOS_REDUCER.BY_PROPIETARIO)
+  const { espacios, loading, addEspacio } = useEspacios(
+    ESPACIOS_REDUCER.BY_PROPIETARIO
+  )
   const idGroupEspaciosActivos = useId()
   const idGroupEspaciosCerrados = useId()
 
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
 
-  const [filtroNombre, setFiltroNombre] = useState('')
-  const [filtroDescripcion, setFiltroDescripcion] = useState('')
-  const [filtroCapacidad, setFiltroCapacidad] = useState('')
-
-  const [mostrarActivos, setMostrarActivos] = useState(true)
-  const [mostrarCerrados, setMostrarCerrados] = useState(true)
+  const [filtro, setFiltro] = useState(defaultFiltro)
   const [mostrarFiltros, setMostrarFiltros] = useState(false)
 
   const resetFiltros = () => {
-    setFiltroNombre('')
-    setFiltroDescripcion('')
-    setFiltroCapacidad('')
-    setMostrarActivos(true)
-    setMostrarCerrados(true)
+    setFiltro(defaultFiltro)
   }
 
-  const espaciosFiltrados = useMemo(() => {
-    return espacios.filter((espacio) => {
-      const nombreMatch = espacio.nombre
-        .toLowerCase()
-        .includes(filtroNombre.toLowerCase())
-      const descripcionMatch = espacio.descripcion
-        ?.toLowerCase()
-        .includes(filtroDescripcion.toLowerCase())
-      const capacidadMatch =
-        filtroCapacidad === '' || espacio.capacidad >= parseInt(filtroCapacidad)
-      return nombreMatch && descripcionMatch && capacidadMatch
-    })
-  }, [espacios, filtroNombre, filtroDescripcion, filtroCapacidad])
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setFiltro((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }))
+  }
+
+  const handleAddEspacio = (espacio) => {
+    try {
+      addEspacio(espacio)
+      setShowEspacioModal(false)
+      addToast(
+        'Espacio creado',
+        'El espacio ha sido creado correctamente',
+        'success'
+      )
+    } catch {
+      addToast('Error', `No se pudo crear el espacio`, 'error')
+    }
+  }
 
   if (loading) return <Loading />
+
+  const espaciosFiltrados = espacios.filter((espacio) => {
+    return (
+      espacio.nombre?.toLowerCase().includes(filtro.nombre.toLowerCase()) &&
+      espacio.descripcion
+        ?.toLowerCase()
+        .includes(filtro.descripcion.toLowerCase()) &&
+      espacio.capacidad >= filtro.capacidadMinima
+    )
+  })
 
   const espaciosActivos = obtenerEspaciosActivos(espaciosFiltrados)
   const espaciosCerrados = obtenerEspaciosCerrados(espaciosFiltrados)
@@ -59,13 +77,10 @@ export default function MisEspacios() {
   return (
     <Container className="d-flex flex-column p-0 gap-3">
       <MyToast toasts={toasts} removeToast={removeToast} />
-
       <EspacioModal
         show={showEspacioModal}
-        callback={(espacio) =>
-          handleCrearEspacio(espacio, setShowEspacioModal, addToast)
-        }
         onHide={() => setShowEspacioModal(false)}
+        callback={handleAddEspacio}
       />
 
       <h1 className="text-center">Mis Espacios</h1>
@@ -96,45 +111,50 @@ export default function MisEspacios() {
               <Form.Label>Nombre</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Nombre del espacio"
-                value={filtroNombre}
-                onChange={(e) => setFiltroNombre(e.target.value)}
+                name="nombre"
+                placeholder="Sala de Arte"
+                value={filtro.nombre}
+                onChange={handleInputChange}
               />
             </Col>
             <Col md={4}>
               <Form.Label>Descripción</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Descripción"
-                value={filtroDescripcion}
-                onChange={(e) => setFiltroDescripcion(e.target.value)}
+                name="descripcion"
+                placeholder="Espacio para talleres artísticos"
+                value={filtro.descripcion}
+                onChange={handleInputChange}
               />
             </Col>
             <Col md={4}>
               <Form.Label>Capacidad</Form.Label>
               <Form.Control
                 type="number"
+                name="capacidadMinima"
+                placeholder="30"
                 min="0"
-                placeholder="Ej: 30"
-                value={filtroCapacidad}
-                onChange={(e) => setFiltroCapacidad(e.target.value)}
+                value={filtro.capacidadMinima}
+                onChange={handleInputChange}
               />
             </Col>
 
             <Col xs="auto">
               <Form.Check
                 type="switch"
+                name="mostrarActivos"
                 label="Mostrar Activos"
-                checked={mostrarActivos}
-                onChange={(e) => setMostrarActivos(e.target.checked)}
+                checked={filtro.mostrarActivos}
+                onChange={handleInputChange}
               />
             </Col>
             <Col xs="auto">
               <Form.Check
                 type="switch"
+                name="mostrarCerrados"
                 label="Mostrar Cerrados"
-                checked={mostrarCerrados}
-                onChange={(e) => setMostrarCerrados(e.target.checked)}
+                checked={filtro.mostrarCerrados}
+                onChange={handleInputChange}
               />
             </Col>
 
@@ -147,7 +167,7 @@ export default function MisEspacios() {
         </Form>
       )}
 
-      {mostrarActivos && (
+      {filtro.mostrarActivos && (
         <>
           <h3 id={idGroupEspaciosActivos}>Activos</h3>
           <GroupCards
@@ -159,7 +179,7 @@ export default function MisEspacios() {
         </>
       )}
 
-      {mostrarCerrados && (
+      {filtro.mostrarCerrados && (
         <>
           <h3 id={idGroupEspaciosCerrados}>Cerrados Temporalmente</h3>
           <GroupCards

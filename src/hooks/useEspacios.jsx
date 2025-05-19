@@ -11,12 +11,36 @@ const initialState = {
 
 function espaciosReducer(state, action) {
   switch (action.type) {
-    case 'FETCH_START':
+    case 'ACTION_START':
       return { ...state, loading: true, error: null }
+    case 'ACTION_ERROR':
+      return { ...state, loading: false, error: action.payload }
     case 'FETCH_SUCCESS':
       return { ...state, loading: false, espacios: action.payload }
-    case 'FETCH_ERROR':
-      return { ...state, loading: false, error: action.payload }
+    case 'ADD_SUCCESS':
+      return {
+        ...state,
+        espacios: [...state.espacios, action.payload],
+        loading: false
+      }
+    case 'UPDATE_SUCCESS':
+      return {
+        ...state,
+        espacios: state.espacios.map((espacio) =>
+          espacio.id === action.payload.id ? action.payload : espacio
+        ),
+        loading: false
+      }
+    case 'STATUS_SUCCESS':
+      return {
+        ...state,
+        espacios: state.espacios.map((espacio) =>
+          espacio.id === action.payload.id
+            ? { ...espacio, estado: action.payload.status }
+            : espacio
+        ),
+        loading: false
+      }
     default:
       return state
   }
@@ -27,7 +51,7 @@ export function useEspacios(type, value = 0, value2 = 0) {
   const [state, dispatch] = useReducer(espaciosReducer, initialState)
 
   const fetchEspacios = useCallback(async () => {
-    dispatch({ type: 'FETCH_START' })
+    dispatch({ type: 'ACTION_START' })
 
     try {
       let espacios
@@ -61,9 +85,39 @@ export function useEspacios(type, value = 0, value2 = 0) {
 
       dispatch({ type: 'FETCH_SUCCESS', payload: espacios })
     } catch (error) {
-      dispatch({ type: 'FETCH_ERROR', payload: error.message })
+      dispatch({ type: 'ACTION_ERROR', payload: error.message })
     }
-  }, [type, user?.username, value])
+  }, [type, user?.username, value, value2])
+
+  const addEspacio = async (espacio) => {
+    dispatch({ type: 'ACTION_START' })
+    try {
+      await ServicioEspacios.addEspacio(espacio)
+      dispatch({ type: 'ADD_SUCCESS', payload: espacio })
+    } catch (error) {
+      dispatch({ type: 'ACTION_ERROR', payload: error.message })
+    }
+  }
+
+  const updateEspacio = async (id, espacio) => {
+    dispatch({ type: 'ACTION_START' })
+    try {
+      await ServicioEspacios.updateEspacio(id, espacio)
+      dispatch({ type: 'UPDATE_SUCCESS', payload: { ...espacio, id } })
+    } catch (error) {
+      dispatch({ type: 'ACTION_ERROR', payload: error.message })
+    }
+  }
+
+  const updateEspacioStatus = async (id, status) => {
+    dispatch({ type: 'ACTION_START' })
+    try {
+      await ServicioEspacios.updateEspacioStatus(id, status)
+      dispatch({ type: 'STATUS_SUCCESS', payload: { id, status } })
+    } catch (error) {
+      dispatch({ type: 'ACTION_ERROR', payload: error.message })
+    }
+  }
 
   useEffect(() => {
     fetchEspacios()
@@ -73,6 +127,8 @@ export function useEspacios(type, value = 0, value2 = 0) {
     espacios: state.espacios,
     loading: state.loading,
     error: state.error,
-    refetch: fetchEspacios
+    addEspacio,
+    updateEspacio,
+    updateEspacioStatus
   }
 }

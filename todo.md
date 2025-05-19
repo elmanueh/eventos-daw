@@ -17,6 +17,7 @@
 - Cuando se usan los filtros, el paginator deberia de resetearse a la page 1
 
 - Al hacer una acción, mostrar cargando, para no permitir hacer la acción de nuevo
+- Cuando se actualize algo, que solamente se haga de los campos que se han cambiado
 
 # Segurencia
 

@@ -1,4 +1,3 @@
-import { ESPACIO_MODIFICABLE } from '@/configs/constant'
 import { AuthContext } from '@context/AuthContext'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import Button from 'react-bootstrap/Button'
@@ -10,57 +9,30 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
 
   const initialFormData = useMemo(
     () => ({
-      nombre: '',
-      propietario: user.username,
-      capacidad: '',
-      direccion: '',
-      longitud: '',
-      latitud: '',
-      descripcion: ''
+      nombre: espacio?.nombre || '',
+      propietario: espacio?.propietario || user.username,
+      capacidad: espacio?.capacidad || 0,
+      direccion: espacio?.direccion || '',
+      longitud: espacio?.longitud || 0,
+      latitud: espacio?.latitud || 0,
+      descripcion: espacio?.descripcion || ''
     }),
-    [user]
+    [espacio, user.username]
   )
 
   const [formData, setFormData] = useState(initialFormData)
-  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
-    setFormData(espacio ? { ...espacio } : initialFormData)
-    setErrorMessage('')
+    setFormData(initialFormData)
   }, [show, espacio, initialFormData])
-
-  useEffect(() => {
-    if (espacio) {
-      const { id, ...espacioSinId } = espacio
-      setFormData({
-        ...espacioSinId
-      })
-    }
-  }, [espacio])
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
   }
 
-  const handleSubmit = (espacio) => {
-    if (Object.values(formData).some((value) => !value)) {
-      setErrorMessage('Este campo es obligatorio')
-      return
-    }
-
-    setErrorMessage('')
-
-    if (espacio) {
-      const cambios = Object.fromEntries(
-        ESPACIO_MODIFICABLE.filter(
-          (campo) => !espacio || formData[campo] !== espacio[campo]
-        ).map((campo) => [campo, formData[campo]])
-      )
-      callback(cambios)
-    } else {
-      callback(formData)
-    }
+  const handleSubmit = () => {
+    callback(formData)
   }
 
   return (
@@ -72,19 +44,13 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
       </Modal.Header>
 
       <Modal.Body>
-        {errorMessage && (
-          <div className="alert alert-danger mb-3" role="alert">
-            {errorMessage}
-          </div>
-        )}
-
         <Form>
           <Form.Group className="mb-3" controlId="formNombre">
             <Form.Label>Nombre del espacio</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Ej. Plaza de Toros de Murcia"
               name="nombre"
+              placeholder="Plaza de Toros de Murcia"
               value={formData.nombre}
               onChange={handleChange}
             />
@@ -94,118 +60,60 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
             <Form.Label>Capacidad</Form.Label>
             <Form.Control
               type="number"
-              placeholder="Ej. 15000"
               name="capacidad"
-              value={formData.capacidad}
+              placeholder="15000"
               min={1}
               max={Number.MAX_SAFE_INTEGER}
-              onChange={(e) => {
-                const value = Math.min(e.target.value, Number.MAX_SAFE_INTEGER)
-                handleChange({ target: { name: e.target.name, value } })
-              }}
+              value={formData.capacidad}
+              onChange={handleChange}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formDireccion">
             <Form.Label>Dirección</Form.Label>
-            {espacio ? (
-              <Form.Control
-                type="text"
-                value={formData.direccion}
-                readOnly
-                style={{
-                  pointerEvents: 'none',
-                  filter: 'brightness(0.70)'
-                }}
-              />
-            ) : (
-              <Form.Control
-                type="text"
-                placeholder="Ej. C/ Apóstoles, 8, 30003 Murcia, España"
-                name="direccion"
-                value={formData.direccion}
-                onChange={handleChange}
-              />
-            )}
+            <Form.Control
+              type="text"
+              name="direccion"
+              placeholder="C/ Apóstoles, 8, 30003 Murcia, España"
+              value={formData.direccion}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formLatitud">
+            <Form.Label>Latitud (N/S)</Form.Label>
+            <Form.Control
+              type="number"
+              name="latitud"
+              placeholder="37.9861"
+              min={-90}
+              max={90}
+              value={formData.latitud}
+              onChange={handleChange}
+            />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formLongitud">
-            <div className="row">
-              <div className="col-md-6">
-                <Form.Label>Latitud (N/S)</Form.Label>
-
-                {espacio ? (
-                  <Form.Control
-                    type="text"
-                    value={formData.latitud}
-                    readOnly
-                    style={{
-                      pointerEvents: 'none',
-                      filter: 'brightness(0.70)'
-                    }}
-                  />
-                ) : (
-                  <Form.Control
-                    type="number"
-                    step="0.0000001"
-                    placeholder="Ej. 37.9861"
-                    name="latitud"
-                    value={formData.latitud}
-                    min={-90}
-                    max={90}
-                    onChange={(e) => {
-                      let value = parseFloat(e.target.value)
-                      if (value > 90) value = 90
-                      if (value < -90) value = -90
-                      handleChange({
-                        target: { name: e.target.name, value: value.toFixed(7) }
-                      })
-                    }}
-                  />
-                )}
-              </div>
-              <div className="col-md-6">
-                <Form.Label>Longitud (E/W)</Form.Label>
-                {espacio ? (
-                  <Form.Control
-                    type="text"
-                    value={formData.longitud}
-                    readOnly
-                    style={{
-                      pointerEvents: 'none',
-                      filter: 'brightness(0.70)'
-                    }}
-                  />
-                ) : (
-                  <Form.Control
-                    type="number"
-                    step="0.0000001"
-                    placeholder="Ej. -1.1295"
-                    name="longitud"
-                    value={formData.longitud}
-                    min={-180}
-                    max={180}
-                    onChange={(e) => {
-                      let value = parseFloat(e.target.value)
-                      if (value > 180) value = 180
-                      if (value < -180) value = -180
-                      handleChange({
-                        target: { name: e.target.name, value: value.toFixed(7) }
-                      })
-                    }}
-                  />
-                )}
-              </div>
-            </div>
+            <Form.Label>Longitud (E/W)</Form.Label>
+            <Form.Control
+              type="number"
+              name="longitud"
+              placeholder="-1.1295"
+              min={-180}
+              max={180}
+              value={formData.longitud}
+              onChange={handleChange}
+            />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formDescripcion">
             <Form.Label>Descripción</Form.Label>
             <Form.Control
+              type="text"
+              name="descripcion"
               as="textarea"
               rows={3}
-              placeholder="Ej. Un histórico recinto para eventos taurinos, conciertos y actividades culturales, con una gran capacidad de público y un ambiente único en el corazón de Murcia."
-              name="descripcion"
+              placeholder="Un histórico recinto para eventos taurinos, conciertos y actividades culturales, con una gran capacidad de público y un ambiente único en el corazón de Murcia."
               value={formData.descripcion}
               onChange={handleChange}
             />
@@ -217,7 +125,7 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
         <Button variant="secondary" onClick={onHide}>
           Cancelar
         </Button>
-        <Button variant="primary" onClick={() => handleSubmit(espacio)}>
+        <Button variant="primary" onClick={handleSubmit}>
           {espacio ? 'Editar' : 'Crear'}
         </Button>
       </Modal.Footer>

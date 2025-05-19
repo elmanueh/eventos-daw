@@ -10,9 +10,9 @@ const getEspacioById = async (id) => {
   try {
     const response = await HttpService.get(API_URLS.ESPACIOS_DETALLE(id))
     response.puntosInteres = response.puntosInteres?.sort(
-        (a, b) => a.distancia - b.distancia
-      )
-    return response
+      (a, b) => a.distancia - b.distancia
+    )
+    return [response]
   } catch {
     throw new Error('Error al obtener el espacio por ID')
   }
@@ -26,7 +26,7 @@ const getEspaciosByPropietario = async (propietario) => {
     const espacios = await Promise.all(
       response.espacio.map((e) => getEspacioById(e.espacioDTO.id))
     )
-    return espacios
+    return espacios.flat()
   } catch {
     throw new Error('Error al obtener los espacios por propietario')
   }
@@ -66,6 +66,30 @@ const getEspaciosRandomSinEspacio = async (number, espacioActual) => {
   }
 }
 
+const addEspacio = async (espacio) => {
+  try {
+    await HttpService.post(API_URLS.ESPACIOS_CREAR, espacio)
+  } catch {
+    throw new Error('Error al crear el espacio')
+  }
+}
+
+const updateEspacio = async (id, espacio) => {
+  try {
+    await HttpService.patch(API_URLS.ESPACIOS_MODIFICAR(id), espacio)
+  } catch {
+    throw new Error('Error al modificar el espacio')
+  }
+}
+
+const updateEspacioStatus = async (id, status) => {
+  try {
+    await HttpService.put(API_URLS.ESPACIOS_CAMBIAR_ESTADO(id), status)
+  } catch {
+    throw new Error('Error al modificar el estado del espacio')
+  }
+}
+
 export const ServicioEspacios = {
   getEspacios,
   getEspacioById,
@@ -73,4 +97,7 @@ export const ServicioEspacios = {
   getEspaciosFirst,
   getEspaciosRandom,
   getEspaciosRandomSinEspacio,
+  addEspacio,
+  updateEspacio,
+  updateEspacioStatus
 }

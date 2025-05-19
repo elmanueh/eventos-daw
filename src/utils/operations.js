@@ -1,50 +1,7 @@
 import { API_URLS, ESTADOS } from '@/configs/constant'
 import { HttpService } from '@/services/httpService'
 
-export const handleCrearEspacio = async (
-  espacio,
-  setShowEspacioModal,
-  addToast
-) => {
-  console.log('Creando espacio...')
-
-  try {
-    await HttpService.post(API_URLS.ESPACIOS_CREAR, espacio)
-    setShowEspacioModal(false)
-    addToast(
-      'Espacio creado',
-      'Tu espacio se ha creado con éxito.',
-      true,
-      'success'
-    )
-  } catch (error) {
-    addToast('Error al crear espacio', error.message)
-  }
-}
-
-export const handleEditEspacio = async (
-  id,
-  modificados,
-  setShowEspacioModal,
-  addToast
-) => {
-  console.log('Editando espacio...', modificados)
-
-  try {
-    await HttpService.patch(API_URLS.ESPACIOS_MODIFICAR(id), modificados)
-    setShowEspacioModal(false)
-    addToast(
-      'Espacio modificado',
-      'Tu espacio se ha modificado con éxito.',
-      true,
-      'success'
-    )
-  } catch (error) {
-    addToast('Error al modificar espacio', error.message)
-  }
-}
-
-export const handleCambiarEstadoEspacio = async (
+const handleCambiarEstadoEspacio = async (
   espacio,
   status,
   setShowConfirmation,
@@ -84,11 +41,7 @@ export const handleCambiarEstadoEspacio = async (
   }
 }
 
-export const handleCrearEvento = async (
-  evento,
-  setShowEventoModal,
-  addToast
-) => {
+const handleCrearEvento = async (evento, setShowEventoModal, addToast) => {
   console.log('Creando evento...', evento)
 
   try {
@@ -105,7 +58,7 @@ export const handleCrearEvento = async (
   }
 }
 
-export const handleEditEvento = async (
+const handleEditEvento = async (
   id,
   modificados,
   setShowEventoModal,
@@ -127,11 +80,7 @@ export const handleEditEvento = async (
   }
 }
 
-export const handleDesactivarEvento = async (
-  id,
-  setShowConfirmation,
-  addToast
-) => {
+const handleDesactivarEvento = async (id, setShowConfirmation, addToast) => {
   console.log('Desactivando evento...')
 
   try {
@@ -147,4 +96,14 @@ export const handleDesactivarEvento = async (
     setShowConfirmation(false)
     addToast('Error al cancelar evento', error.message)
   }
+}
+
+const handleCrearEspacio = async () => {}
+
+export {
+  handleCambiarEstadoEspacio,
+  handleCrearEspacio,
+  handleCrearEvento,
+  handleDesactivarEvento,
+  handleEditEvento
 }

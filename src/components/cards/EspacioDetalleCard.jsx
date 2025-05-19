@@ -1,18 +1,94 @@
-import { AUTH_ROLES, ESTADOS } from '@/configs/constant'
+import {
+  AUTH_ROLES,
+  ESPACIOS_REDUCER,
+  ESTADOS,
+  TARJETA_TIPOS
+} from '@/configs/constant'
+import { useEspacios } from '@/hooks/useEspacios'
 import { decimalToDMS, isMio, statusEspacio } from '@/utils/espacioHelper'
+import ConfirmationModal from '@components/modals/ConfirmationModal'
+import EspacioModal from '@components/modals/EspacioModal'
+import MyToast, { useToast } from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
-import { useContext } from 'react'
+import Loading from '@pages/Loading'
+import { useContext, useState } from 'react'
 import { Badge, Card, Col, Row } from 'react-bootstrap'
 
-export default function EspacioDetalleCard({ espacio }) {
+export default function EspacioDetalleCard({ idEspacio }) {
   const { user } = useContext(AuthContext)
+  const { toasts, addToast, removeToast } = useToast()
+  const [showEspacioModal, setShowEspacioModal] = useState(false)
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+  const { espacios, updateEspacio, updateEspacioStatus } = useEspacios(
+    ESPACIOS_REDUCER.BY_ID,
+    idEspacio
+  )
 
+  const espacio = espacios[0]
+  if (!espacio) return <Loading />
   const status = statusEspacio(espacio)
   const isUser = user.roles.includes(AUTH_ROLES.GESTOR_EVENTOS)
   const esMio = isMio(espacio, user)
 
+  const handleEditEspacio = async (espacioData) => {
+    try {
+      updateEspacio(idEspacio, espacioData)
+      setShowEspacioModal(false)
+      addToast(
+        'Espacio editado',
+        'El espacio ha sido editado correctamente',
+        'success'
+      )
+    } catch {
+      addToast('Error', `No se pudo editar el espacio`, 'error')
+    }
+  }
+
+  const handleConfirmation = async () => {
+    try {
+      updateEspacioStatus(
+        idEspacio,
+        status === ESTADOS.ACTIVO
+          ? ESTADOS.CERRADO_TEMPORALMENTE
+          : ESTADOS.ACTIVO
+      )
+      setShowConfirmationModal(false)
+      addToast(
+        'Estado actualizado',
+        `El espacio ha sido ${
+          status === ESTADOS.ACTIVO ? 'desactivado' : 'activado'
+        } correctamente`,
+        'success'
+      )
+    } catch {
+      addToast(
+        'Error',
+        `No se pudo ${
+          status === ESTADOS.ACTIVO ? 'desactivar' : 'activar'
+        } el espacio`,
+        'error'
+      )
+    }
+  }
+
   return (
     <Card className="bg-secondary bg-opacity-25 border border-primary">
+      <MyToast toasts={toasts} removeToast={removeToast} />
+      <EspacioModal
+        show={showEspacioModal}
+        onHide={() => setShowEspacioModal(false)}
+        callback={handleEditEspacio}
+        espacio={espacio}
+      />
+      <ConfirmationModal
+        show={showConfirmationModal}
+        onHide={() => setShowConfirmationModal(false)}
+        callback={handleConfirmation}
+        title={espacio.nombre}
+        status={status}
+        tipo={TARJETA_TIPOS.ESPACIOS}
+      />
+
       <Card.Body className="d-flex flex-column gap-2">
         <Row className="align-items-center">
           <Col className="d-flex justify-content-between align-items-center">
@@ -72,31 +148,24 @@ export default function EspacioDetalleCard({ espacio }) {
                 <button
                   type="button"
                   className="btn btn-outline-primary"
-                  //onClick={() => setShowEspacioModal(true)}
+                  onClick={() => setShowEspacioModal(true)}
                 >
                   Editar
                 </button>
-                {status === ESTADOS.ACTIVO ? (
-                  <button
-                    type="button"
-                    className="btn btn-outline-danger"
-                    onClick={() => {
-                      //setShowConfirmation(true)
-                    }}
-                  >
-                    Desactivar
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="btn btn-outline-success"
-                    onClick={() => {
-                      //setShowConfirmation(true)
-                    }}
-                  >
-                    Activar
-                  </button>
-                )}
+
+                <button
+                  type="button"
+                  className={`btn ${
+                    status === ESTADOS.ACTIVO
+                      ? 'btn-outline-danger'
+                      : 'btn-outline-success'
+                  } `}
+                  onClick={() => {
+                    setShowConfirmationModal(true)
+                  }}
+                >
+                  {status === ESTADOS.ACTIVO ? 'Desactivar' : 'Activar'}
+                </button>
               </>
             )}
             {isUser && status === ESTADOS.ACTIVO && (

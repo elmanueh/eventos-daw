@@ -8,9 +8,9 @@ import { Button, Col, Form, Row } from 'react-bootstrap'
 const defaultFiltro = {
   nombre: '',
   descripcion: '',
+  capacidadMinima: '',
   mostrarActivo: true,
-  mostrarCerrado: true,
-  capacidadMinima: ''
+  mostrarCerrado: true
 }
 
 export default function Espacios() {

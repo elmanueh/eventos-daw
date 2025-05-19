@@ -17,6 +17,10 @@ export default function ConfirmationModal({
         : 'Estás a punto de activar este espacio. Una vez activado, estará disponible nuevamente para la creación de nuevos eventos.'
       : 'Estás a punto de cancelar este evento. Una vez cancelado, no podrás volver a activarlo y se cancelarán todas las reservas asociadas.'
 
+  const handleChangeStatus = () => {
+    callback()
+  }
+
   return (
     <Modal show={show} onHide={onHide} backdrop={true}>
       <Modal.Header>
@@ -33,7 +37,7 @@ export default function ConfirmationModal({
         <Button
           variant={status === ESTADOS.CERRADO ? 'success' : 'danger'}
           className="text-white"
-          onClick={callback}
+          onClick={handleChangeStatus}
         >
           Continuar
         </Button>
