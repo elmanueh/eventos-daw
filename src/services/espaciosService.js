@@ -9,6 +9,9 @@ const getEspacios = async () => {
 const getEspacioById = async (id) => {
   try {
     const response = await HttpService.get(API_URLS.ESPACIOS_DETALLE(id))
+    response.puntosInteres = response.puntosInteres?.sort(
+        (a, b) => a.distancia - b.distancia
+      )
     return response
   } catch {
     throw new Error('Error al obtener el espacio por ID')
@@ -52,10 +55,22 @@ const getEspaciosRandom = async (number) => {
   }
 }
 
+const getEspaciosRandomSinEspacio = async (number, espacioActual) => {
+  try {
+    const espacios = await getEspaciosRandom(number + 1)
+    return espacios
+      .filter((espacio) => espacio.id !== espacioActual)
+      .slice(0, number)
+  } catch {
+    throw new Error('Error al obtener los espacios aleatorios')
+  }
+}
+
 export const ServicioEspacios = {
   getEspacios,
   getEspacioById,
   getEspaciosByPropietario,
   getEspaciosFirst,
-  getEspaciosRandom
+  getEspaciosRandom,
+  getEspaciosRandomSinEspacio,
 }

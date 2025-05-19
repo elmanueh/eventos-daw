@@ -37,9 +37,6 @@ export function useEspacios(type, value = 0, value2) {
           break
         case ESPACIOS_REDUCER.BY_ID:
           espacios = await ServicioEspacios.getEspacioById(value)
-          espacios.puntosInteres = espacios.puntosInteres.sort(
-            (a, b) => a.distancia - b.distancia
-          )
           break
         case ESPACIOS_REDUCER.BY_PROPIETARIO:
           espacios = await ServicioEspacios.getEspaciosByPropietario(
@@ -50,11 +47,13 @@ export function useEspacios(type, value = 0, value2) {
           espacios = await ServicioEspacios.getEspaciosFirst(value)
           break
         case ESPACIOS_REDUCER.RANDOM:
-          const cantidad = value2 ? value + 1 : value
-          espacios = await ServicioEspacios.getEspaciosRandom(cantidad)
-          value2 &&
-            (espacios = espacios.filter((espacio) => espacio.id !== value2))
-          espacios = espacios.slice(0, value)
+          espacios = await ServicioEspacios.getEspaciosRandom(value)
+          break
+        case ESPACIOS_REDUCER.RANDOM_SIN_ESPACIO:
+          espacios = await ServicioEspacios.getEspaciosRandomSinEspacio(
+            value,
+            value2
+          )
           break
         default:
           throw new Error('Tipo de espacios no válido')

@@ -1,6 +1,5 @@
 import {
   AUTH_ROLES,
-  ESPACIOS_REDUCER,
   ESTADOS,
   EVENTOS_REDUCER,
   GROUP_DETALLES_CARDS_TIPOS,
@@ -8,7 +7,6 @@ import {
   RESERVAS_REDUCER,
   TARJETA_TIPOS
 } from '@/configs/constant'
-import { useEspacios } from '@/hooks/useEspacios'
 import { useEventos } from '@/hooks/useEventos'
 import { useReservas } from '@/hooks/useReservas'
 import {
@@ -38,7 +36,7 @@ import { useLoaderData } from 'react-router'
 export default function EventoDetalle() {
   const { user } = useContext(AuthContext)
   const eventoId = useLoaderData()
-  const { eventos: evento, loading: loadingEventos } = useEventos(
+  const { eventos: evento, loading } = useEventos(
     EVENTOS_REDUCER.BY_ID,
     eventoId
   )
@@ -46,9 +44,6 @@ export default function EventoDetalle() {
     EVENTOS_REDUCER.RANDOM,
     4,
     eventoId
-  )
-  const { espacios, loading: loadingEspacios } = useEspacios(
-    ESPACIOS_REDUCER.ALL
   )
   const { reservas, loading: loadingReservas } = useReservas(
     RESERVAS_REDUCER.BY_EVENTO,
@@ -61,10 +56,8 @@ export default function EventoDetalle() {
   const [showEventoModal, setShowEventoModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
 
-  if (loadingEventos || loadingEspacios || loadingReservas || otrosLoading)
-    return <Loading />
+  if (loading || loadingReservas || otrosLoading) return <Loading />
 
-  const espacio = espacios.find((e) => e.id === evento.espacioFisico)
   const isUser = user.roles.includes(AUTH_ROLES.USUARIO)
   const esMio = esEventoMio(evento, user)
 
@@ -72,7 +65,7 @@ export default function EventoDetalle() {
   const colorStatus = getEstadoColor(status)
 
   const handleNavigate = () => {
-    window.location.href = NAV_ROUTES.ESPACIOS_DET(espacio.id)
+    window.location.href = NAV_ROUTES.ESPACIOS_DET(evento.espacioFisico.id)
   }
 
   return (
@@ -171,7 +164,7 @@ export default function EventoDetalle() {
                           <i className="bi bi-geo-alt-fill me-2 text-primary"></i>
                           <span>
                             <strong>Espacio:</strong>{' '}
-                            {espacio ? (
+                            {evento.espacioFisico ? (
                               <a
                                 onClick={handleNavigate}
                                 style={{ cursor: 'pointer' }}
@@ -179,7 +172,7 @@ export default function EventoDetalle() {
                                 rel="noopener noreferrer"
                                 className="text-decoration-none"
                               >
-                                {espacio.nombre}
+                                {evento.espacioFisico.nombre}
                               </a>
                             ) : (
                               ''

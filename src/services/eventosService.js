@@ -9,6 +9,9 @@ const getEventos = async () => {
 const getEventoById = async (id) => {
   try {
     const response = await HttpService.get(API_URLS.EVENTOS_DETALLE(id))
+    response.espacioFisico = await HttpService.get(
+      API_URLS.ESPACIOS_DETALLE(response.espacioFisico)
+    )
     return response
   } catch {
     throw new Error('Error al obtener el evento por ID')
@@ -18,10 +21,7 @@ const getEventoById = async (id) => {
 const getEventosByGestor = async (gestor) => {
   try {
     const response = await HttpService.get(API_URLS.EVENTOS_GESTOR(gestor))
-    const eventos = await Promise.all(
-      response._embedded.eventoResumenList.map((e) => getEventoById(e.id))
-    )
-    return eventos
+    return response._embedded.eventoResumenList
   } catch {
     throw new Error('Error al obtener los eventos por gestor')
   }
@@ -30,10 +30,7 @@ const getEventosByGestor = async (gestor) => {
 const getEventosFirst = async (number = 2000) => {
   try {
     const response = await HttpService.get(API_URLS.EVENTOS_LISTAR(number))
-    const eventos = await Promise.all(
-      response._embedded.eventoResumenList.map((e) => getEventoById(e.id))
-    )
-    return eventos
+    return response._embedded.eventoResumenList
   } catch {
     throw new Error('Error al obtener los eventos')
   }
@@ -41,10 +38,31 @@ const getEventosFirst = async (number = 2000) => {
 
 const getEventosRandom = async (number) => {
   try {
-    const eventos = await getEventosFirst()
-    return eventos.sort(() => Math.random() - 0.5).slice(0, number)
+    const response = await getEventosFirst()
+    return response.sort(() => Math.random() - 0.5).slice(0, number)
   } catch {
     throw new Error('Error al obtener los eventos aleatorios')
+  }
+}
+
+const getEventosRandomSinEvento = async (number, eventoActual) => {
+  try {
+    const response = await getEventosRandom(number + 1)
+    return response.filter((evento) => evento.id !== eventoActual).slice(0, number)
+  } catch {
+    throw new Error('Error al obtener los eventos aleatorios por espacio')
+  }
+}
+
+const getEventosByEspacio = async (espacio) => {
+  try {
+    const response = await getEventosFirst()
+    return response
+      .filter((evento) => evento.espacioFisico === espacio)
+      .filter((e) => new Date(e.fechaInicio) >= new Date())
+      .sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio))
+  } catch {
+    throw new Error('Error al obtener los eventos por espacio')
   }
 }
 
@@ -53,5 +71,7 @@ export const ServicioEventos = {
   getEventoById,
   getEventosByGestor,
   getEventosFirst,
-  getEventosRandom
+  getEventosRandom,
+  getEventosRandomSinEvento,
+  getEventosByEspacio,
 }
