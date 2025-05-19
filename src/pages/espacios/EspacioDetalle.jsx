@@ -22,7 +22,7 @@ import OthersCards from '@components/OthersCards'
 import MyToast, { useToast } from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
 import Loading from '@pages/Loading'
-import { useContext, useState } from 'react'
+import { useContext, useId, useState } from 'react'
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
@@ -41,6 +41,9 @@ export default function EspacioDetalle() {
     EVENTOS_REDUCER.BY_ESPACIO,
     espacioId
   )
+
+  const idGroupPuntosInteres = useId()
+  const idGroupEventos = useId()
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showEventoModal, setShowEventoModal] = useState(false)
@@ -211,11 +214,13 @@ export default function EspacioDetalle() {
               <GroupDetallesCards
                 objetos={espacio.puntosInteres}
                 tipo={GROUP_DETALLES_CARDS_TIPOS.PUNTOS_INTERES}
+                id={idGroupPuntosInteres}
               />
 
               <GroupDetallesCards
                 objetos={eventos}
                 tipo={GROUP_DETALLES_CARDS_TIPOS.EVENTOS}
+                id={idGroupEventos}
               />
             </>
           )}

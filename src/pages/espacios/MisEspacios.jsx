@@ -10,11 +10,13 @@ import EspacioModal from '@components/modals/EspacioModal'
 import MyToast, { useToast } from '@components/toast/MyToast'
 import Loading from '@pages/Loading'
 
-import { useMemo, useState } from 'react'
+import { useId, useMemo, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 export default function MisEspacios() {
   const { espacios, loading } = useEspacios(ESPACIOS_REDUCER.BY_PROPIETARIO)
+  const idGroupEspaciosActivos = useId()
+  const idGroupEspaciosCerrados = useId()
 
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
@@ -147,24 +149,24 @@ export default function MisEspacios() {
 
       {mostrarActivos && (
         <>
-          <h3 id="espacios-activos">Activos</h3>
+          <h3 id={idGroupEspaciosActivos}>Activos</h3>
           <GroupCards
             objetos={espaciosActivos}
             tipo={TARJETA_TIPOS.ESPACIOS}
             visible={true}
-            id="espacios-activos"
+            id={idGroupEspaciosActivos}
           />
         </>
       )}
 
       {mostrarCerrados && (
         <>
-          <h3 id="espacios-cerrados">Cerrados Temporalmente</h3>
+          <h3 id={idGroupEspaciosCerrados}>Cerrados Temporalmente</h3>
           <GroupCards
             objetos={espaciosCerrados}
             tipo={TARJETA_TIPOS.ESPACIOS}
             visible={true}
-            id="espacios-cerrados"
+            id={idGroupEspaciosCerrados}
           />
         </>
       )}

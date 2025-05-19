@@ -11,11 +11,15 @@ import GroupCards from '@components/GroupCards'
 import EventoModal from '@components/modals/EventoModal'
 import MyToast, { useToast } from '@components/toast/MyToast'
 import Loading from '@pages/Loading'
-import { useMemo, useState } from 'react'
+import { useId, useMemo, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 export default function MisEventos() {
   const { eventos, loading } = useEventos(EVENTOS_REDUCER.BY_GESTOR)
+  const idGroupEventosEnCurso = useId()
+  const idGroupEventosFinalizados = useId()
+  const idGroupEventosActivos = useId()
+  const idGroupEventosCancelados = useId()
 
   const [showEventoModal, setShowEventoModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
@@ -164,48 +168,48 @@ export default function MisEventos() {
 
       {mostrarEnCurso && eventosEnCurso.length > 0 && (
         <>
-          <h3 id="eventos-curso">En curso</h3>
+          <h3 id={idGroupEventosEnCurso}>En curso</h3>
           <GroupCards
             objetos={eventosEnCurso}
             tipo={TARJETA_TIPOS.EVENTOS}
             visible={true}
-            id="eventos-curso"
+            id={idGroupEventosEnCurso}
           />
         </>
       )}
 
       {mostrarProximos && eventosActivos.length > 0 && (
         <>
-          <h3 id="eventos-activos">Próximos</h3>
+          <h3 id={idGroupEventosActivos}>Próximos</h3>
           <GroupCards
             objetos={eventosActivos}
             tipo={TARJETA_TIPOS.EVENTOS}
             visible={true}
-            id="eventos-activos"
+            id={idGroupEventosActivos}
           />
         </>
       )}
 
       {mostrarFinalizados && eventosFinalizados.length > 0 && (
         <>
-          <h3 id="eventos-finalizados">Finalizados</h3>
+          <h3 id={idGroupEventosFinalizados}>Finalizados</h3>
           <GroupCards
             objetos={eventosFinalizados}
             tipo={TARJETA_TIPOS.EVENTOS}
             visible={true}
-            id="eventos-finalizados"
+            id={idGroupEventosFinalizados}
           />
         </>
       )}
 
       {mostrarCancelados && eventosCancelados.length > 0 && (
         <>
-          <h3 id="eventos-cancelados">Cancelados</h3>
+          <h3 id={idGroupEventosCancelados}>Cancelados</h3>
           <GroupCards
             objetos={eventosCancelados}
             tipo={TARJETA_TIPOS.EVENTOS}
             visible={true}
-            id="eventos-cancelados"
+            id={idGroupEventosCancelados}
           />
         </>
       )}

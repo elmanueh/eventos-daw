@@ -7,7 +7,7 @@ import { Pagination } from '@components/pagination/Pagination'
 import { useState } from 'react'
 import { Card, ListGroup } from 'react-bootstrap'
 
-export default function GroupDetallesCards({ objetos, tipo }) {
+export default function GroupDetallesCards({ objetos, tipo, id }) {
   if (!objetos || objetos.length === 0) return <></>
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -30,7 +30,7 @@ export default function GroupDetallesCards({ objetos, tipo }) {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber)
 
-    const el = document.getElementById('objetos')
+    const el = document.getElementById(id)
     if (el) {
       const offset = 80
       const y = el.getBoundingClientRect().top + window.pageYOffset - offset
@@ -44,7 +44,7 @@ export default function GroupDetallesCards({ objetos, tipo }) {
         <Card.Header
           as="h3"
           className="bg-secondary bg-opacity-25 text-primary"
-          id="objetos"
+          id={id}
         >
           {isPuntosInteres && 'Puntos de interés cercanos'}
           {isReservas && 'Reservas realizadas'}

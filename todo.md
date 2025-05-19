@@ -6,16 +6,16 @@
 - Los filtros no deberian de haber un filtro para cada "propiedad", sino un filtro general para los strings (de esto ya me encargare yo)
 - Como tratar buscarEventosDisponibles(plazas, fechaInicio, fechaFin) en EventoModal
 
-- EventoDetalle -> mirar para no obtener todos los espacios, introducir el espacio al cargar evento o algo, con alguna variable
+- EventoDetalle -> mirar para no obtener todos los espacios, cargar el espacio junto al evento o algo, con alguna variable
 
-- EventosDetalles se recegar 2 veces los randoms
-
-- Usar useId()
+- EventosDetalles se recagar 2 veces los randoms
 
 # Bugs
 
 - En Espacios y Eventos, al filtrar de nuevo, debe cambiar el paginator a la page 1
 - Cuando se usan los filtros, el paginator deberia de resetearse a la page 1
+
+- EventoCards, en_curso sale mal
 
 # Segurencia
 

@@ -31,7 +31,7 @@ import { AuthContext } from '@context/AuthContext'
 import Loading from '@pages/Loading'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
-import { useContext, useState } from 'react'
+import { useContext, useId, useState } from 'react'
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
@@ -53,6 +53,7 @@ export default function EventoDetalle() {
     RESERVAS_REDUCER.BY_EVENTO,
     eventoId
   )
+  const idGroupReservas = useId()
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showReservaModal, setShowReservaModal] = useState(false)
@@ -255,6 +256,7 @@ export default function EventoDetalle() {
                 <GroupDetallesCards
                   objetos={reservas}
                   tipo={GROUP_DETALLES_CARDS_TIPOS.RESERVAS}
+                  id={idGroupReservas}
                 />
               )}
             </>

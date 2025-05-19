@@ -3,7 +3,7 @@ import { useEventos } from '@/hooks/useEventos'
 import { getEstadoEvento } from '@/utils/eventoHelper'
 import GroupCards from '@components/GroupCards'
 import Loading from '@pages/Loading'
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 
 const defaultFiltro = {
@@ -20,6 +20,7 @@ const defaultFiltro = {
 export default function Eventos() {
   const { eventos, loading } = useEventos(EVENTOS_REDUCER.ALL)
   const [filtro, setFiltro] = useState(defaultFiltro)
+  const idGroup = useId()
 
   const resetFiltros = () => {
     setFiltro(defaultFiltro)
@@ -68,7 +69,7 @@ export default function Eventos() {
   return (
     <div className="d-flex flex-column align-items-center">
       <header className="text-center">
-        <h1 className="text-primary fw-bold" id="eventos">
+        <h1 className="text-primary fw-bold" id={idGroup}>
           Eventos
         </h1>
       </header>
@@ -165,7 +166,7 @@ export default function Eventos() {
         <GroupCards
           objetos={eventosFiltrados}
           tipo={TARJETA_TIPOS.EVENTOS}
-          id={'eventos'}
+          id={idGroup}
         />
       </section>
     </div>

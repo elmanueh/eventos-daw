@@ -2,7 +2,7 @@ import { ESPACIOS_REDUCER, ESTADOS, TARJETA_TIPOS } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
 import GroupCards from '@components/GroupCards'
 import Loading from '@pages/Loading'
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 
 const defaultFiltro = {
@@ -16,6 +16,7 @@ const defaultFiltro = {
 export default function Espacios() {
   const { espacios, loading } = useEspacios(ESPACIOS_REDUCER.ALL)
   const [filtro, setFiltro] = useState(defaultFiltro)
+  const idGroup = useId()
 
   const resetFiltros = () => {
     setFiltro(defaultFiltro)
@@ -30,7 +31,7 @@ export default function Espacios() {
   }
 
   if (loading) return <Loading />
-  
+
   const espaciosFiltrados = espacios.filter((espacio) => {
     return (
       espacio.nombre.toLowerCase().includes(filtro.nombre.toLowerCase()) &&
@@ -47,7 +48,7 @@ export default function Espacios() {
   return (
     <div className="d-flex flex-column gap-3 align-items-center">
       <header className="text-center">
-        <h1 className="text-primary fw-bold" id="espacios">
+        <h1 className="text-primary fw-bold" id={idGroup}>
           Espacios Físicos
         </h1>
       </header>
@@ -121,7 +122,7 @@ export default function Espacios() {
         <GroupCards
           objetos={espaciosFiltrados}
           tipo={TARJETA_TIPOS.ESPACIOS}
-          id={'espacios'}
+          id={idGroup}
         />
       </section>
     </div>
