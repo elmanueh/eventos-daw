@@ -14,11 +14,7 @@ import {
   getEstadoColor,
   getEstadoEvento
 } from '@/utils/eventoHelper'
-import {
-  handleDesactivarEvento,
-  handleEditEvento,
-  handleResevar
-} from '@/utils/operations'
+import { handleDesactivarEvento, handleEditEvento } from '@/utils/operations'
 import GroupDetallesCards from '@components/GroupDetallesCards'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EventoModal from '@components/modals/EventoModal'
@@ -45,10 +41,11 @@ export default function EventoDetalle() {
     4,
     eventoId
   )
-  const { reservas, loading: loadingReservas } = useReservas(
-    RESERVAS_REDUCER.BY_EVENTO,
-    eventoId
-  )
+  const {
+    reservas,
+    loading: loadingReservas,
+    reservar
+  } = useReservas(RESERVAS_REDUCER.BY_EVENTO, eventoId)
   const idGroupReservas = useId()
 
   const [showConfirmation, setShowConfirmation] = useState(false)
@@ -82,9 +79,7 @@ export default function EventoDetalle() {
       />
       <ReservaModal
         show={showReservaModal}
-        callback={(reserva) =>
-          handleResevar(reserva, setShowReservaModal, addToast)
-        }
+        callback={(reserva) => reservar(reserva, setShowReservaModal, addToast)}
         onHide={() => setShowReservaModal(false)}
         evento={evento}
       />

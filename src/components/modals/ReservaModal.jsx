@@ -11,18 +11,14 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
     () => ({
       idEvento: evento.id,
       idUsuario: user.id,
-      numPlazas: ''
+      plazasReservadas: ''
     }),
     [user, evento]
   )
 
   useEffect(() => {
     if (show) {
-      setFormData({
-        idEvento: evento.id,
-        idUsuario: user.id,
-        numPlazas: ''
-      })
+      setFormData(initialFormData)
 
       setErrorMessage('')
     }
@@ -71,15 +67,15 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
           <Form.Group className="mb-3" controlId="formNumPlazas">
             <Form.Label>
               Número de plazas
-              {!!errorMessage && !formData.numPlazas && (
+              {!!errorMessage && !formData.plazasReservadas && (
                 <span className="text-danger ms-2">({errorMessage})</span>
               )}
             </Form.Label>
             <Form.Control
               type="number"
               placeholder="Ej. 5"
-              name="numPlazas"
-              value={formData.numPlazas}
+              name="plazasReservadas"
+              value={formData.plazasReservadas}
               onChange={(e) => {
                 const value = Math.min(
                   e.target.value,
@@ -90,7 +86,7 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
               required
               min={1}
               max={evento.numPlazasDisponibles}
-              isInvalid={!!errorMessage && formData.numPlazas == ''}
+              isInvalid={!!errorMessage && formData.plazasReservadas == ''}
             />
           </Form.Group>
         </Form>

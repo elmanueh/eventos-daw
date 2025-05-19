@@ -9,9 +9,6 @@ export default function MyToast({ toasts, removeToast }) {
           key={index}
           onClose={() => {
             removeToast(index)
-            if (toast.reloadOnClose) {
-              window.location.reload()
-            }
           }}
           show={true}
           delay={3000}

@@ -38,7 +38,16 @@ const getReservasByEvento = async (evento) => {
   }
 }
 
+const addReserva = async (reserva) => {
+  try {
+    const resposne = await HttpService.post(API_URLS.RESERVAS_CREAR, reserva)
+  } catch (error) {
+    throw new Error('Error al crear la reserva')
+  }
+}
+
 export const ServicioReservas = {
   getReservasByIdUsuario,
-  getReservasByEvento
+  getReservasByEvento,
+  addReserva
 }
