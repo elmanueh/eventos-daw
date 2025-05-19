@@ -1,5 +1,5 @@
 import { ESTADOS, NAV_ROUTES, TARJETA_TIPOS } from '@/configs/constant'
-import { getEstadoEvento } from '@/utils/eventoHelper'
+import { statusEvento } from '@/utils/eventoHelper'
 import { handleEditEvento } from '@/utils/operations'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EventoModal from '@components/modals/EventoModal'
@@ -12,7 +12,7 @@ export default function EventoCard({ evento, visible, action, addToast }) {
 
   const [eventoDet, setEventoDet] = useState(null)
 
-  const status = getEstadoEvento(evento)
+  const status = statusEvento(evento)
 
   return (
     <div>

@@ -11,12 +11,12 @@ const initialState = {
 
 function eventosReducer(state, action) {
   switch (action.type) {
-    case 'FETCH_START':
+    case 'ACTION_START':
       return { ...state, loading: true, error: null }
+    case 'ACTION_ERROR':
+      return { ...state, loading: false, error: action.payload }
     case 'FETCH_SUCCESS':
       return { ...state, loading: false, eventos: action.payload }
-    case 'FETCH_ERROR':
-      return { ...state, loading: false, error: action.payload }
     case 'TOGGLE_ESTADO':
       return {
         ...state,
@@ -37,7 +37,7 @@ export function useEventos(type, value = 0, value2 = 0) {
   const [state, dispatch] = useReducer(eventosReducer, initialState)
 
   const fetchEventos = useCallback(async () => {
-    dispatch({ type: 'FETCH_START' })
+    dispatch({ type: 'ACTION_START' })
 
     try {
       let eventos
@@ -71,29 +71,19 @@ export function useEventos(type, value = 0, value2 = 0) {
       }
       dispatch({ type: 'FETCH_SUCCESS', payload: eventos })
     } catch (error) {
-      dispatch({ type: 'FETCH_ERROR', payload: error.message })
+      dispatch({ type: 'ACTION_ERROR', payload: error.message })
     }
   }, [type, user?.username, value])
 
-  const toggleEstado = useCallback(
-    async (id, setShowConfirmation, addToast) => {
-      try {
-        await ServicioEventos.toggleEstado(id)
-        setShowConfirmation(false)
-        addToast(
-          'Evento cancelado',
-          'Tu evento se ha cancelado con éxito.',
-          'success'
-        )
-
-        dispatch({ type: 'TOGGLE_ESTADO', payload: id })
-      } catch (error) {
-        setShowConfirmation(false)
-        addToast('Error al cancelar evento', error.message)
-      }
-    },
-    []
-  )
+  const toggleEstado = async (id) => {
+    dispatch({ type: 'ACTION_START' })
+    try {
+      await ServicioEventos.toggleEstado(id)
+      dispatch({ type: 'TOGGLE_ESTADO', payload: id })
+    } catch (error) {
+      dispatch({ type: 'ACTION_ERROR', payload: error.message })
+    }
+  }
 
   useEffect(() => {
     fetchEventos()

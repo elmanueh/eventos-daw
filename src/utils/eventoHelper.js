@@ -1,6 +1,6 @@
 import { ESTADOS } from '@/configs/constant'
 
-export function getEstadoEvento(evento) {
+export function statusEvento(evento) {
   const ahora = new Date()
 
   if (evento.cancelado) return ESTADOS.CANCELADO

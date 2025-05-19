@@ -1,6 +1,6 @@
 import { ESTADOS, EVENTOS_REDUCER, TARJETA_TIPOS } from '@/configs/constant'
 import { useEventos } from '@/hooks/useEventos'
-import { getEstadoEvento } from '@/utils/eventoHelper'
+import { statusEvento } from '@/utils/eventoHelper'
 import GroupCards from '@components/GroupCards'
 import Loading from '@pages/Loading'
 import { useId, useState } from 'react'
@@ -50,7 +50,7 @@ export default function Eventos() {
   if (loading) return <Loading />
 
   const eventosFiltrados = eventos.filter((evento) => {
-    const estado = getEstadoEvento(evento)
+    const estado = statusEvento(evento)
 
     return (
       evento.nombre.toLowerCase().includes(filtro.nombre.toLowerCase()) &&

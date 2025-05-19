@@ -1,19 +1,35 @@
-import { AUTH_ROLES, ESTADOS, NAV_ROUTES } from '@/configs/constant'
 import {
-  esEventoMio,
-  getEstadoColor,
-  getEstadoEvento
-} from '@/utils/eventoHelper'
+  AUTH_ROLES,
+  ESTADOS,
+  EVENTOS_REDUCER,
+  NAV_ROUTES,
+  TARJETA_TIPOS
+} from '@/configs/constant'
+import { useEventos } from '@/hooks/useEventos'
+import { esEventoMio, getEstadoColor, statusEvento } from '@/utils/eventoHelper'
+import ConfirmationModal from '@components/modals/ConfirmationModal'
+import EventoModal from '@components/modals/EventoModal'
+import ReservaModal from '@components/modals/ReservaModal'
+import MyToast, { useToast } from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
+import Loading from '@pages/Loading'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Badge, Card, Col, Row } from 'react-bootstrap'
 
-export default function EventoDetalleCard({ evento }) {
+export default function EventoDetalleCard({ idEvento, action }) {
   const { user } = useContext(AuthContext)
+  const { toasts, addToast, removeToast } = useToast()
+  const [showEventoModal, setShowEventoModal] = useState(false)
+  const [showReservaModal, setShowReservaModal] = useState(false)
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const { eventos, toggleEstado } = useEventos(EVENTOS_REDUCER.BY_ID, idEvento)
 
-  const status = getEstadoEvento(evento)
+  const evento = eventos[0]
+  if (!evento) return <Loading />
+
+  const status = statusEvento(evento)
   const colorStatus = getEstadoColor(status)
   const isUser = user.roles.includes(AUTH_ROLES.USUARIO)
   const esMio = esEventoMio(evento, user)
@@ -22,8 +38,73 @@ export default function EventoDetalleCard({ evento }) {
     window.location.href = NAV_ROUTES.ESPACIOS_DET(evento.espacioFisico.id)
   }
 
+  const handleReservar = async (reserva) => {
+    try {
+      //action.reservar(reserva)
+      setShowReservaModal(false)
+      addToast(
+        'Reserva exitosa',
+        `Has reservado tu plaza en el evento ${evento.nombre}`,
+        'success'
+      )
+    } catch (error) {
+      addToast('Error', `No se pudo realizar la reserva`, 'error')
+    }
+  }
+
+  const handleEditEvento = async (eventoData) => {
+    try {
+      //updateEvento(idEvento, eventoData)
+      setShowEventoModal(false)
+      addToast(
+        'Evento editado',
+        'El evento ha sido editado correctamente',
+        'success'
+      )
+    } catch (error) {
+      addToast('Error', `No se pudo editar el evento`, 'error')
+    }
+  }
+
+  const handleConfirmation = async () => {
+    try {
+      toggleEstado(evento.id)
+      setShowConfirmation(false)
+      addToast(
+        'Estado actualizado',
+        `El evento ha sido desactivado correctamente`,
+        'success'
+      )
+    } catch (error) {
+      addToast('Error', `No se pudo desactivar el evento`, 'error')
+    }
+  }
+
   return (
     <Card className="bg-secondary bg-opacity-25 border border-primary">
+      <MyToast toasts={toasts} removeToast={removeToast} />
+
+      <EventoModal
+        show={showEventoModal}
+        onHide={() => setShowEventoModal(false)}
+        callback={handleEditEvento}
+        evento={evento}
+      />
+      <ReservaModal
+        show={showReservaModal}
+        onHide={() => setShowReservaModal(false)}
+        callback={handleReservar}
+        evento={evento}
+      />
+      <ConfirmationModal
+        show={showConfirmation}
+        onHide={() => setShowConfirmation(false)}
+        callback={handleConfirmation}
+        title={evento.nombre}
+        status={status}
+        tipo={TARJETA_TIPOS.EVENTOS}
+      />
+
       <Card.Body className="d-flex flex-column gap-2">
         <Row className="align-items-center">
           <Col className="d-flex justify-content-between align-items-center">
@@ -135,7 +216,7 @@ export default function EventoDetalleCard({ evento }) {
                   <button
                     type="button"
                     className="btn btn-outline-danger"
-                    //onClick={() => setShowConfirmation(true)}
+                    onClick={() => setShowConfirmation(true)}
                   >
                     Desactivar
                   </button>
