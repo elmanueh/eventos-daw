@@ -22,7 +22,7 @@ function espaciosReducer(state, action) {
   }
 }
 
-export function useEspacios(type, value = 0) {
+export function useEspacios(type, value = 0, value2) {
   const { user } = useContext(AuthContext)
   const [state, dispatch] = useReducer(espaciosReducer, initialState)
 
@@ -41,7 +41,6 @@ export function useEspacios(type, value = 0) {
             (a, b) => a.distancia - b.distancia
           )
           break
-
         case ESPACIOS_REDUCER.BY_PROPIETARIO:
           espacios = await ServicioEspacios.getEspaciosByPropietario(
             user.username
@@ -51,7 +50,11 @@ export function useEspacios(type, value = 0) {
           espacios = await ServicioEspacios.getEspaciosFirst(value)
           break
         case ESPACIOS_REDUCER.RANDOM:
-          espacios = await ServicioEspacios.getEspaciosRandom(value)
+          const cantidad = value2 ? value + 1 : value
+          espacios = await ServicioEspacios.getEspaciosRandom(cantidad)
+          value2 &&
+            (espacios = espacios.filter((espacio) => espacio.id !== value2))
+          espacios = espacios.slice(0, value)
           break
         default:
           throw new Error('Tipo de espacios no válido')

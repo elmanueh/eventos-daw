@@ -22,7 +22,7 @@ function eventosReducer(state, action) {
   }
 }
 
-export function useEventos(type, value = 0) {
+export function useEventos(type, value = 0, value2) {
   const { user } = useContext(AuthContext)
   const [state, dispatch] = useReducer(eventosReducer, initialState)
 
@@ -45,7 +45,10 @@ export function useEventos(type, value = 0) {
           eventos = await ServicioEventos.getEventosFirst(value)
           break
         case EVENTOS_REDUCER.RANDOM:
+          const cantidad = value2 ? value + 1 : value
           eventos = await ServicioEventos.getEventosRandom(value)
+          value2 && (eventos = eventos.filter((evento) => evento.id !== value2))
+          eventos = eventos.slice(0, value)
           break
         case EVENTOS_REDUCER.BY_ESPACIO:
           eventos = await ServicioEventos.getEventos()

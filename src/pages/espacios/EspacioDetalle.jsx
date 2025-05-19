@@ -35,7 +35,8 @@ export default function EspacioDetalle() {
   )
   const { espacios: otrosEspacios, loading: otrosLoading } = useEspacios(
     ESPACIOS_REDUCER.RANDOM,
-    3
+    4,
+    espacioId
   )
   const { eventos, loading: eventosLoading } = useEventos(
     EVENTOS_REDUCER.BY_ESPACIO,
