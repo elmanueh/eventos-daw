@@ -148,21 +148,3 @@ export const handleDesactivarEvento = async (
     addToast('Error al cancelar evento', error.message)
   }
 }
-
-export const handleResevar = async (reserva, setShowReservaModal, addToast) => {
-  console.log('Reservando...')
-
-  try {
-    await HttpService.post(API_URLS.RESERVAS_CREAR, reserva)
-    setShowReservaModal(false)
-
-    addToast(
-      'Reserva realizada',
-      'Tu reserva se ha realizado correctamente.',
-      true,
-      'success'
-    )
-  } catch (error) {
-    addToast('Error al reservar', error.message)
-  }
-}

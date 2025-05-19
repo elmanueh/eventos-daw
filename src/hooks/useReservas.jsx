@@ -17,6 +17,11 @@ function reservasReducer(state, action) {
       return { ...state, loading: false, reservas: action.payload }
     case 'FETCH_ERROR':
       return { ...state, loading: false, error: action.payload }
+    case 'RESERVA_SUCCESS':
+      return {
+        ...state,
+        reservas: [...state.reservas, action.payload]
+      }
     default:
       return state
   }
@@ -47,6 +52,25 @@ export function useReservas(type, value = 0) {
     }
   }, [type, user?.id, value])
 
+  const reservar = useCallback(
+    async (reserva, setShowReservaModal, addToast) => {
+      try {
+        await ServicioReservas.addReserva(reserva)
+        setShowReservaModal(false)
+        addToast(
+          'Reserva realizada',
+          'Tu reserva se ha realizado correctamente.',
+          true,
+          'success'
+        )
+        dispatch({ type: 'RESERVA_SUCCESS', payload: reserva })
+      } catch (error) {
+        addToast('Error al reservar', error.message)
+      }
+    },
+    []
+  )
+
   useEffect(() => {
     fetchReservas()
   }, [fetchReservas])
@@ -55,6 +79,7 @@ export function useReservas(type, value = 0) {
     reservas: state.reservas,
     loading: state.loading,
     error: state.error,
-    refetch: fetchReservas
+    refetch: fetchReservas,
+    reservar
   }
 }
