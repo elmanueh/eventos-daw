@@ -57,7 +57,10 @@ const getEventosRandomSinEvento = async (number, eventoActual) => {
 const getEventosByEspacio = async (espacio) => {
   try {
     const response = await getEventosFirst()
-    return response
+    const eventos = await Promise.all(
+      response.map((e) => HttpService.get(API_URLS.EVENTOS_DETALLE(e.id)))
+    )
+    return  eventos
       .filter((evento) => evento.espacioFisico === espacio)
       .filter((e) => new Date(e.fechaInicio) >= new Date())
       .sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio))

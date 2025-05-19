@@ -54,7 +54,7 @@ export function useEventos(type, value = 0, value2 = 0) {
           )
           break
         case EVENTOS_REDUCER.BY_ESPACIO:
-          eventos = await ServicioEventos.getEventosByEspacio()
+          eventos = await ServicioEventos.getEventosByEspacio(value)
           break
         default:
           throw new Error('Tipo de eventos no válido')
