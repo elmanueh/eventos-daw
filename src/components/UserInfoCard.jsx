@@ -39,12 +39,10 @@ export default function UserInfoCard() {
               <i className="bi bi-pin-map-fill text-primary" />
               <strong> Lugar: </strong>
               <Link
-                to={NAV_ROUTES.ESPACIOS_DET(
-                  reservaReciente.evento.espacioFisico.id
-                )}
+                to={NAV_ROUTES.ESPACIOS_DET(reservaReciente.espacio.id)}
                 className="text-decoration-none"
               >
-                {reservaReciente.evento.espacioFisico.nombre}
+                {reservaReciente.espacio.nombre}
               </Link>
             </li>
             <li>
