@@ -1,5 +1,9 @@
 import { ESPACIOS_REDUCER, TARJETA_TIPOS } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
+import {
+  obtenerEspaciosActivos,
+  obtenerEspaciosCerrados
+} from '@/utils/espacioHelper'
 import { handleCrearEspacio } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
 import EspacioModal from '@components/modals/EspacioModal'
@@ -47,12 +51,8 @@ export default function MisEspacios() {
 
   if (loading) return <Loading />
 
-  const espaciosActivos = espaciosFiltrados.filter(
-    (espacio) => espacio.estado === 'ACTIVO'
-  )
-  const espaciosCerrados = espaciosFiltrados.filter(
-    (espacio) => espacio.estado === 'CERRADO_TEMPORALMENTE'
-  )
+  const espaciosActivos = obtenerEspaciosActivos(espaciosFiltrados)
+  const espaciosCerrados = obtenerEspaciosCerrados(espaciosFiltrados)
 
   return (
     <Container className="d-flex flex-column p-0 gap-3">

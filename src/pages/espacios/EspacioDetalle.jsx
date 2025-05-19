@@ -6,6 +6,7 @@ import {
   TARJETA_TIPOS
 } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
+import { decimalToDMS, isMio, statusEspacio } from '@/utils/espacioHelper'
 import {
   handleCambiarEstadoEspacio,
   handleCrearEvento,
@@ -34,37 +35,18 @@ export default function EspacioDetalle() {
     ESPACIOS_REDUCER.RANDOM,
     3
   )
-  const { addToast, toasts, removeToast } = useToast()
+
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showEventoModal, setShowEventoModal] = useState(false)
   const [showEspacioModal, setShowEspacioModal] = useState(false)
+  const { addToast, toasts, removeToast } = useToast()
 
   if (loading || otrosLoading) return <Loading />
 
   const isUser = user.roles.includes(AUTH_ROLES.GESTOR_EVENTOS)
-  const esMio = espacio.propietario == user.username
+  const esMio = isMio(espacio, user)
 
-  const status =
-    espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO
-
-  // TODO: Cambiar a un hook
-  function decimalToDMS(coordinate, isLongitude = false) {
-    const degrees = Math.floor(coordinate)
-    const minutes = Math.floor((coordinate - degrees) * 60)
-    const seconds = ((coordinate - degrees - minutes / 60) * 3600).toFixed(1)
-
-    let direction = ''
-
-    if (isLongitude) {
-      direction = coordinate < 0 ? 'W' : 'E'
-    } else {
-      direction = coordinate < 0 ? 'S' : 'N'
-    }
-
-    return `${Math.abs(degrees)}°${Math.abs(minutes)}'${Math.abs(
-      seconds
-    )}"${direction}`
-  }
+  const status = statusEspacio(espacio)
 
   return (
     <Container className="p-0">

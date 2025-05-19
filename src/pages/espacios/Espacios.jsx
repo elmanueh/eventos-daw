@@ -5,24 +5,20 @@ import Loading from '@pages/Loading'
 import { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 
+const defaultFiltro = {
+  nombre: '',
+  descripcion: '',
+  mostrarActivo: true,
+  mostrarCerrado: true,
+  capacidadMinima: ''
+}
+
 export default function Espacios() {
   const { espacios, loading } = useEspacios(ESPACIOS_REDUCER.ALL)
-  const [filtro, setFiltro] = useState({
-    nombre: '',
-    descripcion: '',
-    mostrarActivo: true,
-    mostrarCerrado: true,
-    capacidadMinima: ''
-  })
+  const [filtro, setFiltro] = useState(defaultFiltro)
 
   const resetFiltros = () => {
-    setFiltro({
-      nombre: '',
-      descripcion: '',
-      mostrarActivo: true,
-      mostrarCerrado: true,
-      capacidadMinima: ''
-    })
+    setFiltro(defaultFiltro)
   }
 
   const handleInputChange = (e) => {
@@ -34,6 +30,7 @@ export default function Espacios() {
   }
 
   if (loading) return <Loading />
+  
   const espaciosFiltrados = espacios.filter((espacio) => {
     return (
       espacio.nombre.toLowerCase().includes(filtro.nombre.toLowerCase()) &&

@@ -11,7 +11,11 @@ import {
 import { useEspacios } from '@/hooks/useEspacios'
 import { useEventos } from '@/hooks/useEventos'
 import { useReservas } from '@/hooks/useReservas'
-import { getEstadoColor, getEstadoEvento } from '@/utils/eventoHelper'
+import {
+  esEventoMio,
+  getEstadoColor,
+  getEstadoEvento
+} from '@/utils/eventoHelper'
 import {
   handleDesactivarEvento,
   handleEditEvento,
@@ -56,7 +60,7 @@ export default function EventoDetalle() {
 
   const espacio = espacios.find((e) => e.id === evento.espacioFisico)
   const isUser = user.roles.includes(AUTH_ROLES.USUARIO)
-  const esMio = user.username === evento.organizador
+  const esMio = esEventoMio(evento, user)
 
   const status = getEstadoEvento(evento)
   const colorStatus = getEstadoColor(status)

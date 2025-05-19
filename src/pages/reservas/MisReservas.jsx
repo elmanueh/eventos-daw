@@ -1,5 +1,10 @@
 import { RESERVAS_REDUCER, TARJETA_TIPOS } from '@/configs/constant'
 import { useReservas } from '@/hooks/useReservas'
+import {
+  obtenerReservasActivas,
+  obtenerReservasCanceladas,
+  obtenerReservasFinalizadas
+} from '@/utils/reservaHelper'
 import GroupCards from '@components/GroupCards'
 import Loading from '@pages/Loading'
 import { Container } from 'react-bootstrap'
@@ -9,17 +14,9 @@ export default function MisReservas() {
 
   if (loading) return <Loading />
 
-  const reservasActivas = reservas.filter((r) => {
-    const fechaFin = new Date(r.fechaFin)
-    return !r.cancelada && fechaFin >= new Date()
-  })
-
-  const reservasCanceladas = reservas.filter((r) => r.cancelada)
-
-  const reservasFinalizadas = reservas.filter((r) => {
-    const fechaFin = new Date(r.fechaFin)
-    return !r.cancelada && fechaFin < new Date()
-  })
+  const reservasActivas = obtenerReservasActivas(reservas)
+  const reservasCanceladas = obtenerReservasCanceladas(reservas)
+  const reservasFinalizadas = obtenerReservasFinalizadas(reservas)
 
   return (
     <Container className="d-flex flex-column gap-3 p-0">

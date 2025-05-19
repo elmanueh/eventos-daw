@@ -25,3 +25,33 @@ export function getEstadoColor(estado) {
       return 'danger'
   }
 }
+
+export const obtenerEventosEnCurso = (eventos) => {
+  return eventos.filter((e) => {
+    const inicio = new Date(e.fechaInicio);
+    const fin = new Date(e.fechaFin);
+    return !e.cancelado && inicio <= new Date() && new Date() <= fin;
+  });
+};
+
+export const obtenerEventosFinalizados = (eventos) => {
+  return eventos.filter((e) => {
+    const fin = new Date(e.fechaFin);
+    return !e.cancelado && fin < new Date();
+  });
+};
+
+export const obtenerEventosActivos = (eventos) => {
+  return eventos.filter((e) => {
+    const inicio = new Date(e.fechaInicio);
+    return !e.cancelado && inicio > new Date();
+  });
+};
+
+export const obtenerEventosCancelados = (eventos) => {
+  return eventos.filter((e) => e.cancelado);
+};
+
+export const esEventoMio = (evento, usuario) => {
+  return evento.gestor === usuario._id;
+};

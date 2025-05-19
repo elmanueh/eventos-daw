@@ -1,5 +1,11 @@
 import { EVENTOS_REDUCER, TARJETA_TIPOS } from '@/configs/constant'
 import { useEventos } from '@/hooks/useEventos'
+import {
+  obtenerEventosActivos,
+  obtenerEventosCancelados,
+  obtenerEventosEnCurso,
+  obtenerEventosFinalizados
+} from '@/utils/eventoHelper'
 import { handleCrearEvento } from '@/utils/operations'
 import GroupCards from '@components/GroupCards'
 import EventoModal from '@components/modals/EventoModal'
@@ -51,23 +57,10 @@ export default function MisEventos() {
 
   if (loading) return <Loading />
 
-  const eventosEnCurso = eventosFiltrados.filter((e) => {
-    const inicio = new Date(e.fechaInicio)
-    const fin = new Date(e.fechaFin)
-    return !e.cancelado && inicio <= new Date() && new Date() <= fin
-  })
-
-  const eventosFinalizados = eventosFiltrados.filter((e) => {
-    const fin = new Date(e.fechaFin)
-    return !e.cancelado && fin < new Date()
-  })
-
-  const eventosActivos = eventosFiltrados.filter((e) => {
-    const inicio = new Date(e.fechaInicio)
-    return !e.cancelado && inicio > new Date()
-  })
-
-  const eventosCancelados = eventosFiltrados.filter((e) => e.cancelado)
+  const eventosEnCurso = obtenerEventosEnCurso(eventosFiltrados)
+  const eventosFinalizados = obtenerEventosFinalizados(eventosFiltrados)
+  const eventosActivos = obtenerEventosActivos(eventosFiltrados)
+  const eventosCancelados = obtenerEventosCancelados(eventosFiltrados)
 
   return (
     <Container className="d-flex flex-column gap-3 p-0">
