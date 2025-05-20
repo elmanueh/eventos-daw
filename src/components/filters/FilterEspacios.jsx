@@ -58,7 +58,7 @@ export default function FilterEspacios({ espacios, callback }) {
       </div>
 
       {mostrarFiltro && (
-        <Form className=" border rounded p-3 border-secondary">
+        <Form className="border rounded p-3 border-secondary">
           <Row className="g-3 align-items-end">
             <Col md={4}>
               <Form.Label>Nombre</Form.Label>
