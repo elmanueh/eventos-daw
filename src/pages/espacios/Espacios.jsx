@@ -3,15 +3,11 @@ import { useEspacios } from '@/hooks/useEspacios'
 import FilterEspacios from '@components/filters/FilterEspacios'
 import GroupCards from '@components/GroupCards'
 import Loading from '@pages/Loading'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export default function Espacios() {
   const { espacios, loading } = useEspacios(ESPACIOS_REDUCER.ALL)
   const [espaciosFiltrados, setEspaciosFiltrados] = useState(espacios)
-
-  useEffect(() => {
-    setEspaciosFiltrados(espacios)
-  }, [espacios])
 
   const handleFiltroChange = useCallback((espaciosFiltrados) => {
     setEspaciosFiltrados(espaciosFiltrados)

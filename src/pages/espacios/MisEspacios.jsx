@@ -10,7 +10,7 @@ import EspacioModal from '@components/modals/EspacioModal'
 import MyToast, { useToast } from '@components/toast/MyToast'
 import Loading from '@pages/Loading'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 
 export default function MisEspacios() {
@@ -20,10 +20,6 @@ export default function MisEspacios() {
   const [espaciosFiltrados, setEspaciosFiltrados] = useState(espacios)
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
-
-  useEffect(() => {
-    setEspaciosFiltrados(espacios)
-  }, [espacios])
 
   const handleFiltroChange = useCallback((espaciosFiltrados) => {
     setEspaciosFiltrados(espaciosFiltrados)

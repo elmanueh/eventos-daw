@@ -7,7 +7,7 @@ const defaultFiltro = {
   descripcion: '',
   capacidadMinima: '',
   mostrarActivo: true,
-  mostrarCerrado: true
+  mostrarCerrado: false
 }
 
 export default function FilterEspacios({ espacios, callback }) {

@@ -26,7 +26,7 @@ export default function GroupCards({ items, type, paginator, actions }) {
   }, [items, pageSize, handlePaginatorChange])
 
   return (
-    <section className="d-flex flex-column gap-4">
+    <section className="d-flex flex-column gap-4 w-100">
       {itemsShowed.length === 0 ? (
         <div style={{ marginBottom: '100px' }}>
           <p>No hay {type} disponibles para mostrar.</p>

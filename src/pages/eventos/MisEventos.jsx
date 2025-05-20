@@ -11,7 +11,7 @@ import GroupCards from '@components/GroupCards'
 import EventoModal from '@components/modals/EventoModal'
 import MyToast, { useToast } from '@components/toast/MyToast'
 import Loading from '@pages/Loading'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 
 export default function MisEventos() {
@@ -21,10 +21,6 @@ export default function MisEventos() {
   const [eventosFiltrados, setEventosFiltrados] = useState(eventos)
   const [showEventoModal, setShowEventoModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
-
-  useEffect(() => {
-    setEventosFiltrados(eventos)
-  }, [eventos])
 
   const handleFiltroChange = useCallback((eventosFiltrados) => {
     setEventosFiltrados(eventosFiltrados)
