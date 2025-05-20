@@ -1,4 +1,14 @@
-export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+import { useState } from 'react'
+
+export default function Pagination({ numItems, pageSize, callback }) {
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPages = Math.ceil(numItems / pageSize)
+
+  const handlePageChange = (nextPage) => {
+    setCurrentPage(nextPage)
+    callback(nextPage)
+  }
+
   const renderPaginationItems = () => {
     const maxPageItems = 5
     const items = []
@@ -20,7 +30,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             className={`page-link border-primary ${
               i === currentPage ? 'text-dark' : ''
             }`}
-            onClick={() => onPageChange(i)}
+            onClick={() => handlePageChange(i)}
           >
             {i}
           </button>
@@ -32,72 +42,30 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   }
 
   return (
-    <>
-      <style>{`
-        .page-link:hover {
-          box-shadow: none;
-          background-color: rgba(var(--bs-primary-rgb), 0.5);
-          color: rgba(var(--bs-dark-rgb), 0.5);
-        }
+    <nav className="d-flex justify-content-center" aria-label="Page navigation">
+      <ul className="pagination">
+        <li className="page-item">
+          <button
+            className="page-link border-primary"
+            onClick={() => handlePageChange(1)}
+            disabled={currentPage === 1}
+          >
+            &laquo;
+          </button>
+        </li>
 
-        .page-link:focus{
-          box-shadow: none;
-          background-color: var(--bs-primary);
-          color: var(--bs-dark);
-        }
-      `}</style>
-      <nav
-        className="d-flex justify-content-center"
-        aria-label="Page navigation"
-      >
-        <ul className="pagination">
-          {currentPage > 1 && (
-            <li className="page-item">
-              <button
-                className="page-link border-primary"
-                onClick={() => onPageChange(1)}
-              >
-                &laquo;
-              </button>
-            </li>
-          )}
+        {renderPaginationItems()}
 
-          {currentPage > 1 && (
-            <li className="page-item">
-              <button
-                className="page-link border-primary"
-                onClick={() => onPageChange(currentPage - 1)}
-              >
-                &lsaquo;
-              </button>
-            </li>
-          )}
-
-          {renderPaginationItems()}
-
-          {currentPage < totalPages && (
-            <li className="page-item">
-              <button
-                className="page-link border-primary"
-                onClick={() => onPageChange(currentPage + 1)}
-              >
-                &rsaquo;
-              </button>
-            </li>
-          )}
-
-          {currentPage < totalPages && (
-            <li className="page-item">
-              <button
-                className="page-link border-primary"
-                onClick={() => onPageChange(totalPages)}
-              >
-                &raquo;
-              </button>
-            </li>
-          )}
-        </ul>
-      </nav>
-    </>
+        <li className="page-item">
+          <button
+            className="page-link border-primary"
+            onClick={() => handlePageChange(totalPages)}
+            disabled={currentPage === totalPages}
+          >
+            &raquo;
+          </button>
+        </li>
+      </ul>
+    </nav>
   )
 }

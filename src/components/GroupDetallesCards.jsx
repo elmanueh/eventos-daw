@@ -3,40 +3,36 @@ import {
   GROUP_DETALLES_CARDS_TIPOS
 } from '@/configs/constant'
 import EventoCard from '@components/cards/EventoCard'
-import { Pagination } from '@components/pagination/Pagination'
-import { useState } from 'react'
+import Pagination from '@components/pagination/Pagination'
+import { useCallback, useEffect, useState } from 'react'
 import { Card, ListGroup } from 'react-bootstrap'
 
-export default function GroupDetallesCards({ objetos, tipo, id }) {
-  if (!objetos || objetos.length === 0) return <></>
-
-  const [currentPage, setCurrentPage] = useState(1)
-
-  const isPuntosInteres = tipo === GROUP_DETALLES_CARDS_TIPOS.PUNTOS_INTERES
-  const isReservas = tipo === GROUP_DETALLES_CARDS_TIPOS.RESERVAS
-  const isEventos = tipo === GROUP_DETALLES_CARDS_TIPOS.EVENTOS
-
+export default function GroupDetallesCards({ items, type }) {
+  const [itemsShowed, setItemsShowed] = useState([])
   const pageSize = GROUP_DETALLES_CARDS_SIZE
-  const totalPages = objetos ? Math.ceil(objetos.length / pageSize) : 0
-  const indexOfFirstItem = (currentPage - 1) * pageSize
+  const title =
+    type === GROUP_DETALLES_CARDS_TIPOS.EVENTOS
+      ? 'Próximos eventos'
+      : type === GROUP_DETALLES_CARDS_TIPOS.RESERVAS
+      ? 'Reservas realizadas'
+      : type === GROUP_DETALLES_CARDS_TIPOS.PUNTOS_INTERES
+      ? 'Puntos de interés cercanos'
+      : ''
 
-  const getCurrentPage = () => {
-    const startIndex = (currentPage - 1) * pageSize
-    const endIndex = startIndex + pageSize
+  const handlePaginatorChange = useCallback(
+    (page) => {
+      const startIndex = (page - 1) * pageSize
+      const endIndex = startIndex + pageSize
+      setItemsShowed(items.slice(startIndex, endIndex))
+    },
+    [items, pageSize]
+  )
 
-    return objetos.slice(startIndex, endIndex)
-  }
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber)
-
-    const el = document.getElementById(id)
-    if (el) {
-      const offset = 80
-      const y = el.getBoundingClientRect().top + window.pageYOffset - offset
-      window.scrollTo({ top: y, behavior: 'smooth' })
+  useEffect(() => {
+    if (items?.length > 0) {
+      handlePaginatorChange(1)
     }
-  }
+  }, [items, pageSize, handlePaginatorChange])
 
   return (
     <>
@@ -44,15 +40,42 @@ export default function GroupDetallesCards({ objetos, tipo, id }) {
         <Card.Header
           as="h3"
           className="bg-secondary bg-opacity-25 text-primary"
-          id={id}
         >
-          {isPuntosInteres && 'Puntos de interés cercanos'}
-          {isReservas && 'Reservas realizadas'}
-          {isEventos && 'Próximos eventos'}
+          {title}
         </Card.Header>
         <ListGroup variant="flush">
-          {getCurrentPage().map((objeto, index) => {
-            if (isPuntosInteres) {
+          {type === GROUP_DETALLES_CARDS_TIPOS.EVENTOS &&
+            itemsShowed.map((objeto, index) => {
+              return (
+                <ListGroup.Item
+                  key={index}
+                  className="border-top border-primary py-3"
+                >
+                  <EventoCard evento={objeto} />
+                </ListGroup.Item>
+              )
+            })}
+          {type === GROUP_DETALLES_CARDS_TIPOS.RESERVAS &&
+            itemsShowed.map((objeto, index) => {
+              return (
+                <ListGroup.Item
+                  key={index}
+                  className="border-top border-primary d-flex justify-content-between align-items-center py-3"
+                >
+                  <div className="d-flex flex-column">
+                    <span className="fw-bold">Reserva #{index + 1}</span>
+                    <span className="text-muted">
+                      Usuario: {objeto.idUsuario}
+                    </span>
+                  </div>
+                  <span className="badge bg-primary bg-opacity-25 text-primary rounded-pill px-3 py-2">
+                    {objeto.plazasReservadas} plazas
+                  </span>
+                </ListGroup.Item>
+              )
+            })}
+          {type === GROUP_DETALLES_CARDS_TIPOS.PUNTOS_INTERES &&
+            itemsShowed.map((objeto, index) => {
               return (
                 <ListGroup.Item
                   key={index}
@@ -77,47 +100,14 @@ export default function GroupDetallesCards({ objetos, tipo, id }) {
                   </div>
                 </ListGroup.Item>
               )
-            } else if (isReservas) {
-              return (
-                <ListGroup.Item
-                  key={index}
-                  className="border-top border-primary d-flex justify-content-between align-items-center py-3"
-                >
-                  <div className="d-flex flex-column">
-                    <span className="fw-bold">
-                      Reserva #{index + 1 + indexOfFirstItem}
-                    </span>
-                    <span className="text-muted">
-                      Usuario: {objeto.idUsuario}
-                    </span>
-                  </div>
-                  <span className="badge bg-primary bg-opacity-25 text-primary rounded-pill px-3 py-2">
-                    {objeto.plazasReservadas} plazas
-                  </span>
-                </ListGroup.Item>
-              )
-            } else if (isEventos) {
-              return (
-                <ListGroup.Item
-                  key={index}
-                  className="border-top border-primary py-3"
-                >
-                  <EventoCard
-                    evento={objeto}
-                    isReservas={isReservas}
-                    isEventos={isEventos}
-                  />
-                </ListGroup.Item>
-              )
-            }
-          })}
+            })}
         </ListGroup>
       </Card>
 
       <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
+        numItems={items.length}
+        pageSize={pageSize}
+        callback={handlePaginatorChange}
       />
     </>
   )

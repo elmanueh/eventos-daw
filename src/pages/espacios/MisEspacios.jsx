@@ -14,8 +14,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 
 export default function MisEspacios() {
-  const { espacios, loading, addEspacio, updateEspacio, updateEspacioStatus } =
-    useEspacios(ESPACIOS_REDUCER.BY_PROPIETARIO)
+  const { espacios, loading, addEspacio } = useEspacios(
+    ESPACIOS_REDUCER.BY_PROPIETARIO
+  )
   const [espaciosFiltrados, setEspaciosFiltrados] = useState(espacios)
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
@@ -67,11 +68,10 @@ export default function MisEspacios() {
         <>
           <h3>Activos</h3>
           <GroupCards
-            objetos={espaciosActivos}
-            tipo={TARJETA_TIPOS.ESPACIOS}
-            visible={true}
-            action={{ updateEspacio, updateEspacioStatus }}
-            addToast={addToast}
+            items={espaciosActivos}
+            type={TARJETA_TIPOS.ESPACIOS}
+            paginator
+            actions
           />
         </>
       )}
@@ -80,9 +80,10 @@ export default function MisEspacios() {
         <>
           <h3>Cerrados Temporalmente</h3>
           <GroupCards
-            objetos={espaciosCerrados}
-            tipo={TARJETA_TIPOS.ESPACIOS}
-            visible={true}
+            items={espaciosCerrados}
+            type={TARJETA_TIPOS.ESPACIOS}
+            paginator
+            actions
           />
         </>
       )}

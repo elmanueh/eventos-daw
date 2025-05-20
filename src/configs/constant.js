@@ -9,7 +9,9 @@ export const AUTH_ROLES = {
 export const NAV_ROUTES = {
   LOGIN: '/login',
   HOME: '/home',
+  ESPACIOS: '/espacios',
   ESPACIOS_DET: (id) => `/espacios/${id}`,
+  EVENTOS: '/eventos',
   EVENTOS_DET: (id) => `/eventos/${id}`,
   MIS_ESPACIOS: '/dashboard/espacios',
   MIS_RESERVAS: '/dashboard/reservas',
@@ -123,11 +125,11 @@ export const EVENTOS_REDUCER = {
   BY_ID: 'BY_ID',
   BY_ESPACIO: 'BY_ESPACIO',
   BY_GESTOR: 'BY_GESTOR',
-  TOGGLE_ESTADO: 'TOGGLE_ESTADO',
+  TOGGLE_ESTADO: 'TOGGLE_ESTADO'
 }
 
 export const RESERVAS_REDUCER = {
   BY_EVENTO: 'BY_EVENTO',
   BY_USUARIO: 'BY_USUARIO',
-  ADD_RESERVA: 'ADD_RESERVA',
+  ADD_RESERVA: 'ADD_RESERVA'
 }

@@ -67,9 +67,10 @@ export default function MisEventos() {
         <>
           <h3>En curso</h3>
           <GroupCards
-            objetos={eventosEnCurso}
-            tipo={TARJETA_TIPOS.EVENTOS}
-            visible={true}
+            items={eventosEnCurso}
+            type={TARJETA_TIPOS.EVENTOS}
+            paginator
+            actions
           />
         </>
       )}
@@ -78,11 +79,10 @@ export default function MisEventos() {
         <>
           <h3>Próximos</h3>
           <GroupCards
-            objetos={eventosActivos}
-            tipo={TARJETA_TIPOS.EVENTOS}
-            visible={true}
-            action={{ updateEventoStatus }}
-            addToast={addToast}
+            items={eventosActivos}
+            type={TARJETA_TIPOS.EVENTOS}
+            paginator
+            actions
           />
         </>
       )}
@@ -91,9 +91,10 @@ export default function MisEventos() {
         <>
           <h3>Finalizados</h3>
           <GroupCards
-            objetos={eventosFinalizados}
-            tipo={TARJETA_TIPOS.EVENTOS}
-            visible={true}
+            items={eventosFinalizados}
+            type={TARJETA_TIPOS.EVENTOS}
+            paginator
+            actions
           />
         </>
       )}
@@ -102,9 +103,10 @@ export default function MisEventos() {
         <>
           <h3>Cancelados</h3>
           <GroupCards
-            objetos={eventosCancelados}
-            tipo={TARJETA_TIPOS.EVENTOS}
-            visible={true}
+            items={eventosCancelados}
+            type={TARJETA_TIPOS.EVENTOS}
+            paginator
+            actions
           />
         </>
       )}

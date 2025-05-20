@@ -1,18 +1,19 @@
 import { ESTADOS, NAV_ROUTES, TARJETA_TIPOS } from '@/configs/constant'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EspacioModal from '@components/modals/EspacioModal'
+import MyToast, { useToast } from '@components/toast/MyToast'
 import { useState } from 'react'
 import './card.css'
 
-export default function EspacioCard({ espacio, visible, action, addToast }) {
-  const status =
-    espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO
+export default function EspacioCard({ espacio, actions }) {
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+  const { toasts, addToast, removeToast } = useToast()
+  const status =
+    espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO
 
   const handleEditEspacio = async (espacioData) => {
     try {
-      action.updateEspacio(espacio.id, espacioData)
       setShowEspacioModal(false)
       addToast(
         'Espacio editado',
@@ -26,12 +27,6 @@ export default function EspacioCard({ espacio, visible, action, addToast }) {
 
   const handleConfirmation = async () => {
     try {
-      action.updateEspacioStatus(
-        espacio.id,
-        status === ESTADOS.ACTIVO
-          ? ESTADOS.CERRADO_TEMPORALMENTE
-          : ESTADOS.ACTIVO
-      )
       setShowConfirmationModal(false)
       addToast(
         'Estado actualizado',
@@ -53,6 +48,7 @@ export default function EspacioCard({ espacio, visible, action, addToast }) {
 
   return (
     <div>
+      <MyToast toasts={toasts} removeToast={removeToast} />
       <EspacioModal
         show={showEspacioModal}
         onHide={() => setShowEspacioModal(false)}
@@ -90,7 +86,7 @@ export default function EspacioCard({ espacio, visible, action, addToast }) {
           </span>
         </div>
       </div>
-      {visible && (
+      {actions && (
         <div className="my-card-buttons">
           <button
             type="button"
@@ -99,27 +95,18 @@ export default function EspacioCard({ espacio, visible, action, addToast }) {
           >
             Editar
           </button>
-          {status === ESTADOS.ACTIVO ? (
-            <button
-              type="button"
-              className="btn btn-outline-danger"
-              onClick={() => {
-                setShowConfirmationModal(true)
-              }}
-            >
-              Desactivar
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="btn btn-outline-success"
-              onClick={() => {
-                setShowConfirmationModal(true)
-              }}
-            >
-              Activar
-            </button>
-          )}
+
+          <button
+            type="button"
+            className={`btn btn-outline-${
+              status === ESTADOS.ACTIVO ? 'danger' : 'success'
+            }`}
+            onClick={() => {
+              setShowConfirmationModal(true)
+            }}
+          >
+            {status === ESTADOS.ACTIVO ? 'Desactivar' : 'Activar'}
+          </button>
         </div>
       )}
     </div>

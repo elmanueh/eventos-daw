@@ -2,52 +2,40 @@ import { GROUP_CARDS_SIZE, TARJETA_TIPOS } from '@/configs/constant'
 import EspacioCard from '@components/cards/EspacioCard'
 import EventoCard from '@components/cards/EventoCard'
 import ReservaCard from '@components/cards/ReservaCard'
-import { Pagination } from '@components/pagination/Pagination'
-import { useState } from 'react'
+import Pagination from '@components/pagination/Pagination'
+import { useCallback, useEffect, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 
-export default function GroupCards({
-  objetos,
-  tipo,
-  visible,
-  noPaginator,
-  id,
-  action,
-  addToast
-}) {
-  const [currentPage, setCurrentPage] = useState(1)
-
+export default function GroupCards({ items, type, paginator, actions }) {
+  const [itemsShowed, setItemsShowed] = useState([])
   const pageSize = GROUP_CARDS_SIZE
-  const totalPages = Math.ceil(objetos.length / pageSize)
 
-  const getCurrentPageEspacios = () => {
-    const startIndex = (currentPage - 1) * pageSize
-    const endIndex = startIndex + pageSize
-    return objetos.slice(startIndex, endIndex)
-  }
+  const handlePaginatorChange = useCallback(
+    (page) => {
+      const startIndex = (page - 1) * pageSize
+      const endIndex = startIndex + pageSize
+      setItemsShowed(items.slice(startIndex, endIndex))
+    },
+    [items, pageSize]
+  )
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber)
-
-    const el = document.getElementById(id)
-    if (el) {
-      const offset = 80
-      const y = el.getBoundingClientRect().top + window.pageYOffset - offset
-      window.scrollTo({ top: y, behavior: 'smooth' })
+  useEffect(() => {
+    if (items?.length > 0) {
+      handlePaginatorChange(1)
     }
-  }
+  }, [items, pageSize, handlePaginatorChange])
 
   return (
     <section className="d-flex flex-column gap-4">
-      {getCurrentPageEspacios().length === 0 ? (
+      {itemsShowed.length === 0 ? (
         <div style={{ marginBottom: '100px' }}>
-          <p>No hay {tipo} disponibles para mostrar.</p>
+          <p>No hay {type} disponibles para mostrar.</p>
         </div>
       ) : (
         <>
           <Row className="g-4">
-            {getCurrentPageEspacios().map((objeto) => {
-              switch (tipo) {
+            {itemsShowed.map((objeto) => {
+              switch (type) {
                 case TARJETA_TIPOS.RESERVAS:
                   return (
                     <Col key={objeto.id} xl={12} xxl={6}>
@@ -57,40 +45,24 @@ export default function GroupCards({
                 case TARJETA_TIPOS.ESPACIOS:
                   return (
                     <Col key={objeto.id} sm={12} md={6} xl={6} xxl={4}>
-                      <EspacioCard
-                        espacio={objeto}
-                        visible={visible}
-                        action={action}
-                        addToast={addToast}
-                      />
+                      <EspacioCard espacio={objeto} actions={actions} />
                     </Col>
                   )
                 case TARJETA_TIPOS.EVENTOS:
                   return (
                     <Col key={objeto.id} sm={12} md={6} xl={6} xxl={4}>
-                      <EventoCard
-                        evento={objeto}
-                        visible={visible}
-                        action={action}
-                        addToast={addToast}
-                      />
+                      <EventoCard evento={objeto} actions={actions} />
                     </Col>
                   )
               }
             })}
           </Row>
 
-          {noPaginator ? (
-            <div className="text-end">
-              <a href={`/${tipo}`} className="btn btn-outline-primary">
-                Ver todos los {tipo}
-              </a>
-            </div>
-          ) : (
+          {paginator && (
             <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
+              numItems={items.length}
+              pageSize={pageSize}
+              callback={handlePaginatorChange}
             />
           )}
         </>

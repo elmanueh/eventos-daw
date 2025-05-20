@@ -27,9 +27,11 @@ export default function Eventos() {
 
       <FilterEventos eventos={eventos} callback={handleFiltroChange} />
 
-      <section className="mt-3">
-        <GroupCards objetos={eventosFiltrados} tipo={TARJETA_TIPOS.EVENTOS} />
-      </section>
+      <GroupCards
+        items={eventosFiltrados}
+        type={TARJETA_TIPOS.EVENTOS}
+        paginator
+      />
     </div>
   )
 }

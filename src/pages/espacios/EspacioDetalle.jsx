@@ -10,7 +10,6 @@ import EspacioDetalleCard from '@components/cards/EspacioDetalleCard'
 import GroupDetallesCards from '@components/GroupDetallesCards'
 import OthersCards from '@components/OthersCards'
 import Loading from '@pages/Loading'
-import { useId } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
@@ -25,9 +24,6 @@ export default function EspacioDetalle() {
     EVENTOS_REDUCER.BY_ESPACIO,
     espacioId
   )
-
-  //const idGroupPuntosInteres = useId()
-  const idGroupEventos = useId()
 
   if (otrosLoading || eventosLoading) return <Loading />
 
@@ -45,16 +41,14 @@ export default function EspacioDetalle() {
           <EspacioDetalleCard idEspacio={espacioId} />
           {/*<div className="mt-4">
                 <GroupDetallesCards
-                  objetos={espacio.puntosInteres}
-                  tipo={GROUP_DETALLES_CARDS_TIPOS.PUNTOS_INTERES}
-                  id={idGroupPuntosInteres}
+                  items={espacio.puntosInteres}
+                  type={GROUP_DETALLES_CARDS_TIPOS.PUNTOS_INTERES}
                 />
               </div>*/}
           <div className="mt-4">
             <GroupDetallesCards
-              objetos={eventos}
-              tipo={GROUP_DETALLES_CARDS_TIPOS.EVENTOS}
-              id={idGroupEventos}
+              items={eventos}
+              type={GROUP_DETALLES_CARDS_TIPOS.EVENTOS}
             />
           </div>
         </Col>

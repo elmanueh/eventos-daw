@@ -1,6 +1,7 @@
 import {
   ESPACIOS_REDUCER,
   EVENTOS_REDUCER,
+  NAV_ROUTES,
   TARJETA_TIPOS
 } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
@@ -9,6 +10,7 @@ import GroupCards from '@components/GroupCards'
 import { AuthContext } from '@context/AuthContext'
 import Loading from '@pages/Loading'
 import { useContext, useId } from 'react'
+import { Link } from 'react-router'
 
 export default function Home() {
   const { user } = useContext(AuthContext)
@@ -47,12 +49,17 @@ export default function Home() {
             No se han encontrado espacios disponibles por ahora.
           </h2>
         ) : (
-          <GroupCards
-            objetos={espacios}
-            tipo={TARJETA_TIPOS.ESPACIOS}
-            noPaginator={true}
-            id={idGroupEspacios}
-          ></GroupCards>
+          <>
+            <GroupCards items={espacios} type={TARJETA_TIPOS.ESPACIOS} />
+            <div className="text-end">
+              <Link
+                to={NAV_ROUTES.ESPACIOS}
+                className="btn btn-outline-primary"
+              >
+                Ver todos los espacios
+              </Link>
+            </div>
+          </>
         )}
       </section>
 
@@ -65,12 +72,14 @@ export default function Home() {
             Todavía no hay eventos, pero ¡estate atento!
           </h2>
         ) : (
-          <GroupCards
-            objetos={eventos}
-            tipo={TARJETA_TIPOS.EVENTOS}
-            noPaginator={true}
-            id={idGroupEventos}
-          ></GroupCards>
+          <>
+            <GroupCards items={eventos} type={TARJETA_TIPOS.EVENTOS} />
+            <div className="text-end">
+              <Link to={NAV_ROUTES.EVENTOS} className="btn btn-outline-primary">
+                Ver todos los eventos
+              </Link>
+            </div>
+          </>
         )}
       </section>
     </div>

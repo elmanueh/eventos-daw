@@ -42,9 +42,8 @@ export default function EventoDetalle() {
           {/*{esEventoMio && (
             <div className="mt-4">
               <GroupDetallesCards
-                objetos={reservas}
-                tipo={GROUP_DETALLES_CARDS_TIPOS.RESERVAS}
-                id={idGroupReservas}
+                items={reservas}
+                type={GROUP_DETALLES_CARDS_TIPOS.RESERVAS}
               />
             </div>
           )}*/}
