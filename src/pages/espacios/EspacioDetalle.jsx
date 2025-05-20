@@ -45,12 +45,14 @@ export default function EspacioDetalle() {
                   type={GROUP_DETALLES_CARDS_TIPOS.PUNTOS_INTERES}
                 />
               </div>*/}
-          <div className="mt-4">
-            <GroupDetallesCards
-              items={eventos}
-              type={GROUP_DETALLES_CARDS_TIPOS.EVENTOS}
-            />
-          </div>
+          {eventos.length > 0 && (
+            <div className="mt-4">
+              <GroupDetallesCards
+                items={eventos}
+                type={GROUP_DETALLES_CARDS_TIPOS.EVENTOS}
+              />
+            </div>
+          )}
         </Col>
       </Row>
     </Container>
