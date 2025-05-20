@@ -14,9 +14,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 
 export default function MisEspacios() {
-  const { espacios, loading, addEspacio } = useEspacios(
-    ESPACIOS_REDUCER.BY_PROPIETARIO
-  )
+  const { espacios, loading, addEspacio, updateEspacio, updateEspacioStatus } =
+    useEspacios(ESPACIOS_REDUCER.BY_PROPIETARIO)
   const [espaciosFiltrados, setEspaciosFiltrados] = useState(espacios)
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
@@ -71,6 +70,8 @@ export default function MisEspacios() {
             objetos={espaciosActivos}
             tipo={TARJETA_TIPOS.ESPACIOS}
             visible={true}
+            action={{ updateEspacio, updateEspacioStatus }}
+            addToast={addToast}
           />
         </>
       )}

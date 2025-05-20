@@ -1,12 +1,73 @@
-import { ESTADOS, NAV_ROUTES } from '@/configs/constant'
+import { ESTADOS, NAV_ROUTES, TARJETA_TIPOS } from '@/configs/constant'
+import ConfirmationModal from '@components/modals/ConfirmationModal'
+import EspacioModal from '@components/modals/EspacioModal'
+import { useState } from 'react'
 import './card.css'
 
-export default function EspacioCard({ espacio, visible }) {
+export default function EspacioCard({ espacio, visible, action, addToast }) {
   const status =
     espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO
+  const [showEspacioModal, setShowEspacioModal] = useState(false)
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+
+  const handleEditEspacio = async (espacioData) => {
+    try {
+      action.updateEspacio(espacio.id, espacioData)
+      setShowEspacioModal(false)
+      addToast(
+        'Espacio editado',
+        'El espacio ha sido editado correctamente',
+        'success'
+      )
+    } catch {
+      addToast('Error', `No se pudo editar el espacio`, 'error')
+    }
+  }
+
+  const handleConfirmation = async () => {
+    try {
+      action.updateEspacioStatus(
+        espacio.id,
+        status === ESTADOS.ACTIVO
+          ? ESTADOS.CERRADO_TEMPORALMENTE
+          : ESTADOS.ACTIVO
+      )
+      setShowConfirmationModal(false)
+      addToast(
+        'Estado actualizado',
+        `El espacio ha sido ${
+          status === ESTADOS.ACTIVO ? 'desactivado' : 'activado'
+        } correctamente`,
+        'success'
+      )
+    } catch {
+      addToast(
+        'Error',
+        `No se pudo ${
+          status === ESTADOS.ACTIVO ? 'desactivar' : 'activar'
+        } el espacio`,
+        'error'
+      )
+    }
+  }
 
   return (
     <div>
+      <EspacioModal
+        show={showEspacioModal}
+        onHide={() => setShowEspacioModal(false)}
+        callback={handleEditEspacio}
+        espacio={espacio}
+      />
+      <ConfirmationModal
+        show={showConfirmationModal}
+        onHide={() => setShowConfirmationModal(false)}
+        callback={handleConfirmation}
+        title={espacio.nombre}
+        status={status}
+        tipo={TARJETA_TIPOS.ESPACIOS}
+      />
+
       <div
         className="my-card"
         onClick={() =>
@@ -31,15 +92,31 @@ export default function EspacioCard({ espacio, visible }) {
       </div>
       {visible && (
         <div className="my-card-buttons">
-          <button type="button" className="btn btn-outline-primary">
+          <button
+            type="button"
+            className="btn btn-outline-primary"
+            onClick={() => setShowEspacioModal(true)}
+          >
             Editar
           </button>
           {status === ESTADOS.ACTIVO ? (
-            <button type="button" className="btn btn-outline-danger">
+            <button
+              type="button"
+              className="btn btn-outline-danger"
+              onClick={() => {
+                setShowConfirmationModal(true)
+              }}
+            >
               Desactivar
             </button>
           ) : (
-            <button type="button" className="btn btn-outline-success">
+            <button
+              type="button"
+              className="btn btn-outline-success"
+              onClick={() => {
+                setShowConfirmationModal(true)
+              }}
+            >
               Activar
             </button>
           )}

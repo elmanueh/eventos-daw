@@ -13,7 +13,7 @@ export default function GroupCards({
   noPaginator,
   id,
   action,
-  addToast,
+  addToast
 }) {
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -57,7 +57,12 @@ export default function GroupCards({
                 case TARJETA_TIPOS.ESPACIOS:
                   return (
                     <Col key={objeto.id} sm={12} md={6} xl={6} xxl={4}>
-                      <EspacioCard espacio={objeto} visible={visible} />
+                      <EspacioCard
+                        espacio={objeto}
+                        visible={visible}
+                        action={action}
+                        addToast={addToast}
+                      />
                     </Col>
                   )
                 case TARJETA_TIPOS.EVENTOS:
