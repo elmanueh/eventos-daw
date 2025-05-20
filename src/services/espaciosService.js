@@ -38,9 +38,9 @@ const getEspaciosFirst = async (number = 2000) => {
     const espacios = await Promise.all(
       response.espacio
         .slice(0, number)
-        .map((e) => HttpService.get(API_URLS.ESPACIOS_DETALLE(e.espacioDTO.id)))
-    )
-    return espacios
+        .map((e) => getEspacioById(e.espacioDTO.id)))
+  
+    return espacios.flat()
   } catch {
     throw new Error('Error al obtener los espacios')
   }

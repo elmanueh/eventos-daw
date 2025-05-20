@@ -23,7 +23,12 @@ const getEventoById = async (id) => {
 const getEventosByGestor = async (gestor) => {
   try {
     const response = await HttpService.get(API_URLS.EVENTOS_GESTOR(gestor))
-    return response._embedded.eventoResumenList
+    const eventos = await Promise.all(
+      response._embedded.eventoResumenList.map((e) =>
+        getEventoById(e.id)
+      )
+    )
+    return eventos.flat()
   } catch {
     throw new Error('Error al obtener los eventos por gestor')
   }
@@ -32,7 +37,12 @@ const getEventosByGestor = async (gestor) => {
 const getEventosFirst = async (number = 2000) => {
   try {
     const response = await HttpService.get(API_URLS.EVENTOS_LISTAR(number))
-    return response._embedded.eventoResumenList
+    const eventos = await Promise.all(
+      response._embedded.eventoResumenList.map((e) =>
+        getEventoById(e.id)
+      )
+    )
+    return eventos.flat()
   } catch {
     throw new Error('Error al obtener los eventos')
   }
@@ -59,9 +69,6 @@ const getEventosRandomSinEvento = async (number, eventoActual) => {
 const getEventosByEspacio = async (espacio) => {
   try {
     const response = await getEventosFirst()
-    const eventos = await Promise.all(
-      response.map((e) => HttpService.get(API_URLS.EVENTOS_DETALLE(e.id)))
-    )
     return  eventos
       .filter((evento) => evento.espacioFisico === espacio)
       .filter((e) => new Date(e.fechaInicio) >= new Date())
