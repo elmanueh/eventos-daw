@@ -24,7 +24,7 @@ export default function EventoDetalleCard({ idEvento, action }) {
   const [showEventoModal, setShowEventoModal] = useState(false)
   const [showReservaModal, setShowReservaModal] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
-  const { eventos, updateEventoStatus, loading } = useEventos(
+  const { eventos, updateEventoStatus, updateEvento, loading } = useEventos(
     EVENTOS_REDUCER.BY_ID,
     idEvento
   )
@@ -57,7 +57,7 @@ export default function EventoDetalleCard({ idEvento, action }) {
 
   const handleEditEvento = async (eventoData) => {
     try {
-      //updateEvento(idEvento, eventoData)
+      updateEvento(idEvento, eventoData)
       setShowEventoModal(false)
       addToast(
         'Evento editado',
@@ -211,7 +211,7 @@ export default function EventoDetalleCard({ idEvento, action }) {
                 <button
                   type="button"
                   className="btn btn-outline-primary"
-                  //onClick={() => setShowEventoModal(true)}
+                  onClick={() => setShowEventoModal(true)}
                 >
                   Editar
                 </button>

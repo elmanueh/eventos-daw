@@ -77,6 +77,7 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
               placeholder="C/ Apóstoles, 8, 30003 Murcia, España"
               value={formData.direccion}
               onChange={handleChange}
+              readOnly={!!espacio}
             />
           </Form.Group>
 
@@ -90,6 +91,7 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
               max={90}
               value={formData.latitud}
               onChange={handleChange}
+              readOnly={!!espacio}
             />
           </Form.Group>
 
@@ -103,6 +105,7 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
               max={180}
               value={formData.longitud}
               onChange={handleChange}
+              readOnly={!!espacio}
             />
           </Form.Group>
 

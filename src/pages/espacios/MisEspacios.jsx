@@ -83,6 +83,8 @@ export default function MisEspacios() {
             objetos={espaciosCerrados}
             tipo={TARJETA_TIPOS.ESPACIOS}
             visible={true}
+            action={{ updateEspacio, updateEspacioStatus }}
+            addToast={addToast}
           />
         </>
       )}

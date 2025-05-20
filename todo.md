@@ -10,7 +10,7 @@
 
 - CHEKEAR QUE NO HAYA EVENTOS CON MAS PLAZAS QUE EL ESPACIO EN LA BASE DE DATOS
 
-- Tratar errores y onlyRead en los Modal
+- Tratar errores en los Modal
 
 # Bugs
 
@@ -24,6 +24,8 @@
 - Al reservar un evento no se muestra toast
 
 - Al mostrar MisEvento y MisEspacios la primera vez se muestran los cancelados
+
+- Mirar filtros
 
 # Segurencia
 

@@ -1,78 +1,51 @@
 import {
-  API_URLS,
   CATEGORIA_EVENTOS,
-  ESTADOS,
+  ESPACIOS_REDUCER,
   EVENTO_MODIFICABLE
 } from '@/configs/constant'
-import { HttpService } from '@/services/httpService'
+import { useEspacios } from '@/hooks/useEspacios'
+import { formatDateTimeLocal } from '@/utils/eventoHelper'
 import { AuthContext } from '@context/AuthContext'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 
-export default function EventoModal({
-  show,
-  callback,
-  onHide,
-  espacioFisico,
-  evento
-}) {
+export default function EventoModal({ show, callback, onHide, evento }) {
   const { user } = useContext(AuthContext)
+
+  const { espacios: espaciosList } = useEspacios(ESPACIOS_REDUCER.ALL)
 
   const initialFormData = useMemo(
     () => ({
-      nombre: '',
-      descripcion: '',
-      organizador: user?.username || '',
-      numPlazas: '',
-      categoria: '',
-      fechaInicio: '',
-      fechaFin: '',
-      espacioFisico: espacioFisico?.id || ''
+      nombre: evento?.nombre || '',
+      descripcion: evento?.descripcion || '',
+      organizador: evento?.organizador || user.username,
+      numPlazas: evento?.numPlazas || 0,
+      categoria: evento?.categoria || '',
+      fechaInicio: evento?.fechaInicio || '',
+      fechaFin: evento?.fechaFin || '',
+      espacioFisico: evento?.espacioFisico || ''
     }),
-    [user, espacioFisico]
+    [evento, user.username]
   )
 
   const [formData, setFormData] = useState(initialFormData)
-  const [espaciosList, setEspaciosList] = useState([])
-  const [errorMessage, setErrorMessage] = useState('')
 
   const [maxPlazas, setMaxPlazas] = useState(0)
 
   const plazasOcupadas = evento?.numPlazas - evento?.numPlazasDisponibles
 
   useEffect(() => {
-    setFormData(evento ? { ...evento } : initialFormData)
-    setErrorMessage('')
-  }, [show])
-
-  useEffect(() => {
-    if (evento) {
-      const { id, ...eventoSinId } = evento
-      setFormData({
-        ...eventoSinId
-      })
-    }
-  }, [])
+    setFormData(initialFormData)
+  }, [show, evento, initialFormData])
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
   }
 
-  const handleSubmit = (evento) => {
-    if (
-      Object.values(formData).some(
-        (value) => value === null || value === undefined || value === ''
-      )
-    ) {
-      setErrorMessage('Este campo es obligatorio')
-      return
-    }
-
-    setErrorMessage('')
-
+  const handleSubmit = () => {
     if (evento) {
       const cambios = Object.fromEntries(
         EVENTO_MODIFICABLE.filter(
@@ -80,35 +53,19 @@ export default function EventoModal({
         ).map((campo) => [campo, formData[campo]])
       )
 
-      callback(cambios)
+      if (Object.keys(cambios).length) callback(cambios)
     } else {
       callback(formData)
     }
   }
 
   useEffect(() => {
-    const fetchEspacios = async () => {
-      const data = await HttpService.get(API_URLS.ESPACIOS_LISTAR)
-      setEspaciosList(
-        data.espacio
-          .map((espacio) => espacio.espacioDTO)
-          .filter((espacio) => espacio.estado === ESTADOS.ACTIVO)
-      )
-    }
-
-    if (!espacioFisico) {
-      fetchEspacios()
-    }
-  }, [])
-
-  useEffect(() => {
-    if (espacioFisico) {
-      setMaxPlazas(espacioFisico.capacidad)
+    if (evento?.espacioFisico) {
+      setMaxPlazas(evento.espacioFisico.capacidad)
     } else {
       const espacioSeleccionado = espaciosList.find(
         (espacio) => espacio.id === formData.espacioFisico
       )
-
       setMaxPlazas(espacioSeleccionado?.capacidad || Number.MAX_SAFE_INTEGER)
     }
   }, [formData.espacioFisico, espaciosList])
@@ -124,29 +81,19 @@ export default function EventoModal({
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3" controlId="formEspacioFisico">
-            <Form.Label>
-              Espacio físico
-              {!!errorMessage && !formData.espacioFisico && (
-                <span className="text-danger ms-2">({errorMessage})</span>
-              )}
-            </Form.Label>
-            {espacioFisico ? (
+            <Form.Label>Espacio físico</Form.Label>
+            {evento?.espacioFisico ? (
               <Form.Control
                 type="text"
-                value={espacioFisico.nombre}
+                name="espacioFisico"
+                value={evento.espacioFisico.nombre}
                 readOnly
-                style={{
-                  pointerEvents: 'none',
-                  filter: 'brightness(0.70)'
-                }}
               />
             ) : (
               <Form.Select
                 name="espacioFisico"
                 value={formData.espacioFisico}
                 onChange={handleChange}
-                isInvalid={!!errorMessage && formData.espacioFisico === ''}
-                required
               >
                 <option value="">Seleccione un espacio físico</option>
                 {espaciosList.map((espacio) => (
@@ -159,41 +106,20 @@ export default function EventoModal({
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formNombre">
-            <Form.Label>
-              Nombre del evento
-              {!!errorMessage && !formData.nombre && (
-                <span className="text-danger ms-2">({errorMessage})</span>
-              )}
-            </Form.Label>
-            {evento ? (
-              <Form.Control
-                type="text"
-                value={formData.nombre}
-                readOnly
-                style={{
-                  pointerEvents: 'none',
-                  filter: 'brightness(0.70)'
-                }}
-              />
-            ) : (
-              <Form.Control
-                type="text"
-                placeholder="Ej. Concierto de Rock"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-                isInvalid={!!errorMessage && formData.nombre === ''}
-                required
-              />
-            )}
+            <Form.Label>Nombre del evento</Form.Label>
+            <Form.Control
+              type="text"
+              name="nombre"
+              placeholder="Concierto de Rock"
+              value={formData.nombre}
+              onChange={handleChange}
+              readOnly={!!evento}
+            />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formNumPlazas">
             <Form.Label>
               Número de plazas
-              {!!errorMessage && !formData.numPlazas && (
-                <span className="text-danger ms-2">({errorMessage})</span>
-              )}
               {!!evento && (
                 <span className="text-muted ms-2">
                   (Plazas disponibles: {formData.numPlazas - plazasOcupadas})
@@ -202,45 +128,29 @@ export default function EventoModal({
             </Form.Label>
             <Form.Control
               type="number"
-              placeholder="Ej. 5"
               name="numPlazas"
-              value={formData.numPlazas}
-              onChange={(e) => {
-                const value = Math.max(
-                  plazasOcupadas || 1,
-                  Math.min(e.target.value, maxPlazas)
-                )
-                handleChange({ target: { name: e.target.name, value } })
-              }}
+              placeholder="Ej. 5"
               min={plazasOcupadas || 1}
               max={maxPlazas}
-              isInvalid={!!errorMessage && formData.numPlazas === ''}
+              value={formData.numPlazas}
+              onChange={handleChange}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formCategoria">
-            <Form.Label>
-              Categoría
-              {!!errorMessage && !formData.categoria && (
-                <span className="text-danger ms-2">({errorMessage})</span>
-              )}
-            </Form.Label>
+            <Form.Label>Categoría</Form.Label>
             {evento ? (
               <Form.Control
                 type="text"
+                name="categoria"
                 value={formData.categoria}
                 readOnly
-                style={{
-                  pointerEvents: 'none',
-                  filter: 'brightness(0.70)'
-                }}
               />
             ) : (
               <Form.Select
                 name="categoria"
                 value={formData.categoria}
                 onChange={handleChange}
-                isInvalid={!!errorMessage && formData.categoria === ''}
               >
                 <option value="">Selecciona una categoría</option>
                 {Object.entries(CATEGORIA_EVENTOS).map(([key, value]) => (
@@ -253,55 +163,37 @@ export default function EventoModal({
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formFechaInicio">
-            <Form.Label>
-              Fecha de inicio
-              {!!errorMessage && !formData.fechaInicio && (
-                <span className="text-danger ms-2">({errorMessage})</span>
-              )}
-            </Form.Label>
+            <Form.Label>Fecha de inicio</Form.Label>
             <Form.Control
               type="datetime-local"
               name="fechaInicio"
+              min={formatDateTimeLocal(new Date())}
+              max={formData.fechaFin}
               value={formData.fechaInicio}
               onChange={handleChange}
-              min={new Date().toISOString()}
-              max={formData.fechaFin}
-              isInvalid={!!errorMessage && formData.fechaInicio === ''}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formFechaFin">
-            <Form.Label>
-              Fecha de finalización
-              {!!errorMessage && !formData.fechaFin && (
-                <span className="text-danger ms-2">({errorMessage})</span>
-              )}
-            </Form.Label>
+            <Form.Label>Fecha de finalización</Form.Label>
             <Form.Control
               type="datetime-local"
               name="fechaFin"
+              min={formData.fechaInicio}
               value={formData.fechaFin}
               onChange={handleChange}
-              min={formData.fechaInicio}
-              isInvalid={!!errorMessage && formData.fechaFin === ''}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formDescripcion">
-            <Form.Label>
-              Descripción
-              {!!errorMessage && !formData.descripcion && (
-                <span className="text-danger ms-2">({errorMessage})</span>
-              )}
-            </Form.Label>
+            <Form.Label>Descripción</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
-              placeholder="Ej. Un histórico recinto para eventos taurinos, conciertos y actividades culturales, con una gran capacidad de público y un ambiente único en el corazón de Murcia."
               name="descripcion"
+              placeholder="Un histórico recinto para eventos taurinos, conciertos y actividades culturales, con una gran capacidad de público y un ambiente único en el corazón de Murcia."
               value={formData.descripcion}
               onChange={handleChange}
-              isInvalid={!!errorMessage && formData.descripcion === ''}
             />
           </Form.Group>
         </Form>
@@ -311,7 +203,7 @@ export default function EventoModal({
         <Button variant="secondary" onClick={onHide}>
           Cancelar
         </Button>
-        <Button variant="primary" onClick={() => handleSubmit(evento)}>
+        <Button variant="primary" onClick={handleSubmit}>
           {evento ? 'Editar' : 'Crear'}
         </Button>
       </Modal.Footer>
