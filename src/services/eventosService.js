@@ -82,7 +82,7 @@ const addEvento = async (evento) => {
 
 const updateEvento = async (id, evento) => {
   try {
-    const response = await HttpService.put(
+    await HttpService.patch(
       API_URLS.EVENTOS_MODIFICAR(id),
       evento
     )

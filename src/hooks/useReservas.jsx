@@ -14,9 +14,9 @@ function reservasReducer(state, action) {
     case 'ACTION_START':
       return { ...state, loading: true, error: null }
     case 'ACTION_ERROR':
-      return { ...state, loading: false, reservas: action.payload }
-    case 'FETCH_ERROR':
       return { ...state, loading: false, error: action.payload }
+    case 'FETCH_SUCCESS':
+      return { ...state, loading: false, reservas: action.payload }
     case 'ADD_SUCCESS':
       return {
         ...state,
@@ -33,7 +33,7 @@ export function useReservas(type, value = 0) {
   const [state, dispatch] = useReducer(reservasReducer, initialState)
 
   const fetchReservas = useCallback(async () => {
-    dispatch({ type: 'FETCH_START' })
+    dispatch({ type: 'ACTION_START' })
 
     try {
       let reservas
@@ -49,7 +49,7 @@ export function useReservas(type, value = 0) {
       }
       dispatch({ type: 'FETCH_SUCCESS', payload: reservas })
     } catch (error) {
-      dispatch({ type: 'FETCH_ERROR', payload: error.message })
+      dispatch({ type: 'ACTION_ERROR', payload: error.message })
     }
   }, [type, user?.id, value])
 

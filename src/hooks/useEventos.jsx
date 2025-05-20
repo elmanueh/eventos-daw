@@ -28,9 +28,7 @@ function eventosReducer(state, action) {
       return {
         ...state,
         eventos: state.eventos.map((evento) =>
-          evento.id === action.payload
-            ? { ...evento, cancelado: !evento.cancelado }
-            : evento
+          evento.id === action.payload.id ? action.payload : evento
         ),
         loading: false
       }
@@ -85,8 +83,8 @@ export function useEventos(type, value = 0, value2 = 0) {
   const addEvento = async (evento) => {
     dispatch({ type: 'ACTION_START' })
     try {
-      const newEvento = await ServicioEventos.addEvento(evento)
-      dispatch({ type: 'ADD_SUCCESS', payload: newEvento })
+      const [nuevoEvento] = await ServicioEventos.addEvento(evento)
+      dispatch({ type: 'ADD_SUCCESS', payload: nuevoEvento })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
     }
@@ -95,8 +93,8 @@ export function useEventos(type, value = 0, value2 = 0) {
   const updateEvento = async (id, evento) => {
     dispatch({ type: 'ACTION_START' })
     try {
-      const updatedEvento = await ServicioEventos.updateEvento(id, evento)
-      dispatch({ type: 'UPDATE_SUCCESS', payload: updatedEvento })
+      const [nuevoEvento] = await ServicioEventos.updateEvento(id, evento)
+      dispatch({ type: 'UPDATE_SUCCESS', payload: nuevoEvento })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
     }
@@ -105,8 +103,8 @@ export function useEventos(type, value = 0, value2 = 0) {
   const updateEventoStatus = async (id) => {
     dispatch({ type: 'ACTION_START' })
     try {
-      await ServicioEventos.updateEventoStatus(id)
-      dispatch({ type: 'STATUS_ESTADO', payload: id })
+      const [nuevoEvento] = await ServicioEventos.updateEventoStatus(id)
+      dispatch({ type: 'STATUS_ESTADO', payload: nuevoEvento })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
     }

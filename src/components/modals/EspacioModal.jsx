@@ -32,7 +32,17 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
   }
 
   const handleSubmit = () => {
-    callback(formData)
+    if (espacio) {
+      const cambios = Object.fromEntries(
+        Object.entries(formData).filter(
+          ([key, value]) => value !== espacio[key]
+        )
+      )
+
+      if (Object.keys(cambios).length) callback(cambios)
+    } else {
+      callback(formData)
+    }
   }
 
   return (
@@ -77,6 +87,7 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
               placeholder="C/ Apóstoles, 8, 30003 Murcia, España"
               value={formData.direccion}
               onChange={handleChange}
+              readOnly={!!espacio}
             />
           </Form.Group>
 
@@ -90,6 +101,7 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
               max={90}
               value={formData.latitud}
               onChange={handleChange}
+              readOnly={!!espacio}
             />
           </Form.Group>
 
@@ -103,6 +115,7 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
               max={180}
               value={formData.longitud}
               onChange={handleChange}
+              readOnly={!!espacio}
             />
           </Form.Group>
 

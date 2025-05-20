@@ -16,3 +16,8 @@ $headings-font-family: 'Montserrat', sans-serif;
 $form-switch-color: white;
 
 @import 'bootstrap/scss/bootstrap';
+
+.form-control[readonly] {
+  pointer-events: none;
+  filter: brightness(0.7);
+}

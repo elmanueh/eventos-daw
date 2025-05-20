@@ -10,6 +10,8 @@
 
 - CHEKEAR QUE NO HAYA EVENTOS CON MAS PLAZAS QUE EL ESPACIO EN LA BASE DE DATOS
 
+- Tratar errores en los Modal
+
 # Bugs
 
 - En Espacios y Eventos, al filtrar de nuevo, debe cambiar el paginator a la page 1
@@ -19,11 +21,12 @@
 - Cuando se actualize algo, que solamente se haga de los campos que se han cambiado
 
 - Al cancelar evento desde EventoCard no se muestra el toast
+- Al reservar un evento no se muestra toast
+
+- Al mostrar MisEvento y MisEspacios la primera vez se muestran los cancelados
+
+- Mirar filtros
 
 # Segurencia
 
 - En AuthProvider al hacer login creo que el setUser es innecesario
-
-# Mirar de hook
-
-- ESPACIOS_REDUCER.FIRST y EVENTOS_REDUCER.FIRST no se utiliza para nada

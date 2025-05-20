@@ -15,7 +15,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 
 export default function MisEventos() {
-  const { eventos, loading, updateEventoStatus } = useEventos(
+  const { eventos, loading, updateEventoStatus, addEvento } = useEventos(
     EVENTOS_REDUCER.BY_GESTOR
   )
   const [eventosFiltrados, setEventosFiltrados] = useState(eventos)
@@ -32,7 +32,7 @@ export default function MisEventos() {
 
   const handleAddEvento = (evento) => {
     try {
-      //addEvento(evento)
+      addEvento(evento)
       setShowEventoModal(false)
       addToast('Evento creado', 'Tu evento se ha creado con éxito.', 'success')
     } catch {
@@ -44,6 +44,7 @@ export default function MisEventos() {
   const eventosFinalizados = obtenerEventosFinalizados(eventosFiltrados)
   const eventosActivos = obtenerEventosActivos(eventosFiltrados)
   const eventosCancelados = obtenerEventosCancelados(eventosFiltrados)
+
   if (loading) return <Loading />
 
   return (
