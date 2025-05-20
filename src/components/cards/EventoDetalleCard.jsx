@@ -24,13 +24,13 @@ export default function EventoDetalleCard({ idEvento, action }) {
   const [showEventoModal, setShowEventoModal] = useState(false)
   const [showReservaModal, setShowReservaModal] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
-  const { eventos, updateEventoStatus } = useEventos(
+  const { eventos, updateEventoStatus, loading } = useEventos(
     EVENTOS_REDUCER.BY_ID,
     idEvento
   )
 
   const evento = eventos[0]
-  if (!evento) return <Loading />
+  if (loading) return <Loading />
 
   const status = statusEvento(evento)
   const colorStatus = getEstadoColor(status)
@@ -43,7 +43,7 @@ export default function EventoDetalleCard({ idEvento, action }) {
 
   const handleReservar = async (reserva) => {
     try {
-      //action.addReserva(reserva)
+      action.addReserva(reserva)
       setShowReservaModal(false)
       addToast(
         'Reserva exitosa',
@@ -230,7 +230,7 @@ export default function EventoDetalleCard({ idEvento, action }) {
               <button
                 type="button"
                 className="btn btn-outline-info"
-                //onClick={() => setShowReservaModal(true)}
+                onClick={() => setShowReservaModal(true)}
                 disabled={evento.numPlazasDisponibles <= 0}
               >
                 Reservar

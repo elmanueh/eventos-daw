@@ -14,9 +14,9 @@ function reservasReducer(state, action) {
     case 'ACTION_START':
       return { ...state, loading: true, error: null }
     case 'ACTION_ERROR':
-      return { ...state, loading: false, reservas: action.payload }
-    case 'FETCH_ERROR':
       return { ...state, loading: false, error: action.payload }
+    case 'FETCH_SUCCESS':
+      return { ...state, loading: false, reservas: action.payload }
     case 'ADD_SUCCESS':
       return {
         ...state,

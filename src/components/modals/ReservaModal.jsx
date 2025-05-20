@@ -13,19 +13,16 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
       idUsuario: user.id,
       plazasReservadas: ''
     }),
-    [user, evento]
+    [evento, user.id]
   )
+
+  const [formData, setFormData] = useState(initialFormData)
 
   useEffect(() => {
     if (show) {
       setFormData(initialFormData)
-
-      setErrorMessage('')
     }
-  }, [show])
-
-  const [formData, setFormData] = useState(initialFormData)
-  const [errorMessage, setErrorMessage] = useState('')
+  }, [show, evento, initialFormData])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -33,11 +30,6 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
   }
 
   const handleSubmit = () => {
-    if (Object.values(formData).some((value) => !value)) {
-      setErrorMessage('Este campo es obligatorio')
-      return
-    }
-    setErrorMessage('')
     callback(formData)
   }
 
@@ -55,6 +47,7 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
             <Form.Label>Evento</Form.Label>
             <Form.Control
               type="text"
+              name="evento"
               value={evento.nombre}
               readOnly
               style={{
@@ -64,29 +57,18 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formNumPlazas">
+          <Form.Group className="mb-3" controlId="formPlazasReservadas">
             <Form.Label>
               Número de plazas
-              {!!errorMessage && !formData.plazasReservadas && (
-                <span className="text-danger ms-2">({errorMessage})</span>
-              )}
             </Form.Label>
             <Form.Control
               type="number"
-              placeholder="Ej. 5"
               name="plazasReservadas"
-              value={formData.plazasReservadas}
-              onChange={(e) => {
-                const value = Math.min(
-                  e.target.value,
-                  evento.numPlazasDisponibles
-                )
-                handleChange({ target: { name: e.target.name, value } })
-              }}
-              required
+              placeholder="15"
               min={1}
               max={evento.numPlazasDisponibles}
-              isInvalid={!!errorMessage && formData.plazasReservadas == ''}
+              value={formData.plazasReservadas}
+              onChange={handleChange}
             />
           </Form.Group>
         </Form>
