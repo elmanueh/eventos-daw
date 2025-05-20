@@ -24,7 +24,10 @@ export default function EventoDetalleCard({ idEvento, action }) {
   const [showEventoModal, setShowEventoModal] = useState(false)
   const [showReservaModal, setShowReservaModal] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
-  const { eventos, toggleEstado } = useEventos(EVENTOS_REDUCER.BY_ID, idEvento)
+  const { eventos, updateEventoStatus } = useEventos(
+    EVENTOS_REDUCER.BY_ID,
+    idEvento
+  )
 
   const evento = eventos[0]
   if (!evento) return <Loading />
@@ -40,7 +43,7 @@ export default function EventoDetalleCard({ idEvento, action }) {
 
   const handleReservar = async (reserva) => {
     try {
-      //action.reservar(reserva)
+      //action.addReserva(reserva)
       setShowReservaModal(false)
       addToast(
         'Reserva exitosa',
@@ -68,7 +71,7 @@ export default function EventoDetalleCard({ idEvento, action }) {
 
   const handleConfirmation = async () => {
     try {
-      toggleEstado(evento.id)
+      updateEventoStatus(evento.id)
       setShowConfirmation(false)
       addToast(
         'Estado actualizado',

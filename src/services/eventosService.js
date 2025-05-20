@@ -71,9 +71,31 @@ const getEventosByEspacio = async (espacio) => {
   }
 }
 
-const toggleEstado = async (id) => {
+const addEvento = async (evento) => {
+  try {
+    const response = await HttpService.post(API_URLS.EVENTOS_CREAR, evento)
+    return await getEventoById(response.headers.get('location').split('/').pop())
+  } catch {
+    throw new Error('Error al crear el evento')
+  }
+}
+
+const updateEvento = async (id, evento) => {
+  try {
+    const response = await HttpService.put(
+      API_URLS.EVENTOS_MODIFICAR(id),
+      evento
+    )
+    return await getEventoById(id)
+  } catch {
+    throw new Error('Error al actualizar el evento')
+  }
+}
+
+const updateEventoStatus = async (id) => {
   try {
     await HttpService.put(API_URLS.EVENTOS_CANCELAR(id))
+    return await getEventoById(id)
   } catch {
     throw new Error('Error al cancelar el evento')
   }
@@ -87,5 +109,7 @@ export const ServicioEventos = {
   getEventosRandom,
   getEventosRandomSinEvento,
   getEventosByEspacio,
-  toggleEstado,
+  addEvento,
+  updateEvento,
+  updateEventoStatus,
 }

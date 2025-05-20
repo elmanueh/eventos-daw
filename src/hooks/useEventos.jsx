@@ -17,16 +17,23 @@ function eventosReducer(state, action) {
       return { ...state, loading: false, error: action.payload }
     case 'FETCH_SUCCESS':
       return { ...state, loading: false, eventos: action.payload }
-    case 'TOGGLE_ESTADO':
+    case 'ADD_SUCCESS':
+      return {
+        ...state,
+        eventos: [...state.eventos, action.payload],
+        loading: false
+      }
+    case 'STATUS_ESTADO':
+    case 'UPDATE_SUCCESS':
       return {
         ...state,
         eventos: state.eventos.map((evento) =>
           evento.id === action.payload
             ? { ...evento, cancelado: !evento.cancelado }
             : evento
-        )
+        ),
+        loading: false
       }
-
     default:
       return state
   }
@@ -75,11 +82,31 @@ export function useEventos(type, value = 0, value2 = 0) {
     }
   }, [type, user?.username, value])
 
-  const toggleEstado = async (id) => {
+  const addEvento = async (evento) => {
     dispatch({ type: 'ACTION_START' })
     try {
-      await ServicioEventos.toggleEstado(id)
-      dispatch({ type: 'TOGGLE_ESTADO', payload: id })
+      const newEvento = await ServicioEventos.addEvento(evento)
+      dispatch({ type: 'ADD_SUCCESS', payload: newEvento })
+    } catch (error) {
+      dispatch({ type: 'ACTION_ERROR', payload: error.message })
+    }
+  }
+
+  const updateEvento = async (id, evento) => {
+    dispatch({ type: 'ACTION_START' })
+    try {
+      const updatedEvento = await ServicioEventos.updateEvento(id, evento)
+      dispatch({ type: 'UPDATE_SUCCESS', payload: updatedEvento })
+    } catch (error) {
+      dispatch({ type: 'ACTION_ERROR', payload: error.message })
+    }
+  }
+
+  const updateEventoStatus = async (id) => {
+    dispatch({ type: 'ACTION_START' })
+    try {
+      await ServicioEventos.updateEventoStatus(id)
+      dispatch({ type: 'STATUS_ESTADO', payload: id })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
     }
@@ -94,6 +121,8 @@ export function useEventos(type, value = 0, value2 = 0) {
     loading: state.loading,
     error: state.error,
     refetch: fetchEventos,
-    toggleEstado
+    addEvento,
+    updateEvento,
+    updateEventoStatus
   }
 }

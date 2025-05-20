@@ -15,7 +15,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 
 export default function MisEventos() {
-  const { eventos, loading, toggleEstado } = useEventos(
+  const { eventos, loading, updateEventoStatus } = useEventos(
     EVENTOS_REDUCER.BY_GESTOR
   )
   const [eventosFiltrados, setEventosFiltrados] = useState(eventos)
@@ -81,7 +81,7 @@ export default function MisEventos() {
             objetos={eventosActivos}
             tipo={TARJETA_TIPOS.EVENTOS}
             visible={true}
-            action={{ toggleEstado }}
+            action={{ updateEventoStatus }}
             addToast={addToast}
           />
         </>

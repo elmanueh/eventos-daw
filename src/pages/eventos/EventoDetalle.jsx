@@ -21,7 +21,7 @@ export default function EventoDetalle() {
   const {
     reservas,
     loading: loadingReservas,
-    reservar
+    addReserva
   } = useReservas(RESERVAS_REDUCER.BY_EVENTO, eventoId)
   //const idGroupReservas = useId()
 
@@ -38,7 +38,7 @@ export default function EventoDetalle() {
         </Col>
 
         <Col md={8} className="order-sm-1 order-md-2">
-          <EventoDetalleCard idEvento={eventoId} action={{ reservar }} />
+          <EventoDetalleCard idEvento={eventoId} action={{ addReserva }} />
           {/*{esEventoMio && (
             <div className="mt-4">
               <GroupDetallesCards

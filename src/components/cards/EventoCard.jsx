@@ -27,7 +27,7 @@ export default function EventoCard({ evento, visible, action, addToast }) {
       <ConfirmationModal
         show={showConfirmation}
         callback={() => {
-          action.toggleEstado(evento.id, setShowConfirmation, addToast)
+          action.updateEventoStatus(evento.id, setShowConfirmation, addToast)
         }}
         onHide={() => setShowConfirmation(false)}
         title={evento.nombre}

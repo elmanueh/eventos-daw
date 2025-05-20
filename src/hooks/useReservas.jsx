@@ -17,10 +17,11 @@ function reservasReducer(state, action) {
       return { ...state, loading: false, reservas: action.payload }
     case 'FETCH_ERROR':
       return { ...state, loading: false, error: action.payload }
-    case 'RESERVA_SUCCESS':
+    case 'ADD_SUCCESS':
       return {
         ...state,
-        reservas: [...state.reservas, action.payload]
+        reservas: [...state.reservas, action.payload],
+        loading: false
       }
     default:
       return state
@@ -52,11 +53,11 @@ export function useReservas(type, value = 0) {
     }
   }, [type, user?.id, value])
 
-  const reservar = async (reserva) => {
+  const addReserva = async (reserva) => {
     dispatch({ type: 'ACTION_START' })
     try {
       const reservaCreada = await ServicioReservas.addReserva(reserva)
-      dispatch({ type: 'RESERVA_SUCCESS', payload: reservaCreada })
+      dispatch({ type: 'ADD_SUCCESS', payload: reservaCreada })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
     }
@@ -70,6 +71,6 @@ export function useReservas(type, value = 0) {
     reservas: state.reservas,
     loading: state.loading,
     error: state.error,
-    reservar
+    addReserva
   }
 }
