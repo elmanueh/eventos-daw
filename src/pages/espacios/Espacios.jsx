@@ -27,9 +27,7 @@ export default function Espacios() {
 
       <FilterEspacios espacios={espacios} callback={handleFiltroChange} />
 
-      <section className="w-100 px-3 mt-3">
-        <GroupCards objetos={espaciosFiltrados} tipo={TARJETA_TIPOS.ESPACIOS} />
-      </section>
+      <GroupCards objetos={espaciosFiltrados} tipo={TARJETA_TIPOS.ESPACIOS} />
     </div>
   )
 }
