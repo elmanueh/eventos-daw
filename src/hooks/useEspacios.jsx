@@ -24,20 +24,11 @@ function espaciosReducer(state, action) {
         loading: false
       }
     case 'UPDATE_SUCCESS':
-      return {
-        ...state,
-        espacios: state.espacios.map((espacio) =>
-          espacio.id === action.payload.id ? action.payload : espacio
-        ),
-        loading: false
-      }
     case 'STATUS_SUCCESS':
       return {
         ...state,
         espacios: state.espacios.map((espacio) =>
-          espacio.id === action.payload.id
-            ? { ...espacio, estado: action.payload.status }
-            : espacio
+          espacio.id === action.payload.id ? action.payload : espacio
         ),
         loading: false
       }
@@ -92,8 +83,8 @@ export function useEspacios(type, value = 0, value2 = 0) {
   const addEspacio = async (espacio) => {
     dispatch({ type: 'ACTION_START' })
     try {
-      await ServicioEspacios.addEspacio(espacio)
-      dispatch({ type: 'ADD_SUCCESS', payload: espacio })
+      const [nuevoEspacio] = await ServicioEspacios.addEspacio(espacio)
+      dispatch({ type: 'ADD_SUCCESS', payload: nuevoEspacio })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
     }
@@ -102,8 +93,8 @@ export function useEspacios(type, value = 0, value2 = 0) {
   const updateEspacio = async (id, espacio) => {
     dispatch({ type: 'ACTION_START' })
     try {
-      await ServicioEspacios.updateEspacio(id, espacio)
-      dispatch({ type: 'UPDATE_SUCCESS', payload: { ...espacio, id } })
+      const [nuevoEspacio] = await ServicioEspacios.updateEspacio(id, espacio)
+      dispatch({ type: 'UPDATE_SUCCESS', payload: nuevoEspacio })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
     }
@@ -112,8 +103,11 @@ export function useEspacios(type, value = 0, value2 = 0) {
   const updateEspacioStatus = async (id, status) => {
     dispatch({ type: 'ACTION_START' })
     try {
-      await ServicioEspacios.updateEspacioStatus(id, status)
-      dispatch({ type: 'STATUS_SUCCESS', payload: { id, status } })
+      const [nuevoEspacio] = await ServicioEspacios.updateEspacioStatus(
+        id,
+        status
+      )
+      dispatch({ type: 'STATUS_SUCCESS', payload: nuevoEspacio })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
     }

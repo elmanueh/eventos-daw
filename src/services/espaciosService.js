@@ -68,7 +68,8 @@ const getEspaciosRandomSinEspacio = async (number, espacioActual) => {
 
 const addEspacio = async (espacio) => {
   try {
-    await HttpService.post(API_URLS.ESPACIOS_CREAR, espacio)
+    const response = await HttpService.post(API_URLS.ESPACIOS_CREAR, espacio)
+    return await getEspacioById(response.headers.get('location').split('/').pop())
   } catch {
     throw new Error('Error al crear el espacio')
   }
@@ -77,6 +78,7 @@ const addEspacio = async (espacio) => {
 const updateEspacio = async (id, espacio) => {
   try {
     await HttpService.patch(API_URLS.ESPACIOS_MODIFICAR(id), espacio)
+    return await getEspacioById(id)
   } catch {
     throw new Error('Error al modificar el espacio')
   }
@@ -85,6 +87,7 @@ const updateEspacio = async (id, espacio) => {
 const updateEspacioStatus = async (id, status) => {
   try {
     await HttpService.put(API_URLS.ESPACIOS_CAMBIAR_ESTADO(id), status)
+    return await getEspacioById(id)
   } catch {
     throw new Error('Error al modificar el estado del espacio')
   }

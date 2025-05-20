@@ -55,8 +55,8 @@ export function useReservas(type, value = 0) {
   const reservar = async (reserva) => {
     dispatch({ type: 'ACTION_START' })
     try {
-      await ServicioReservas.addReserva(reserva)
-      dispatch({ type: 'RESERVA_SUCCESS', payload: reserva })
+      const reservaCreada = await ServicioReservas.addReserva(reserva)
+      dispatch({ type: 'RESERVA_SUCCESS', payload: reservaCreada })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
     }
