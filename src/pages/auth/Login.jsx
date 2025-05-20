@@ -1,12 +1,14 @@
 import { API_URLS, NAV_ROUTES } from '@/configs/constant'
-import MyToast, { useToast } from '@components/toast/MyToast'
+import { TOAST_MESSAGES } from '@/configs/notifications'
+import { useToast } from '@/hooks/useToast'
+import MyToast from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
 import '@pages/auth/login.css'
 import { useContext, useEffect, useRef, useState } from 'react'
 
 export default function Login() {
   const { login } = useContext(AuthContext)
-  const { addToast, toasts, removeToast } = useToast()
+  const { toasts, showToast, hideToast } = useToast()
 
   const [errorMessage, setErrorMessage] = useState('')
   const [invalidFields, setInvalidFields] = useState({
@@ -59,8 +61,8 @@ export default function Login() {
     try {
       await login(username, password)
       window.location.replace(NAV_ROUTES.HOME)
-    } catch (error) {
-      addToast('Error al iniciar sesión', error.message)
+    } catch {
+      showToast(TOAST_MESSAGES.AUTH.LOGIN_ERROR)
     }
   }
 
@@ -86,7 +88,7 @@ export default function Login() {
 
   return (
     <div className="login">
-      <MyToast toasts={toasts} removeToast={removeToast} />
+      <MyToast toasts={toasts} hideToast={hideToast} />
 
       <h2>Inicia sesión</h2>
 

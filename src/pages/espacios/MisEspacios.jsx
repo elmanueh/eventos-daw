@@ -1,5 +1,7 @@
 import { ESPACIOS_REDUCER, TARJETA_TIPOS } from '@/configs/constant'
+import { TOAST_MESSAGES } from '@/configs/notifications'
 import { useEspacios } from '@/hooks/useEspacios'
+import { useToast } from '@/hooks/useToast'
 import {
   obtenerEspaciosActivos,
   obtenerEspaciosCerrados
@@ -7,7 +9,7 @@ import {
 import FilterEspacios from '@components/filters/FilterEspacios'
 import GroupCards from '@components/GroupCards'
 import EspacioModal from '@components/modals/EspacioModal'
-import MyToast, { useToast } from '@components/toast/MyToast'
+import MyToast from '@components/toast/MyToast'
 import { EspacioActionContext } from '@context/EspacioActionContext'
 import Loading from '@pages/Loading'
 
@@ -19,7 +21,7 @@ export default function MisEspacios() {
     useEspacios(ESPACIOS_REDUCER.BY_PROPIETARIO)
   const [espaciosFiltrados, setEspaciosFiltrados] = useState(espacios)
   const [showEspacioModal, setShowEspacioModal] = useState(false)
-  const { addToast, toasts, removeToast } = useToast()
+  const { toasts, showToast, hideToast } = useToast()
 
   const handleFiltroChange = useCallback((espaciosFiltrados) => {
     setEspaciosFiltrados(espaciosFiltrados)
@@ -29,39 +31,27 @@ export default function MisEspacios() {
     try {
       addEspacio(espacio)
       setShowEspacioModal(false)
-      addToast(
-        'Espacio creado',
-        'El espacio ha sido creado correctamente',
-        'success'
-      )
+      showToast(TOAST_MESSAGES.SPACE.CREATED)
     } catch {
-      addToast('Error', `No se pudo crear el espacio`, 'error')
+      showToast(TOAST_MESSAGES.SPACE.CREATED_ERROR)
     }
   }
 
   const handleUpdateEspacio = (id, espacio) => {
     try {
       updateEspacio(id, espacio)
-      addToast(
-        'Espacio actualizado',
-        'El espacio ha sido actualizado correctamente',
-        'success'
-      )
+      showToast(TOAST_MESSAGES.SPACE.UPDATED)
     } catch {
-      addToast('Error', `No se pudo actualizar el espacio`, 'error')
+      showToast(TOAST_MESSAGES.SPACE.UPDATED_ERROR)
     }
   }
 
   const handleUpdateEspacioEstado = (id, status) => {
     try {
       updateEspacioStatus(id, status)
-      addToast(
-        'Espacio actualizado',
-        'El espacio ha sido actualizado correctamente',
-        'success'
-      )
+      showToast(TOAST_MESSAGES.SPACE.STATUS_UPDATED)
     } catch {
-      addToast('Error', `No se pudo actualizar el espacio`, 'error')
+      showToast(TOAST_MESSAGES.SPACE.STATUS_UPDATED_ERROR)
     }
   }
 
@@ -71,7 +61,7 @@ export default function MisEspacios() {
 
   return (
     <Container className="d-flex flex-column p-0 gap-3">
-      <MyToast toasts={toasts} removeToast={removeToast} />
+      <MyToast toasts={toasts} hideToast={hideToast} />
       <EspacioModal
         show={showEspacioModal}
         onHide={() => setShowEspacioModal(false)}

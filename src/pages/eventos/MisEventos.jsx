@@ -1,5 +1,7 @@
 import { EVENTOS_REDUCER, TARJETA_TIPOS } from '@/configs/constant'
+import { TOAST_MESSAGES } from '@/configs/notifications'
 import { useEventos } from '@/hooks/useEventos'
+import { useToast } from '@/hooks/useToast'
 import {
   obtenerEventosActivos,
   obtenerEventosCancelados,
@@ -9,7 +11,7 @@ import {
 import FilterEventos from '@components/filters/FilterEventos'
 import GroupCards from '@components/GroupCards'
 import EventoModal from '@components/modals/EventoModal'
-import MyToast, { useToast } from '@components/toast/MyToast'
+import MyToast from '@components/toast/MyToast'
 import { EventoActionContext } from '@context/EventoActionContext'
 import Loading from '@pages/Loading'
 import { useCallback, useState } from 'react'
@@ -20,7 +22,7 @@ export default function MisEventos() {
     useEventos(EVENTOS_REDUCER.BY_GESTOR)
   const [eventosFiltrados, setEventosFiltrados] = useState(eventos)
   const [showEventoModal, setShowEventoModal] = useState(false)
-  const { addToast, toasts, removeToast } = useToast()
+  const { toasts, showToast, hideToast } = useToast()
 
   const handleFiltroChange = useCallback((eventosFiltrados) => {
     setEventosFiltrados(eventosFiltrados)
@@ -30,35 +32,27 @@ export default function MisEventos() {
     try {
       addEvento(evento)
       setShowEventoModal(false)
-      addToast('Evento creado', 'Tu evento se ha creado con éxito.', 'success')
+      showToast(TOAST_MESSAGES.EVENT.CREATED)
     } catch {
-      addToast('Error al crear evento')
+      showToast(TOAST_MESSAGES.EVENT.CREATED_ERROR)
     }
   }
 
   const handleUpdateEvento = (id, evento) => {
     try {
       updateEvento(id, evento)
-      addToast(
-        'Evento actualizado',
-        'El evento ha sido actualizado correctamente',
-        'success'
-      )
+      showToast(TOAST_MESSAGES.EVENT.UPDATED)
     } catch {
-      addToast('Error', `No se pudo actualizar el evento`, 'error')
+      showToast(TOAST_MESSAGES.EVENT.UPDATED_ERROR)
     }
   }
 
   const handleUpdateEventoEstado = (id) => {
     try {
       updateEventoStatus(id)
-      addToast(
-        'Evento actualizado',
-        'El evento ha sido actualizado correctamente',
-        'success'
-      )
+      showToast(TOAST_MESSAGES.EVENT.STATUS_UPDATED)
     } catch {
-      addToast('Error', `No se pudo actualizar el evento`, 'error')
+      showToast(TOAST_MESSAGES.EVENT.STATUS_ERROR)
     }
   }
 
@@ -71,7 +65,7 @@ export default function MisEventos() {
 
   return (
     <Container className="d-flex flex-column gap-3 p-0">
-      <MyToast toasts={toasts} removeToast={removeToast} />
+      <MyToast toasts={toasts} hideToast={hideToast} />
       <EventoModal
         show={showEventoModal}
         onHide={() => setShowEventoModal(false)}

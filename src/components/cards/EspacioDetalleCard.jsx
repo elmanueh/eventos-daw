@@ -4,11 +4,13 @@ import {
   ESTADOS,
   TARJETA_TIPOS
 } from '@/configs/constant'
+import { TOAST_MESSAGES } from '@/configs/notifications'
 import { useEspacios } from '@/hooks/useEspacios'
+import { useToast } from '@/hooks/useToast'
 import { decimalToDMS, isMio, statusEspacio } from '@/utils/espacioHelper'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EspacioModal from '@components/modals/EspacioModal'
-import MyToast, { useToast } from '@components/toast/MyToast'
+import MyToast from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
 import Loading from '@pages/Loading'
 import { useContext, useState } from 'react'
@@ -16,7 +18,7 @@ import { Badge, Card, Col, Row } from 'react-bootstrap'
 
 export default function EspacioDetalleCard({ idEspacio }) {
   const { user } = useContext(AuthContext)
-  const { toasts, addToast, removeToast } = useToast()
+  const { toasts, hideToast, showToast } = useToast()
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const { espacios, updateEspacio, updateEspacioStatus } = useEspacios(
@@ -34,13 +36,9 @@ export default function EspacioDetalleCard({ idEspacio }) {
     try {
       updateEspacio(idEspacio, espacioData)
       setShowEspacioModal(false)
-      addToast(
-        'Espacio editado',
-        'El espacio ha sido editado correctamente',
-        'success'
-      )
+      showToast(TOAST_MESSAGES.SPACE.UPDATED)
     } catch {
-      addToast('Error', `No se pudo editar el espacio`, 'error')
+      showToast(TOAST_MESSAGES.SPACE.UPDATED_ERROR)
     }
   }
 
@@ -53,27 +51,15 @@ export default function EspacioDetalleCard({ idEspacio }) {
           : ESTADOS.ACTIVO
       )
       setShowConfirmationModal(false)
-      addToast(
-        'Estado actualizado',
-        `El espacio ha sido ${
-          status === ESTADOS.ACTIVO ? 'desactivado' : 'activado'
-        } correctamente`,
-        'success'
-      )
+      showToast(TOAST_MESSAGES.SPACE.STATUS_UPDATED)
     } catch {
-      addToast(
-        'Error',
-        `No se pudo ${
-          status === ESTADOS.ACTIVO ? 'desactivar' : 'activar'
-        } el espacio`,
-        'error'
-      )
+      showToast(TOAST_MESSAGES.SPACE.STATUS_UPDATED_ERROR)
     }
   }
 
   return (
     <Card className="bg-secondary bg-opacity-25 border border-primary">
-      <MyToast toasts={toasts} removeToast={removeToast} />
+      <MyToast toasts={toasts} hideToast={hideToast} />
       <EspacioModal
         show={showEspacioModal}
         onHide={() => setShowEspacioModal(false)}

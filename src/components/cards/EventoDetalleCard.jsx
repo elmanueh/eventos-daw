@@ -5,12 +5,14 @@ import {
   NAV_ROUTES,
   TARJETA_TIPOS
 } from '@/configs/constant'
+import { TOAST_MESSAGES } from '@/configs/notifications'
 import { useEventos } from '@/hooks/useEventos'
+import { useToast } from '@/hooks/useToast'
 import { esEventoMio, getEstadoColor, statusEvento } from '@/utils/eventoHelper'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EventoModal from '@components/modals/EventoModal'
 import ReservaModal from '@components/modals/ReservaModal'
-import MyToast, { useToast } from '@components/toast/MyToast'
+import MyToast from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
 import Loading from '@pages/Loading'
 import { format } from 'date-fns'
@@ -20,7 +22,7 @@ import { Badge, Card, Col, Row } from 'react-bootstrap'
 
 export default function EventoDetalleCard({ idEvento, action }) {
   const { user } = useContext(AuthContext)
-  const { toasts, addToast, removeToast } = useToast()
+  const { toasts, showToast, hideToast } = useToast()
   const [showEventoModal, setShowEventoModal] = useState(false)
   const [showReservaModal, setShowReservaModal] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
@@ -45,13 +47,9 @@ export default function EventoDetalleCard({ idEvento, action }) {
     try {
       action.addReserva(reserva)
       setShowReservaModal(false)
-      addToast(
-        'Reserva exitosa',
-        `Has reservado tu plaza en el evento ${evento.nombre}`,
-        'success'
-      )
-    } catch (error) {
-      addToast('Error', `No se pudo realizar la reserva`, 'error')
+      showToast(TOAST_MESSAGES.RESERVE.CREATED)
+    } catch {
+      showToast(TOAST_MESSAGES.RESERVE.CREATED_ERROR)
     }
   }
 
@@ -59,13 +57,9 @@ export default function EventoDetalleCard({ idEvento, action }) {
     try {
       updateEvento(idEvento, eventoData)
       setShowEventoModal(false)
-      addToast(
-        'Evento editado',
-        'El evento ha sido editado correctamente',
-        'success'
-      )
-    } catch (error) {
-      addToast('Error', `No se pudo editar el evento`, 'error')
+      showToast(TOAST_MESSAGES.EVENT.UPDATED)
+    } catch {
+      showToast(TOAST_MESSAGES.EVENT.UPDATED_ERROR)
     }
   }
 
@@ -73,19 +67,15 @@ export default function EventoDetalleCard({ idEvento, action }) {
     try {
       updateEventoStatus(evento.id)
       setShowConfirmation(false)
-      addToast(
-        'Estado actualizado',
-        `El evento ha sido desactivado correctamente`,
-        'success'
-      )
-    } catch (error) {
-      addToast('Error', `No se pudo desactivar el evento`, 'error')
+      showToast(TOAST_MESSAGES.EVENT.STATUS_UPDATED)
+    } catch {
+      showToast(TOAST_MESSAGES.EVENT.STATUS_ERROR)
     }
   }
 
   return (
     <Card className="bg-secondary bg-opacity-25 border border-primary">
-      <MyToast toasts={toasts} removeToast={removeToast} />
+      <MyToast toasts={toasts} hideToast={hideToast} />
 
       <EventoModal
         show={showEventoModal}
