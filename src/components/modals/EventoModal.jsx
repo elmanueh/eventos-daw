@@ -7,7 +7,13 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 
-export default function EventoModal({ show, callback, onHide, evento }) {
+export default function EventoModal({
+  show,
+  callback,
+  onHide,
+  evento,
+  espacio
+}) {
   const { user } = useContext(AuthContext)
 
   const { espacios: espaciosList } = useEspacios(ESPACIOS_REDUCER.ALL)
@@ -21,7 +27,7 @@ export default function EventoModal({ show, callback, onHide, evento }) {
       categoria: evento?.categoria || '',
       fechaInicio: evento?.fechaInicio || '',
       fechaFin: evento?.fechaFin || '',
-      espacioFisico: evento?.espacioFisico || ''
+      espacioFisico: espacio?.id || ''
     }),
     [evento, user.username]
   )
@@ -53,8 +59,8 @@ export default function EventoModal({ show, callback, onHide, evento }) {
   }
 
   useEffect(() => {
-    if (evento?.espacioFisico) {
-      setMaxPlazas(evento.espacioFisico.capacidad)
+    if (espacio) {
+      setMaxPlazas(espacio.capacidad)
     } else {
       const espacioSeleccionado = espaciosList.find(
         (espacio) => espacio.id === formData.espacioFisico
@@ -75,11 +81,11 @@ export default function EventoModal({ show, callback, onHide, evento }) {
         <Form>
           <Form.Group className="mb-3" controlId="formEspacioFisico">
             <Form.Label>Espacio físico</Form.Label>
-            {evento?.espacioFisico ? (
+            {espacio ? (
               <Form.Control
                 type="text"
                 name="espacioFisico"
-                value={evento.espacioFisico.nombre}
+                value={espacio.nombre}
                 readOnly
               />
             ) : (

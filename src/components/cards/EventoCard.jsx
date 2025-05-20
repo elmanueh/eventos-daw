@@ -29,6 +29,7 @@ export default function EventoCard({ evento, actions }) {
         onHide={() => setShowEventoModal(false)}
         callback={handleEditEvento}
         evento={evento}
+        espacio={evento.espacioFisico}
       />
       <ConfirmationModal
         show={showConfirmationModal}

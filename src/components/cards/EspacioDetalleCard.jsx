@@ -10,8 +10,10 @@ import { useToast } from '@/hooks/useToast'
 import { decimalToDMS, isMio, statusEspacio } from '@/utils/espacioHelper'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EspacioModal from '@components/modals/EspacioModal'
+import EventoModal from '@components/modals/EventoModal'
 import MyToast from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
+import { useEventoActions } from '@context/EventoActionContext'
 import Loading from '@pages/Loading'
 import { useContext, useState } from 'react'
 import { Badge, Card, Col, Row } from 'react-bootstrap'
@@ -21,10 +23,12 @@ export default function EspacioDetalleCard({ idEspacio }) {
   const { toasts, hideToast, showToast } = useToast()
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+  const [showEventoModal, setShowEventoModal] = useState(false)
   const { espacios, updateEspacio, updateEspacioStatus } = useEspacios(
     ESPACIOS_REDUCER.BY_ID,
     idEspacio
   )
+  const { onAdd } = useEventoActions()
 
   const espacio = espacios[0]
   if (!espacio) return <Loading />
@@ -57,6 +61,16 @@ export default function EspacioDetalleCard({ idEspacio }) {
     }
   }
 
+  const handleAddEvento = async (eventoData) => {
+    try {
+      onAdd(eventoData)
+      setShowEventoModal(false)
+      showToast(TOAST_MESSAGES.EVENT.CREATED)
+    } catch {
+      showToast(TOAST_MESSAGES.EVENT.CREATED_ERROR)
+    }
+  }
+
   return (
     <Card className="bg-secondary bg-opacity-25 border border-primary">
       <MyToast toasts={toasts} hideToast={hideToast} />
@@ -73,6 +87,12 @@ export default function EspacioDetalleCard({ idEspacio }) {
         title={espacio.nombre}
         status={status}
         tipo={TARJETA_TIPOS.ESPACIOS}
+      />
+      <EventoModal
+        show={showEventoModal}
+        onHide={() => setShowEventoModal(false)}
+        callback={handleAddEvento}
+        espacio={espacio}
       />
 
       <Card.Body className="d-flex flex-column gap-2">
@@ -158,7 +178,7 @@ export default function EspacioDetalleCard({ idEspacio }) {
               <button
                 type="button"
                 className="btn btn-outline-secondary"
-                //onClick={() => setShowEventoModal(true)}
+                onClick={() => setShowEventoModal(true)}
               >
                 Crear evento
               </button>

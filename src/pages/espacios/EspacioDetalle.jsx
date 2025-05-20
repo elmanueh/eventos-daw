@@ -9,6 +9,7 @@ import { useEventos } from '@/hooks/useEventos'
 import EspacioDetalleCard from '@components/cards/EspacioDetalleCard'
 import GroupDetallesCards from '@components/GroupDetallesCards'
 import OthersCards from '@components/OthersCards'
+import { EventoActionContext } from '@context/EventoActionContext'
 import Loading from '@pages/Loading'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
@@ -20,12 +21,17 @@ export default function EspacioDetalle() {
     4,
     espacioId
   )
-  const { eventos, loading: eventosLoading } = useEventos(
-    EVENTOS_REDUCER.BY_ESPACIO,
-    espacioId
-  )
+  const {
+    eventos,
+    loading: eventosLoading,
+    addEvento
+  } = useEventos(EVENTOS_REDUCER.BY_ESPACIO, espacioId)
 
   if (otrosLoading || eventosLoading) return <Loading />
+
+  const handleAddEvento = (evento) => {
+    addEvento(evento)
+  }
 
   return (
     <Container className="p-0">
@@ -38,7 +44,13 @@ export default function EspacioDetalle() {
         </Col>
 
         <Col md={8} className="order-sm-1 order-md-2">
-          <EspacioDetalleCard idEspacio={espacioId} />
+          <EventoActionContext.Provider
+            value={{
+              onAdd: handleAddEvento
+            }}
+          >
+            <EspacioDetalleCard idEspacio={espacioId} />
+          </EventoActionContext.Provider>
           {/*<div className="mt-4">
                 <GroupDetallesCards
                   items={espacio.puntosInteres}

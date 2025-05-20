@@ -84,6 +84,7 @@ export default function EventoDetalleCard({ idEvento }) {
         onHide={() => setShowEventoModal(false)}
         callback={handleEditEvento}
         evento={evento}
+        espacio={evento.espacioFisico}
       />
       <ReservaModal
         show={showReservaModal}

@@ -11,7 +11,8 @@
 
 # Bugs
 
-- Al reservar un evento no se muestra toast
+- Al crear una reserva desde EventoDetalles no se muestra el toast
+- Al crear un evento desde EspacioDetalles no se muestra el toast
 
 # Segurencia
 
