@@ -7,7 +7,12 @@
 
 - Tratar errores en los Modal
 
-- Filtrar por espacios en evento
+- Tratar errores en los toast
+
+- Añadir más filtros en eventos
+- Filtrar por propiedades de evento
+- Filtrar por propiedades de espacio
+- Filtrar por numPlazasDisponibles del evento
 
 # Bugs
 
