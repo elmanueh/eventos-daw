@@ -7,6 +7,7 @@ import { useEventos } from '@/hooks/useEventos'
 import { useReservas } from '@/hooks/useReservas'
 import EventoDetalleCard from '@components/cards/EventoDetalleCard'
 import OthersCards from '@components/OthersCards'
+import { ReservaActionContext } from '@context/ReservaActionContext'
 import Loading from '@pages/Loading'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
@@ -23,9 +24,12 @@ export default function EventoDetalle() {
     loading: loadingReservas,
     addReserva
   } = useReservas(RESERVAS_REDUCER.BY_EVENTO, eventoId)
-  //const idGroupReservas = useId()
 
   if (otrosLoading || loadingReservas) return <Loading />
+
+  const handleAddReserva = (reserva) => {
+    addReserva(reserva)
+  }
 
   return (
     <Container className="p-0">
@@ -38,7 +42,14 @@ export default function EventoDetalle() {
         </Col>
 
         <Col md={8} className="order-sm-1 order-md-2">
-          <EventoDetalleCard idEvento={eventoId} action={{ addReserva }} />
+          <ReservaActionContext.Provider
+            value={{
+              onAdd: handleAddReserva
+            }}
+          >
+            <EventoDetalleCard idEvento={eventoId} />
+          </ReservaActionContext.Provider>
+
           {/*{esEventoMio && (
             <div className="mt-4">
               <GroupDetallesCards

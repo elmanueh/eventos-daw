@@ -14,13 +14,14 @@ import EventoModal from '@components/modals/EventoModal'
 import ReservaModal from '@components/modals/ReservaModal'
 import MyToast from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
+import { useReservaActions } from '@context/ReservaActionContext'
 import Loading from '@pages/Loading'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
 import { useContext, useState } from 'react'
 import { Badge, Card, Col, Row } from 'react-bootstrap'
 
-export default function EventoDetalleCard({ idEvento, action }) {
+export default function EventoDetalleCard({ idEvento }) {
   const { user } = useContext(AuthContext)
   const { toasts, showToast, hideToast } = useToast()
   const [showEventoModal, setShowEventoModal] = useState(false)
@@ -30,6 +31,7 @@ export default function EventoDetalleCard({ idEvento, action }) {
     EVENTOS_REDUCER.BY_ID,
     idEvento
   )
+  const { onAdd } = useReservaActions()
 
   const evento = eventos[0]
   if (loading) return <Loading />
@@ -45,7 +47,7 @@ export default function EventoDetalleCard({ idEvento, action }) {
 
   const handleReservar = async (reserva) => {
     try {
-      action.addReserva(reserva)
+      onAdd(reserva)
       setShowReservaModal(false)
       showToast(TOAST_MESSAGES.RESERVE.CREATED)
     } catch {

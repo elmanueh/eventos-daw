@@ -16,10 +16,7 @@
 - En Espacios y Eventos, al filtrar de nuevo, debe cambiar el paginator a la page 1
 - Cuando se usan los filtros, el paginator deberia de resetearse a la page 1
 
-- Al cancelar evento desde EventoCard no se muestra el toast
 - Al reservar un evento no se muestra toast
-
-- Al mostrar MisEvento y MisEspacios la primera vez se muestran los cancelados
 
 # Segurencia
 
