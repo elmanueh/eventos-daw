@@ -10,14 +10,14 @@ import FilterEventos from '@components/filters/FilterEventos'
 import GroupCards from '@components/GroupCards'
 import EventoModal from '@components/modals/EventoModal'
 import MyToast, { useToast } from '@components/toast/MyToast'
+import { EventoActionContext } from '@context/EventoActionContext'
 import Loading from '@pages/Loading'
 import { useCallback, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 
 export default function MisEventos() {
-  const { eventos, loading, updateEventoStatus, addEvento } = useEventos(
-    EVENTOS_REDUCER.BY_GESTOR
-  )
+  const { eventos, loading, updateEvento, updateEventoStatus, addEvento } =
+    useEventos(EVENTOS_REDUCER.BY_GESTOR)
   const [eventosFiltrados, setEventosFiltrados] = useState(eventos)
   const [showEventoModal, setShowEventoModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
@@ -33,6 +33,32 @@ export default function MisEventos() {
       addToast('Evento creado', 'Tu evento se ha creado con éxito.', 'success')
     } catch {
       addToast('Error al crear evento')
+    }
+  }
+
+  const handleUpdateEvento = (id, evento) => {
+    try {
+      updateEvento(id, evento)
+      addToast(
+        'Evento actualizado',
+        'El evento ha sido actualizado correctamente',
+        'success'
+      )
+    } catch {
+      addToast('Error', `No se pudo actualizar el evento`, 'error')
+    }
+  }
+
+  const handleUpdateEventoEstado = (id) => {
+    try {
+      updateEventoStatus(id)
+      addToast(
+        'Evento actualizado',
+        'El evento ha sido actualizado correctamente',
+        'success'
+      )
+    } catch {
+      addToast('Error', `No se pudo actualizar el evento`, 'error')
     }
   }
 
@@ -60,53 +86,60 @@ export default function MisEventos() {
 
       <FilterEventos eventos={eventos} callback={handleFiltroChange} />
 
-      {eventosEnCurso.length > 0 && (
-        <>
-          <h3>En curso</h3>
-          <GroupCards
-            items={eventosEnCurso}
-            type={TARJETA_TIPOS.EVENTOS}
-            paginator
-            actions
-          />
-        </>
-      )}
+      <EventoActionContext.Provider
+        value={{
+          onUpdate: handleUpdateEvento,
+          onUpdateState: handleUpdateEventoEstado
+        }}
+      >
+        {eventosEnCurso.length > 0 && (
+          <>
+            <h3>En curso</h3>
+            <GroupCards
+              items={eventosEnCurso}
+              type={TARJETA_TIPOS.EVENTOS}
+              paginator
+              actions
+            />
+          </>
+        )}
 
-      {eventosActivos.length > 0 && (
-        <>
-          <h3>Próximos</h3>
-          <GroupCards
-            items={eventosActivos}
-            type={TARJETA_TIPOS.EVENTOS}
-            paginator
-            actions
-          />
-        </>
-      )}
+        {eventosActivos.length > 0 && (
+          <>
+            <h3>Próximos</h3>
+            <GroupCards
+              items={eventosActivos}
+              type={TARJETA_TIPOS.EVENTOS}
+              paginator
+              actions
+            />
+          </>
+        )}
 
-      {eventosFinalizados.length > 0 && (
-        <>
-          <h3>Finalizados</h3>
-          <GroupCards
-            items={eventosFinalizados}
-            type={TARJETA_TIPOS.EVENTOS}
-            paginator
-            actions
-          />
-        </>
-      )}
+        {eventosFinalizados.length > 0 && (
+          <>
+            <h3>Finalizados</h3>
+            <GroupCards
+              items={eventosFinalizados}
+              type={TARJETA_TIPOS.EVENTOS}
+              paginator
+              actions
+            />
+          </>
+        )}
 
-      {eventosCancelados.length > 0 && (
-        <>
-          <h3>Cancelados</h3>
-          <GroupCards
-            items={eventosCancelados}
-            type={TARJETA_TIPOS.EVENTOS}
-            paginator
-            actions
-          />
-        </>
-      )}
+        {eventosCancelados.length > 0 && (
+          <>
+            <h3>Cancelados</h3>
+            <GroupCards
+              items={eventosCancelados}
+              type={TARJETA_TIPOS.EVENTOS}
+              paginator
+              actions
+            />
+          </>
+        )}
+      </EventoActionContext.Provider>
     </Container>
   )
 }

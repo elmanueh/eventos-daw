@@ -8,15 +8,15 @@ import FilterEspacios from '@components/filters/FilterEspacios'
 import GroupCards from '@components/GroupCards'
 import EspacioModal from '@components/modals/EspacioModal'
 import MyToast, { useToast } from '@components/toast/MyToast'
+import { EspacioActionContext } from '@context/EspacioActionContext'
 import Loading from '@pages/Loading'
 
 import { useCallback, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 
 export default function MisEspacios() {
-  const { espacios, loading, addEspacio } = useEspacios(
-    ESPACIOS_REDUCER.BY_PROPIETARIO
-  )
+  const { espacios, loading, addEspacio, updateEspacio, updateEspacioStatus } =
+    useEspacios(ESPACIOS_REDUCER.BY_PROPIETARIO)
   const [espaciosFiltrados, setEspaciosFiltrados] = useState(espacios)
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const { addToast, toasts, removeToast } = useToast()
@@ -36,6 +36,32 @@ export default function MisEspacios() {
       )
     } catch {
       addToast('Error', `No se pudo crear el espacio`, 'error')
+    }
+  }
+
+  const handleUpdateEspacio = (id, espacio) => {
+    try {
+      updateEspacio(id, espacio)
+      addToast(
+        'Espacio actualizado',
+        'El espacio ha sido actualizado correctamente',
+        'success'
+      )
+    } catch {
+      addToast('Error', `No se pudo actualizar el espacio`, 'error')
+    }
+  }
+
+  const handleUpdateEspacioEstado = (id, status) => {
+    try {
+      updateEspacioStatus(id, status)
+      addToast(
+        'Espacio actualizado',
+        'El espacio ha sido actualizado correctamente',
+        'success'
+      )
+    } catch {
+      addToast('Error', `No se pudo actualizar el espacio`, 'error')
     }
   }
 
@@ -60,29 +86,36 @@ export default function MisEspacios() {
 
       <FilterEspacios espacios={espacios} callback={handleFiltroChange} />
 
-      {espaciosActivos.length > 0 && (
-        <>
-          <h3>Activos</h3>
-          <GroupCards
-            items={espaciosActivos}
-            type={TARJETA_TIPOS.ESPACIOS}
-            paginator
-            actions
-          />
-        </>
-      )}
+      <EspacioActionContext.Provider
+        value={{
+          onUpdate: handleUpdateEspacio,
+          onUpdateState: handleUpdateEspacioEstado
+        }}
+      >
+        {espaciosActivos.length > 0 && (
+          <>
+            <h3>Activos</h3>
+            <GroupCards
+              items={espaciosActivos}
+              type={TARJETA_TIPOS.ESPACIOS}
+              paginator
+              actions
+            />
+          </>
+        )}
 
-      {espaciosCerrados.length > 0 && (
-        <>
-          <h3>Cerrados Temporalmente</h3>
-          <GroupCards
-            items={espaciosCerrados}
-            type={TARJETA_TIPOS.ESPACIOS}
-            paginator
-            actions
-          />
-        </>
-      )}
+        {espaciosCerrados.length > 0 && (
+          <>
+            <h3>Cerrados Temporalmente</h3>
+            <GroupCards
+              items={espaciosCerrados}
+              type={TARJETA_TIPOS.ESPACIOS}
+              paginator
+              actions
+            />
+          </>
+        )}
+      </EspacioActionContext.Provider>
     </Container>
   )
 }

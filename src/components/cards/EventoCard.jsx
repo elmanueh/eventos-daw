@@ -2,53 +2,28 @@ import { ESTADOS, NAV_ROUTES, TARJETA_TIPOS } from '@/configs/constant'
 import { statusEvento } from '@/utils/eventoHelper'
 import ConfirmationModal from '@components/modals/ConfirmationModal'
 import EventoModal from '@components/modals/EventoModal'
-import MyToast, { useToast } from '@components/toast/MyToast'
+import { useEventoActions } from '@context/EventoActionContext'
 import { useState } from 'react'
 import './card.css'
 
 export default function EventoCard({ evento, actions }) {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [showEventoModal, setShowEventoModal] = useState(false)
-  const { toasts, addToast, removeToast } = useToast()
+  const { onUpdate, onUpdateState } = useEventoActions()
   const status = statusEvento(evento)
 
   const handleEditEvento = async (eventoData) => {
-    try {
-      setShowEventoModal(false)
-      addToast(
-        'Evento editado',
-        'El evento ha sido editado correctamente',
-        'success'
-      )
-    } catch {
-      addToast('Error', `No se pudo editar el evento`, 'error')
-    }
+    setShowEventoModal(false)
+    onUpdate(evento.id, eventoData)
   }
 
   const handleConfirmation = async () => {
-    try {
-      setShowConfirmationModal(false)
-      addToast(
-        'Estado actualizado',
-        `El evento ha sido ${
-          status === ESTADOS.ACTIVO ? 'desactivado' : 'activado'
-        } correctamente`,
-        'success'
-      )
-    } catch {
-      addToast(
-        'Error',
-        `No se pudo ${
-          status === ESTADOS.ACTIVO ? 'desactivar' : 'activar'
-        } el evento`,
-        'error'
-      )
-    }
+    setShowConfirmationModal(false)
+    onUpdateState(evento.id)
   }
 
   return (
     <div>
-      <MyToast toasts={toasts} removeToast={removeToast} />
       <EventoModal
         show={showEventoModal}
         onHide={() => setShowEventoModal(false)}
