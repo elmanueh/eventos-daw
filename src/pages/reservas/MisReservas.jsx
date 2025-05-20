@@ -21,14 +21,22 @@ export default function MisReservas() {
   return (
     <Container className="d-flex flex-column gap-3 p-0">
       <h1 className="text-center">Mis Reservas</h1>
-
-      <h3>Activas</h3>
-      <GroupCards
-        items={reservasActivas}
-        type={TARJETA_TIPOS.RESERVAS}
-        paginator
-        actions
-      />
+      {reservas.length === 0 && (
+        <div className="d-flex flex-column gap-4 w-100">
+          <p>No has realizado ninguna reserva.</p>
+        </div>
+      )}
+      {reservasActivas.length != 0 && (
+        <>
+          <h3>Activas</h3>
+          <GroupCards
+            items={reservasActivas}
+            type={TARJETA_TIPOS.RESERVAS}
+            paginator
+            actions
+          />
+        </>
+      )}
 
       {reservasCanceladas.length != 0 && (
         <>

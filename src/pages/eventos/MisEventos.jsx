@@ -86,6 +86,12 @@ export default function MisEventos() {
           onUpdateState: handleUpdateEventoEstado
         }}
       >
+        {eventosFiltrados.length === 0 && (
+          <div className="d-flex flex-column gap-4 w-100">
+            <p>No hay evento disponibles para mostrar.</p>
+          </div>
+        )}
+
         {eventosEnCurso.length > 0 && (
           <>
             <h3>En curso</h3>

@@ -20,9 +20,7 @@ export default function GroupCards({ items, type, paginator, actions }) {
   )
 
   useEffect(() => {
-    if (items?.length > 0) {
-      handlePaginatorChange(1)
-    }
+    handlePaginatorChange(1)
   }, [items, pageSize, handlePaginatorChange])
 
   return (

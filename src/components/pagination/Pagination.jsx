@@ -1,8 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Pagination({ numItems, pageSize, callback }) {
   const [currentPage, setCurrentPage] = useState(1)
   const totalPages = Math.ceil(numItems / pageSize)
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [numItems])
 
   const handlePageChange = (nextPage) => {
     setCurrentPage(nextPage)

@@ -82,6 +82,11 @@ export default function MisEspacios() {
           onUpdateState: handleUpdateEspacioEstado
         }}
       >
+        {espaciosFiltrados.length === 0 && (
+          <div className="d-flex flex-column gap-4 w-100">
+            <p>No hay espacios disponibles para mostrar.</p>
+          </div>
+        )}
         {espaciosActivos.length > 0 && (
           <>
             <h3>Activos</h3>
