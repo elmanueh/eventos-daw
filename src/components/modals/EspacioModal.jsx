@@ -32,7 +32,17 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
   }
 
   const handleSubmit = () => {
-    callback(formData)
+    if (espacio) {
+      const cambios = Object.fromEntries(
+        Object.entries(formData).filter(
+          ([key, value]) => value !== espacio[key]
+        )
+      )
+
+      if (Object.keys(cambios).length) callback(cambios)
+    } else {
+      callback(formData)
+    }
   }
 
   return (

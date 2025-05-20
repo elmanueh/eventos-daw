@@ -82,19 +82,6 @@ export const CATEGORIA_EVENTOS = {
   OTROS: 'Otros'
 }
 
-// Campos para modificar espacios
-export const ESPACIO_MODIFICABLE = ['nombre', 'descripcion', 'capacidad']
-
-// Campos para modificar eventos
-export const EVENTO_MODIFICABLE = [
-  'descripcion',
-  'numPlazas',
-  'categoria',
-  'fechaInicio',
-  'fechaFin',
-  'espacioFisico'
-]
-
 // Número de elementos por página
 export const GROUP_CARDS_SIZE = 6
 export const GROUP_DETALLES_CARDS_SIZE = 3

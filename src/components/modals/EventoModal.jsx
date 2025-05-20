@@ -1,8 +1,4 @@
-import {
-  CATEGORIA_EVENTOS,
-  ESPACIOS_REDUCER,
-  EVENTO_MODIFICABLE
-} from '@/configs/constant'
+import { CATEGORIA_EVENTOS, ESPACIOS_REDUCER } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
 import { formatDateTimeLocal } from '@/utils/eventoHelper'
 import { AuthContext } from '@context/AuthContext'
@@ -33,7 +29,6 @@ export default function EventoModal({ show, callback, onHide, evento }) {
   const [formData, setFormData] = useState(initialFormData)
 
   const [maxPlazas, setMaxPlazas] = useState(0)
-
   const plazasOcupadas = evento?.numPlazas - evento?.numPlazasDisponibles
 
   useEffect(() => {
@@ -48,9 +43,7 @@ export default function EventoModal({ show, callback, onHide, evento }) {
   const handleSubmit = () => {
     if (evento) {
       const cambios = Object.fromEntries(
-        EVENTO_MODIFICABLE.filter(
-          (campo) => formData[campo] !== evento[campo]
-        ).map((campo) => [campo, formData[campo]])
+        Object.entries(formData).filter(([key, value]) => value !== evento[key])
       )
 
       if (Object.keys(cambios).length) callback(cambios)
