@@ -68,7 +68,11 @@ export default function Header() {
         </div>
         <div className="offcanvas-body">
           <UserCard />
-          <button className="btn btn-danger mt-4 w-100" onClick={handleLogout}>
+          <button
+            className="btn btn-danger mt-4 w-100"
+            data-bs-dismiss="offcanvas"
+            onClick={handleLogout}
+          >
             Cerrar sesión
           </button>
         </div>

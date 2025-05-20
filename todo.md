@@ -9,8 +9,6 @@
 
 - Filtrar por espacios en evento
 
-- Cuando está pequeño, al darle el boton de MisEspacios o algo, que se esconda la ventana
-
 # Bugs
 
 - Al reservar un evento no se muestra toast

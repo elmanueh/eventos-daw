@@ -143,7 +143,7 @@ export default function FilterEventos({ eventos, callback }) {
                 onChange={handleInputChange}
               />
             </Col>
-            <Col md="auto" className="d-flex align-items-end ms-auto">
+            <Col xs="auto" className="d-flex align-items-end ms-auto">
               <Button variant="outline-primary" onClick={resetFiltros}>
                 Quitar filtros
               </Button>
