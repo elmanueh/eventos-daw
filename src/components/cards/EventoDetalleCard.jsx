@@ -42,7 +42,7 @@ export default function EventoDetalleCard({ idEvento }) {
   const esMio = esEventoMio(evento, user)
 
   const handleNavigate = () => {
-    window.location.href = NAV_ROUTES.ESPACIOS_DET(evento.espacioFisico.id)
+    window.location.href = NAV_ROUTES.ESPACIOS_DET(evento.espacioFisico)
   }
 
   const handleReservar = async (reserva) => {
@@ -152,7 +152,7 @@ export default function EventoDetalleCard({ idEvento }) {
                 <i className="bi bi-geo-alt-fill me-2 text-primary"></i>
                 <span>
                   <strong>Espacio:</strong>{' '}
-                  {evento.espacioFisico ? (
+                  {evento.espacio ? (
                     <a
                       onClick={handleNavigate}
                       style={{ cursor: 'pointer' }}
@@ -160,7 +160,7 @@ export default function EventoDetalleCard({ idEvento }) {
                       rel="noopener noreferrer"
                       className="text-decoration-none"
                     >
-                      {evento.espacioFisico.nombre}
+                      {evento.espacio.nombre}
                     </a>
                   ) : (
                     ''

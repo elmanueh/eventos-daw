@@ -37,7 +37,7 @@ export default function FilterEventos({ eventos, callback }) {
           (filtro.mostrarEnCurso && estado === ESTADOS.EN_CURSO)) &&
         (!filtro.nombreEspacio ||
           (!filtro.mostrarCancelado &&
-            evento.espacioFisico.nombre
+            evento.espacio.nombre
               .toLowerCase()
               .includes(filtro.nombreEspacio.toLowerCase())))
       )

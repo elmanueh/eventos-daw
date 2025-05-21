@@ -10,7 +10,7 @@ const getEventoById = async (id) => {
   try {
     const response = await HttpService.get(API_URLS.EVENTOS_DETALLE(id))
     if (!response.cancelado) {
-      response.espacioFisico = await HttpService.get(
+      response.espacio = await HttpService.get(
         API_URLS.ESPACIOS_DETALLE(response.espacioFisico)
       )
     }
@@ -69,7 +69,7 @@ const getEventosRandomSinEvento = async (number, eventoActual) => {
 const getEventosByEspacio = async (espacio) => {
   try {
     const response = await getEventosFirst()
-    return response.filter((evento) => evento.espacioFisico?.id === espacio)
+    return response.filter((evento) => evento.espacioFisico === espacio)
       .filter((e) => new Date(e.fechaInicio) >= new Date())
       .sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio))
   } catch {

@@ -11,25 +11,41 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
     () => ({
       idEvento: evento.id,
       idUsuario: user.id,
-      plazasReservadas: ''
+      plazasReservadas: 0
     }),
     [evento, user.id]
   )
 
   const [formData, setFormData] = useState(initialFormData)
+  const [errors, setErrors] = useState({})
 
   useEffect(() => {
     if (show) {
       setFormData(initialFormData)
+      setErrors({})
     }
   }, [show, evento, initialFormData])
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: '' })
+    }
   }
 
   const handleSubmit = () => {
+    const newErrors = {}
+    Object.keys(formData).forEach((key) => {
+      if (!formData[key]) {
+        newErrors[key] = 'Obligatorio'
+      }
+    })
+
+    if (Object.keys(newErrors).length > 0) {
+      return setErrors(newErrors)
+    }
+
     callback(formData)
   }
 
@@ -50,25 +66,24 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
               name="evento"
               value={evento.nombre}
               readOnly
-              style={{
-                pointerEvents: 'none',
-                filter: 'brightness(0.70)'
-              }}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlazasReservadas">
             <Form.Label>
-              Número de plazas
+              Número de plazas{' '}
+              {errors.plazasReservadas && (
+                <span className="text-danger">({errors.plazasReservadas})</span>
+              )}
             </Form.Label>
             <Form.Control
               type="number"
               name="plazasReservadas"
-              placeholder="15"
               min={1}
               max={evento.numPlazasDisponibles}
               value={formData.plazasReservadas}
               onChange={handleChange}
+              isInvalid={!!errors.plazasReservadas}
             />
           </Form.Group>
         </Form>

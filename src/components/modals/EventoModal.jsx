@@ -33,20 +33,36 @@ export default function EventoModal({
   )
 
   const [formData, setFormData] = useState(initialFormData)
+  const [errors, setErrors] = useState({})
 
   const [maxPlazas, setMaxPlazas] = useState(0)
   const plazasOcupadas = evento?.numPlazas - evento?.numPlazasDisponibles
 
   useEffect(() => {
     setFormData(initialFormData)
+    setErrors({})
   }, [show, evento, initialFormData])
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: '' })
+    }
   }
 
   const handleSubmit = () => {
+    const newErrors = {}
+    Object.keys(formData).forEach((key) => {
+      if (!formData[key]) {
+        newErrors[key] = 'Obligatorio'
+      }
+    })
+
+    if (Object.keys(newErrors).length > 0) {
+      return setErrors(newErrors)
+    }
+
     if (evento) {
       const cambios = Object.fromEntries(
         Object.entries(formData).filter(([key, value]) => value !== evento[key])
@@ -80,7 +96,12 @@ export default function EventoModal({
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3" controlId="formEspacioFisico">
-            <Form.Label>Espacio físico</Form.Label>
+            <Form.Label>
+              Espacio físico{' '}
+              {errors.espacioFisico && (
+                <span className="text-danger">({errors.espacioFisico})</span>
+              )}
+            </Form.Label>
             {espacio ? (
               <Form.Control
                 type="text"
@@ -93,6 +114,7 @@ export default function EventoModal({
                 name="espacioFisico"
                 value={formData.espacioFisico}
                 onChange={handleChange}
+                isInvalid={!!errors.espacioFisico}
               >
                 <option value="">Seleccione un espacio físico</option>
                 {espaciosList.map((espacio) => (
@@ -105,7 +127,12 @@ export default function EventoModal({
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formNombre">
-            <Form.Label>Nombre del evento</Form.Label>
+            <Form.Label>
+              Nombre del evento{' '}
+              {errors.nombre && (
+                <span className="text-danger">({errors.nombre})</span>
+              )}
+            </Form.Label>
             <Form.Control
               type="text"
               name="nombre"
@@ -113,6 +140,7 @@ export default function EventoModal({
               value={formData.nombre}
               onChange={handleChange}
               readOnly={!!evento}
+              isInvalid={!!errors.nombre}
             />
           </Form.Group>
 
@@ -124,20 +152,28 @@ export default function EventoModal({
                   (Plazas disponibles: {formData.numPlazas - plazasOcupadas})
                 </span>
               )}
+              {errors.numPlazas && (
+                <span className="text-danger">({errors.numPlazas})</span>
+              )}
             </Form.Label>
             <Form.Control
               type="number"
               name="numPlazas"
-              placeholder="Ej. 5"
               min={plazasOcupadas || 1}
               max={maxPlazas}
               value={formData.numPlazas}
               onChange={handleChange}
+              isInvalid={!!errors.numPlazas}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formCategoria">
-            <Form.Label>Categoría</Form.Label>
+            <Form.Label>
+              Categoría{' '}
+              {errors.categoria && (
+                <span className="text-danger">({errors.categoria})</span>
+              )}
+            </Form.Label>
             {evento ? (
               <Form.Control
                 type="text"
@@ -150,6 +186,7 @@ export default function EventoModal({
                 name="categoria"
                 value={formData.categoria}
                 onChange={handleChange}
+                isInvalid={!!errors.categoria}
               >
                 <option value="">Selecciona una categoría</option>
                 {Object.entries(CATEGORIA_EVENTOS).map(([key, value]) => (
@@ -162,7 +199,12 @@ export default function EventoModal({
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formFechaInicio">
-            <Form.Label>Fecha de inicio</Form.Label>
+            <Form.Label>
+              Fecha de inicio{' '}
+              {errors.fechaInicio && (
+                <span className="text-danger">({errors.fechaInicio})</span>
+              )}
+            </Form.Label>
             <Form.Control
               type="datetime-local"
               name="fechaInicio"
@@ -170,22 +212,34 @@ export default function EventoModal({
               max={formData.fechaFin}
               value={formData.fechaInicio}
               onChange={handleChange}
+              isInvalid={!!errors.fechaInicio}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formFechaFin">
-            <Form.Label>Fecha de finalización</Form.Label>
+            <Form.Label>
+              Fecha de finalización{' '}
+              {errors.fechaFin && (
+                <span className="text-danger">({errors.fechaFin})</span>
+              )}
+            </Form.Label>
             <Form.Control
               type="datetime-local"
               name="fechaFin"
-              min={formData.fechaInicio}
+              min={formData.fechaInicio || formatDateTimeLocal(new Date())}
               value={formData.fechaFin}
               onChange={handleChange}
+              isInvalid={!!errors.fechaFin}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formDescripcion">
-            <Form.Label>Descripción</Form.Label>
+            <Form.Label>
+              Descripción{' '}
+              {errors.descripcion && (
+                <span className="text-danger">({errors.descripcion})</span>
+              )}
+            </Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
@@ -193,6 +247,7 @@ export default function EventoModal({
               placeholder="Un histórico recinto para eventos taurinos, conciertos y actividades culturales, con una gran capacidad de público y un ambiente único en el corazón de Murcia."
               value={formData.descripcion}
               onChange={handleChange}
+              isInvalid={!!errors.descripcion}
             />
           </Form.Group>
         </Form>
