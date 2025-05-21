@@ -23,7 +23,7 @@ export default function EventoModal({
       nombre: evento?.nombre || '',
       descripcion: evento?.descripcion || '',
       organizador: evento?.organizador || user.username,
-      numPlazas: evento?.numPlazas || 0,
+      numPlazas: evento?.numPlazas || '',
       categoria: evento?.categoria || '',
       fechaInicio: evento?.fechaInicio || '',
       fechaFin: evento?.fechaFin || '',
@@ -159,6 +159,7 @@ export default function EventoModal({
             <Form.Control
               type="number"
               name="numPlazas"
+              placeholder="15000"
               min={plazasOcupadas || 1}
               max={maxPlazas}
               value={formData.numPlazas}

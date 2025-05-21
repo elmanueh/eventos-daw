@@ -11,7 +11,7 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
     () => ({
       idEvento: evento.id,
       idUsuario: user.id,
-      plazasReservadas: 0
+      plazasReservadas: ''
     }),
     [evento, user.id]
   )
@@ -79,6 +79,7 @@ export default function ReservaModal({ show, callback, onHide, evento }) {
             <Form.Control
               type="number"
               name="plazasReservadas"
+              placeholder="15"
               min={1}
               max={evento.numPlazasDisponibles}
               value={formData.plazasReservadas}

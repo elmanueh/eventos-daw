@@ -25,7 +25,7 @@ export default function EspacioDetalleCard({ idEspacio }) {
   const [showEspacioModal, setShowEspacioModal] = useState(false)
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [showEventoModal, setShowEventoModal] = useState(false)
-  const { espacios, updateEspacio, updateEspacioStatus } = useEspacios(
+  const { espacios, updateEspacio, updateEspacioStatus, loading } = useEspacios(
     ESPACIOS_REDUCER.BY_ID,
     idEspacio
   )
@@ -40,7 +40,7 @@ export default function EspacioDetalleCard({ idEspacio }) {
     }
   }, [espacio?.puntosInteres])
 
-  if (!espacio) return <Loading />
+  if (loading) return <Loading />
   const status = statusEspacio(espacio)
   const isUser = user.roles.includes(AUTH_ROLES.GESTOR_EVENTOS)
   const esMio = isMio(espacio, user)

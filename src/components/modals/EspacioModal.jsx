@@ -1,3 +1,5 @@
+import { EVENTOS_REDUCER } from '@/configs/constant'
+import { useEventos } from '@/hooks/useEventos'
 import { AuthContext } from '@context/AuthContext'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import Button from 'react-bootstrap/Button'
@@ -7,14 +9,24 @@ import Modal from 'react-bootstrap/Modal'
 export default function EspacioModal({ show, callback, onHide, espacio }) {
   const { user } = useContext(AuthContext)
 
+  const { eventos, loading } = useEventos(
+    EVENTOS_REDUCER.BY_ESPACIO,
+    espacio?.id
+  )
+
+  const minPlazas = useMemo(() => {
+    if (loading || !eventos) return 1
+    return eventos.reduce((acc, evento) => Math.max(acc, evento.numPlazas), 1)
+  }, [eventos])
+
   const initialFormData = useMemo(
     () => ({
       nombre: espacio?.nombre || '',
       propietario: espacio?.propietario || user.username,
-      capacidad: espacio?.capacidad || 0,
+      capacidad: espacio?.capacidad || '',
       direccion: espacio?.direccion || '',
-      longitud: espacio?.longitud || 0,
-      latitud: espacio?.latitud || 0,
+      longitud: espacio?.longitud || '',
+      latitud: espacio?.latitud || '',
       descripcion: espacio?.descripcion || ''
     }),
     [espacio, user.username]
@@ -99,7 +111,7 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
               type="number"
               name="capacidad"
               placeholder="15000"
-              min={1}
+              min={minPlazas}
               max={Number.MAX_SAFE_INTEGER}
               value={formData.capacidad}
               onChange={handleChange}
@@ -138,6 +150,7 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
               placeholder="37.9861"
               min={-90}
               max={90}
+              step={0.0001}
               value={formData.latitud}
               onChange={handleChange}
               readOnly={!!espacio}
@@ -158,6 +171,7 @@ export default function EspacioModal({ show, callback, onHide, espacio }) {
               placeholder="-1.1295"
               min={-180}
               max={180}
+              step={0.0001}
               value={formData.longitud}
               onChange={handleChange}
               readOnly={!!espacio}
