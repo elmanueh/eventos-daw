@@ -1,4 +1,5 @@
 import express from 'express'
+import hbs from 'hbs'
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -11,14 +12,16 @@ const port = 3000
 app.use(express.static(path.join(__dirname, '../public')))
 
 // Configuración de Handlebars
-app.set('views', path.join(__dirname, 'views')) // Carpeta con las vistas de HBS
-app.set('view engine', 'hbs')
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', '.hbs')
+
+// Register partials
+hbs.registerPartials(path.join(__dirname, 'views/layout'))
 
 // Ruta de inicio, donde se usa Handlebars
 app.get('/', (req, res) => {
   res.render('index', {
-    titulo: 'Bienvenido a la Página de Inicio',
-    mensaje: 'Inicia sesión para continuar en tu aventura'
+    titulo: 'Eventy'
   })
 })
 
