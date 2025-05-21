@@ -58,17 +58,27 @@ export default function GroupDetallesCards({ items, type }) {
           {type === GROUP_DETALLES_CARDS_TIPOS.RESERVAS &&
             itemsShowed.map((objeto, index) => {
               return (
-                <ListGroup.Item
-                  key={index}
-                  className="border-top border-primary d-flex justify-content-between align-items-center py-3"
-                >
-                  <div className="d-flex flex-column">
-                    <span className="fw-bold">Reserva #{index + 1}</span>
+                <ListGroup.Item className="d-flex justify-content-between align-items-center py-3 border-top border-primary">
+                  <img
+                    src={`https://i.pravatar.cc/48?u=${Math.random()}`}
+                    alt="Avatar"
+                    className="rounded-circle border border-primary me-3"
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      objectFit: 'cover'
+                    }}
+                  />
+
+                  <div className="flex-grow-1">
+                    <span className="fw-bold d-block">
+                      Reserva #{index + 1}
+                    </span>
                     <span className="text-muted">
                       Usuario: {objeto.idUsuario}
                     </span>
                   </div>
-                  <span className="badge bg-primary bg-opacity-25 text-primary rounded-pill px-3 py-2">
+                  <span className="badge bg-primary bg-opacity-25 text-primary rounded-pill px-3 py-2 ms-3">
                     {objeto.plazasReservadas} plazas
                   </span>
                 </ListGroup.Item>

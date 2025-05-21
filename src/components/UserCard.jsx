@@ -21,10 +21,7 @@ export default function UserCard() {
   return (
     <aside className="bg-dark rounded p-4 d-flex flex-column text-center align-items-center gap-3 border border-secondary align-self-start">
       <img
-        src={
-          user.avatarUrl ||
-          'https://cdn-icons-png.freepik.com/256/5084/5084713.png'
-        }
+        src={user.avatarUrl || 'https://i.pravatar.cc/120'}
         alt="Foto de perfil"
         className="rounded-circle shadow-sm"
         style={{ width: '120px', height: '120px', objectFit: 'cover' }}
