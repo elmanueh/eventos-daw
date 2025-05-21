@@ -4,11 +4,14 @@ import {
   GROUP_DETALLES_CARDS_TIPOS,
   TARJETA_TIPOS
 } from '@/configs/constant'
+import { TOAST_MESSAGES } from '@/configs/notifications'
 import { useEspacios } from '@/hooks/useEspacios'
 import { useEventos } from '@/hooks/useEventos'
+import { useToast } from '@/hooks/useToast'
 import EspacioDetalleCard from '@components/cards/EspacioDetalleCard'
 import GroupDetallesCards from '@components/GroupDetallesCards'
 import OthersCards from '@components/OthersCards'
+import MyToast from '@components/toast/MyToast'
 import { EspacioActionContext } from '@context/EspacioActionContext'
 import { EventoActionContext } from '@context/EventoActionContext'
 import Loading from '@pages/Loading'
@@ -18,6 +21,7 @@ import { useLoaderData } from 'react-router'
 
 export default function EspacioDetalle() {
   const espacioId = useLoaderData()
+  const { toasts, showToast, hideToast } = useToast()
   const { espacios: otrosEspacios, loading: otrosLoading } = useEspacios(
     ESPACIOS_REDUCER.RANDOM_SIN_ESPACIO,
     4,
@@ -37,11 +41,17 @@ export default function EspacioDetalle() {
   if (otrosLoading || eventosLoading) return <Loading />
 
   const handleAddEvento = async (evento) => {
-    await addEvento(evento)
+    try {
+      await addEvento(evento)
+      showToast(TOAST_MESSAGES.EVENT.CREATED)
+    } catch (error) {
+      showToast(TOAST_MESSAGES.EVENT.CREATED_ERROR)
+    }
   }
 
   return (
     <Container className="p-0">
+      <MyToast toasts={toasts} hideToast={hideToast} />
       <Row>
         <Col md={4} className="order-sm-2 order-md-1">
           <OthersCards

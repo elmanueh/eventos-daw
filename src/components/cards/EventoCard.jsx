@@ -58,7 +58,7 @@ export default function EventoCard({ evento, actions }) {
 
         <p className="my-card-description">{evento.descripcion}</p>
 
-        {!evento.cancelado ? (
+        {status == ESTADOS.ACTIVO ? (
           <div className="my-card-info">
             <span className="my-card-info-truncate">
               <i className="bi bi-people-fill my-card-capacity" />
@@ -78,7 +78,7 @@ export default function EventoCard({ evento, actions }) {
           <div className="my-card-info">
             <span className="my-card-info-truncate">
               <i className="bi bi-people-fill my-card-capacity" />
-              {evento.numPlazas} plazas
+              {evento.numPlazas} plazas totales
             </span>
           </div>
         )}

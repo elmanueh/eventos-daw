@@ -53,13 +53,8 @@ export default function EventoDetalleCard({ idEvento }) {
   }
 
   const handleReservar = async (reserva) => {
-    try {
-      onAdd(reserva)
-      setShowReservaModal(false)
-      showToast(TOAST_MESSAGES.RESERVE.CREATED)
-    } catch {
-      showToast(TOAST_MESSAGES.RESERVE.CREATED_ERROR)
-    }
+    onAdd(reserva)
+    setShowReservaModal(false)
   }
 
   const handleEditEvento = async (eventoData) => {
@@ -183,7 +178,7 @@ export default function EventoDetalleCard({ idEvento }) {
               <strong>Total de plazas:</strong> {evento.numPlazas}
             </span>
           </div>
-          {!evento.cancelado && (
+          {status == ESTADOS.ACTIVO && (
             <div>
               <i className="bi bi-people-fill me-2 text-primary" />
               <span>

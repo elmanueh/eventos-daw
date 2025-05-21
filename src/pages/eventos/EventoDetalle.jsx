@@ -4,11 +4,14 @@ import {
   RESERVAS_REDUCER,
   TARJETA_TIPOS
 } from '@/configs/constant'
+import { TOAST_MESSAGES } from '@/configs/notifications'
 import { useEventos } from '@/hooks/useEventos'
 import { useReservas } from '@/hooks/useReservas'
+import { useToast } from '@/hooks/useToast'
 import EventoDetalleCard from '@components/cards/EventoDetalleCard'
 import GroupDetallesCards from '@components/GroupDetallesCards'
 import OthersCards from '@components/OthersCards'
+import MyToast from '@components/toast/MyToast'
 import { EventoActionContext } from '@context/EventoActionContext'
 import { ReservaActionContext } from '@context/ReservaActionContext'
 import Loading from '@pages/Loading'
@@ -18,6 +21,7 @@ import { useLoaderData } from 'react-router'
 
 export default function EventoDetalle() {
   const eventoId = useLoaderData()
+  const { toasts, showToast, hideToast } = useToast()
   const { eventos: otrosEventos, loading: otrosLoading } = useEventos(
     EVENTOS_REDUCER.RANDOM_SIN_EVENTO,
     4,
@@ -37,11 +41,17 @@ export default function EventoDetalle() {
   if (otrosLoading || loadingReservas) return <Loading />
 
   const handleAddReserva = async (reserva) => {
-    await addReserva(reserva)
+    try {
+      await addReserva(reserva)
+      showToast(TOAST_MESSAGES.RESERVE.CREATED)
+    } catch {
+      showToast(TOAST_MESSAGES.RESERVE.ERROR)
+    }
   }
 
   return (
     <Container className="p-0">
+      <MyToast toasts={toasts} hideToast={hideToast} />
       <Row>
         <Col md={4} className="order-sm-2 order-md-1">
           <OthersCards
@@ -65,7 +75,7 @@ export default function EventoDetalle() {
             </EventoActionContext.Provider>
           </ReservaActionContext.Provider>
 
-          {esEventoMio && (
+          {esEventoMio && reservas?.length > 0 && (
             <div className="mt-4">
               <GroupDetallesCards
                 items={reservas}
