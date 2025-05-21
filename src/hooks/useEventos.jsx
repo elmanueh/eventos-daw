@@ -87,6 +87,7 @@ export function useEventos(type, value = 0, value2 = 0) {
       dispatch({ type: 'ADD_SUCCESS', payload: nuevoEvento })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      throw error
     }
   }
 
@@ -97,6 +98,7 @@ export function useEventos(type, value = 0, value2 = 0) {
       dispatch({ type: 'UPDATE_SUCCESS', payload: nuevoEvento })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      throw error
     }
   }
 
@@ -107,6 +109,7 @@ export function useEventos(type, value = 0, value2 = 0) {
       dispatch({ type: 'STATUS_ESTADO', payload: nuevoEvento })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      throw error
     }
   }
 

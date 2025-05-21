@@ -29,8 +29,8 @@ export default function EspacioDetalle() {
 
   if (otrosLoading || eventosLoading) return <Loading />
 
-  const handleAddEvento = (evento) => {
-    addEvento(evento)
+  const handleAddEvento = async (evento) => {
+    await addEvento(evento)
   }
 
   return (

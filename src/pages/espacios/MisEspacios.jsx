@@ -27,9 +27,9 @@ export default function MisEspacios() {
     setEspaciosFiltrados(espaciosFiltrados)
   }, [])
 
-  const handleAddEspacio = (espacio) => {
+  const handleAddEspacio = async (espacio) => {
     try {
-      addEspacio(espacio)
+      await addEspacio(espacio)
       setShowEspacioModal(false)
       showToast(TOAST_MESSAGES.SPACE.CREATED)
     } catch {
@@ -37,18 +37,18 @@ export default function MisEspacios() {
     }
   }
 
-  const handleUpdateEspacio = (id, espacio) => {
+  const handleUpdateEspacio = async (id, espacio) => {
     try {
-      updateEspacio(id, espacio)
+      await updateEspacio(id, espacio)
       showToast(TOAST_MESSAGES.SPACE.UPDATED)
     } catch {
       showToast(TOAST_MESSAGES.SPACE.UPDATED_ERROR)
     }
   }
 
-  const handleUpdateEspacioEstado = (id, status) => {
+  const handleUpdateEspacioEstado = async (id, status) => {
     try {
-      updateEspacioStatus(id, status)
+      await updateEspacioStatus(id, status)
       showToast(TOAST_MESSAGES.SPACE.STATUS_UPDATED)
     } catch {
       showToast(TOAST_MESSAGES.SPACE.STATUS_UPDATED_ERROR)

@@ -27,8 +27,8 @@ export default function EventoDetalle() {
 
   if (otrosLoading || loadingReservas) return <Loading />
 
-  const handleAddReserva = (reserva) => {
-    addReserva(reserva)
+  const handleAddReserva = async (reserva) => {
+    await addReserva(reserva)
   }
 
   return (

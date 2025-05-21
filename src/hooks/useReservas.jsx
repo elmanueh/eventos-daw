@@ -60,6 +60,7 @@ export function useReservas(type, value = 0) {
       dispatch({ type: 'ADD_SUCCESS', payload: reservaCreada })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      throw error
     }
   }
 

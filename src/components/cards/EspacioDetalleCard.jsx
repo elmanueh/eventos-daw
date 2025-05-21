@@ -38,7 +38,7 @@ export default function EspacioDetalleCard({ idEspacio }) {
 
   const handleEditEspacio = async (espacioData) => {
     try {
-      updateEspacio(idEspacio, espacioData)
+      await updateEspacio(idEspacio, espacioData)
       setShowEspacioModal(false)
       showToast(TOAST_MESSAGES.SPACE.UPDATED)
     } catch {
@@ -48,7 +48,7 @@ export default function EspacioDetalleCard({ idEspacio }) {
 
   const handleConfirmation = async () => {
     try {
-      updateEspacioStatus(
+      await updateEspacioStatus(
         idEspacio,
         status === ESTADOS.ACTIVO
           ? ESTADOS.CERRADO_TEMPORALMENTE

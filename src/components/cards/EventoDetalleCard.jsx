@@ -57,7 +57,7 @@ export default function EventoDetalleCard({ idEvento }) {
 
   const handleEditEvento = async (eventoData) => {
     try {
-      updateEvento(idEvento, eventoData)
+      await updateEvento(idEvento, eventoData)
       setShowEventoModal(false)
       showToast(TOAST_MESSAGES.EVENT.UPDATED)
     } catch {
@@ -67,7 +67,7 @@ export default function EventoDetalleCard({ idEvento }) {
 
   const handleConfirmation = async () => {
     try {
-      updateEventoStatus(evento.id)
+      await updateEventoStatus(evento.id)
       setShowConfirmation(false)
       showToast(TOAST_MESSAGES.EVENT.STATUS_UPDATED)
     } catch {

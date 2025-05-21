@@ -87,6 +87,7 @@ export function useEspacios(type, value = 0, value2 = 0) {
       dispatch({ type: 'ADD_SUCCESS', payload: nuevoEspacio })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      throw error
     }
   }
 
@@ -97,6 +98,7 @@ export function useEspacios(type, value = 0, value2 = 0) {
       dispatch({ type: 'UPDATE_SUCCESS', payload: nuevoEspacio })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      throw error
     }
   }
 
@@ -110,6 +112,7 @@ export function useEspacios(type, value = 0, value2 = 0) {
       dispatch({ type: 'STATUS_SUCCESS', payload: nuevoEspacio })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      throw error
     }
   }
 

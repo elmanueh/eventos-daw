@@ -28,9 +28,9 @@ export default function MisEventos() {
     setEventosFiltrados(eventosFiltrados)
   }, [])
 
-  const handleAddEvento = (evento) => {
+  const handleAddEvento = async (evento) => {
     try {
-      addEvento(evento)
+      await addEvento(evento)
       setShowEventoModal(false)
       showToast(TOAST_MESSAGES.EVENT.CREATED)
     } catch {
@@ -38,18 +38,18 @@ export default function MisEventos() {
     }
   }
 
-  const handleUpdateEvento = (id, evento) => {
+  const handleUpdateEvento = async (id, evento) => {
     try {
-      updateEvento(id, evento)
+      await updateEvento(id, evento)
       showToast(TOAST_MESSAGES.EVENT.UPDATED)
     } catch {
       showToast(TOAST_MESSAGES.EVENT.UPDATED_ERROR)
     }
   }
 
-  const handleUpdateEventoEstado = (id) => {
+  const handleUpdateEventoEstado = async (id) => {
     try {
-      updateEventoStatus(id)
+      await updateEventoStatus(id)
       showToast(TOAST_MESSAGES.EVENT.STATUS_UPDATED)
     } catch {
       showToast(TOAST_MESSAGES.EVENT.STATUS_ERROR)

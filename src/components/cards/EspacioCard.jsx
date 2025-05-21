@@ -13,17 +13,17 @@ export default function EspacioCard({ espacio, actions }) {
     espacio.estado === ESTADOS.ACTIVO ? ESTADOS.ACTIVO : ESTADOS.CERRADO
 
   const handleEditEspacio = async (espacioData) => {
-    setShowEspacioModal(false)
     onUpdate(espacio.id, espacioData)
+    setShowEspacioModal(false)
   }
 
   const handleConfirmation = async () => {
-    setShowConfirmationModal(false)
     const newStatus =
       espacio.estado === ESTADOS.ACTIVO
         ? ESTADOS.CERRADO_TEMPORALMENTE
         : ESTADOS.ACTIVO
     onUpdateState(espacio.id, newStatus)
+    setShowConfirmationModal(false)
   }
 
   return (

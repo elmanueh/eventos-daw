@@ -13,13 +13,13 @@ export default function EventoCard({ evento, actions }) {
   const status = statusEvento(evento)
 
   const handleEditEvento = async (eventoData) => {
-    setShowEventoModal(false)
     onUpdate(evento.id, eventoData)
+    setShowEventoModal(false)
   }
 
   const handleConfirmation = async () => {
-    setShowConfirmationModal(false)
     onUpdateState(evento.id)
+    setShowConfirmationModal(false)
   }
 
   return (
