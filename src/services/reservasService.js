@@ -19,7 +19,10 @@ const getReservasByIdUsuario = async (id) => {
     )
     
     return reservas
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al obtener las reservas por usuario')
   }
 }
@@ -33,7 +36,10 @@ const getReservasByEvento = async (evento) => {
       )
     )
     return reservas
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al obtener las reservas por evento')
   }
 }
@@ -43,6 +49,9 @@ const addReserva = async (reserva) => {
     const response = await HttpService.post(API_URLS.RESERVAS_CREAR, reserva)
     return await HttpService.get(API_URLS.RESERVAS_DETALLE(response.headers.get('location').split('/').pop()))
   } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al crear la reserva')
   }
 }

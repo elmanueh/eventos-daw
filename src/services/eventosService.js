@@ -72,7 +72,10 @@ const getEventosByEspacio = async (espacio) => {
     return response.filter((evento) => evento.espacioFisico === espacio)
       .filter((e) => new Date(e.fechaInicio) >= new Date())
       .sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio))
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al obtener los eventos por espacio')
   }
 }
@@ -81,7 +84,10 @@ const addEvento = async (evento) => {
   try {
     const response = await HttpService.post(API_URLS.EVENTOS_CREAR, evento)
     return await getEventoById(response.headers.get('location').split('/').pop())
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al crear el evento')
   }
 }
@@ -93,7 +99,10 @@ const updateEvento = async (id, evento) => {
       evento
     )
     return await getEventoById(id)
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al actualizar el evento')
   }
 }
@@ -102,7 +111,10 @@ const updateEventoStatus = async (id) => {
   try {
     await HttpService.put(API_URLS.EVENTOS_CANCELAR(id))
     return await getEventoById(id)
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al cancelar el evento')
   }
 }

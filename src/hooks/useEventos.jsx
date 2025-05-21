@@ -38,7 +38,8 @@ function eventosReducer(state, action) {
 }
 
 export function useEventos(type, value = 0, value2 = 0) {
-  const { user } = useContext(AuthContext)
+  const { user, logout } = useContext(AuthContext)
+  
   const [state, dispatch] = useReducer(eventosReducer, initialState)
 
   const fetchEventos = useCallback(async () => {
@@ -77,6 +78,12 @@ export function useEventos(type, value = 0, value2 = 0) {
       dispatch({ type: 'FETCH_SUCCESS', payload: eventos })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      if (
+        error.message === 'No autorizado. Por favor, inicia sesión nuevamente.'
+      ) {
+        return logout()
+      }
+      throw error
     }
   }, [type, user?.username, value])
 
@@ -87,6 +94,11 @@ export function useEventos(type, value = 0, value2 = 0) {
       dispatch({ type: 'ADD_SUCCESS', payload: nuevoEvento })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      if (
+        error.message === 'No autorizado. Por favor, inicia sesión nuevamente.'
+      ) {
+        return logout()
+      }
       throw error
     }
   }
@@ -98,6 +110,11 @@ export function useEventos(type, value = 0, value2 = 0) {
       dispatch({ type: 'UPDATE_SUCCESS', payload: nuevoEvento })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      if (
+        error.message === 'No autorizado. Por favor, inicia sesión nuevamente.'
+      ) {
+        return logout()
+      }
       throw error
     }
   }
@@ -109,6 +126,11 @@ export function useEventos(type, value = 0, value2 = 0) {
       dispatch({ type: 'STATUS_ESTADO', payload: nuevoEvento })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      if (
+        error.message === 'No autorizado. Por favor, inicia sesión nuevamente.'
+      ) {
+        return logout()
+      }
       throw error
     }
   }

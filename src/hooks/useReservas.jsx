@@ -29,7 +29,8 @@ function reservasReducer(state, action) {
 }
 
 export function useReservas(type, value = 0) {
-  const { user } = useContext(AuthContext)
+  const { user, logout } = useContext(AuthContext)
+
   const [state, dispatch] = useReducer(reservasReducer, initialState)
 
   const fetchReservas = useCallback(async () => {
@@ -50,6 +51,11 @@ export function useReservas(type, value = 0) {
       dispatch({ type: 'FETCH_SUCCESS', payload: reservas })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      if (
+        error.message === 'No autorizado. Por favor, inicia sesión nuevamente.'
+      ) {
+        return logout()
+      }
     }
   }, [type, user?.id, value])
 
@@ -60,6 +66,11 @@ export function useReservas(type, value = 0) {
       dispatch({ type: 'ADD_SUCCESS', payload: reservaCreada })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      if (
+        error.message === 'No autorizado. Por favor, inicia sesión nuevamente.'
+      ) {
+        return logout()
+      }
       throw error
     }
   }

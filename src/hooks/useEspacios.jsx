@@ -38,7 +38,8 @@ function espaciosReducer(state, action) {
 }
 
 export function useEspacios(type, value = 0, value2 = 0) {
-  const { user } = useContext(AuthContext)
+  const { user, logout } = useContext(AuthContext)
+
   const [state, dispatch] = useReducer(espaciosReducer, initialState)
 
   const fetchEspacios = useCallback(async () => {
@@ -77,6 +78,11 @@ export function useEspacios(type, value = 0, value2 = 0) {
       dispatch({ type: 'FETCH_SUCCESS', payload: espacios })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      if (
+        error.message === 'No autorizado. Por favor, inicia sesión nuevamente.'
+      ) {
+        return logout()
+      }
     }
   }, [type, user?.username, value, value2])
 
@@ -87,6 +93,11 @@ export function useEspacios(type, value = 0, value2 = 0) {
       dispatch({ type: 'ADD_SUCCESS', payload: nuevoEspacio })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      if (
+        error.message === 'No autorizado. Por favor, inicia sesión nuevamente.'
+      ) {
+        return logout()
+      }
       throw error
     }
   }
@@ -98,6 +109,11 @@ export function useEspacios(type, value = 0, value2 = 0) {
       dispatch({ type: 'UPDATE_SUCCESS', payload: nuevoEspacio })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      if (
+        error.message === 'No autorizado. Por favor, inicia sesión nuevamente.'
+      ) {
+        return logout()
+      }
       throw error
     }
   }
@@ -112,6 +128,11 @@ export function useEspacios(type, value = 0, value2 = 0) {
       dispatch({ type: 'STATUS_SUCCESS', payload: nuevoEspacio })
     } catch (error) {
       dispatch({ type: 'ACTION_ERROR', payload: error.message })
+      if (
+        error.message === 'No autorizado. Por favor, inicia sesión nuevamente.'
+      ) {
+        return logout()
+      }
       throw error
     }
   }

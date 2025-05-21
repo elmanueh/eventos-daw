@@ -13,7 +13,10 @@ const getEspacioById = async (id) => {
       (a, b) => a.distancia - b.distancia
     )
     return [response]
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al obtener el espacio por ID')
   }
 }
@@ -27,7 +30,10 @@ const getEspaciosByPropietario = async (propietario) => {
       response.espacio.map((e) => getEspacioById(e.espacioDTO.id))
     )
     return espacios.flat()
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al obtener los espacios por propietario')
   }
 }
@@ -41,7 +47,10 @@ const getEspaciosFirst = async (number = 2000) => {
         .map((e) => getEspacioById(e.espacioDTO.id)))
   
     return espacios.flat()
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al obtener los espacios')
   }
 }
@@ -50,7 +59,10 @@ const getEspaciosRandom = async (number) => {
   try {
     const espacios = await getEspaciosFirst()
     return espacios.sort(() => Math.random() - 0.5).slice(0, number)
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al obtener los espacios aleatorios')
   }
 }
@@ -61,7 +73,10 @@ const getEspaciosRandomSinEspacio = async (number, espacioActual) => {
     return espacios
       .filter((espacio) => espacio.id !== espacioActual)
       .slice(0, number)
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al obtener los espacios aleatorios')
   }
 }
@@ -70,7 +85,10 @@ const addEspacio = async (espacio) => {
   try {
     const response = await HttpService.post(API_URLS.ESPACIOS_CREAR, espacio)
     return await getEspacioById(response.headers.get('location').split('/').pop())
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al crear el espacio')
   }
 }
@@ -79,7 +97,10 @@ const updateEspacio = async (id, espacio) => {
   try {
     await HttpService.patch(API_URLS.ESPACIOS_MODIFICAR(id), espacio)
     return await getEspacioById(id)
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al modificar el espacio')
   }
 }
@@ -88,7 +109,10 @@ const updateEspacioStatus = async (id, status) => {
   try {
     await HttpService.put(API_URLS.ESPACIOS_CAMBIAR_ESTADO(id), status)
     return await getEspacioById(id)
-  } catch {
+  } catch (error) {
+    if (error.message === 'No autorizado. Por favor, inicia sesión nuevamente.') {
+      throw error
+    }
     throw new Error('Error al modificar el estado del espacio')
   }
 }
