@@ -1,14 +1,18 @@
 import {
   EVENTOS_REDUCER,
+  GROUP_DETALLES_CARDS_TIPOS,
   RESERVAS_REDUCER,
   TARJETA_TIPOS
 } from '@/configs/constant'
 import { useEventos } from '@/hooks/useEventos'
 import { useReservas } from '@/hooks/useReservas'
 import EventoDetalleCard from '@components/cards/EventoDetalleCard'
+import GroupDetallesCards from '@components/GroupDetallesCards'
 import OthersCards from '@components/OthersCards'
+import { EventoActionContext } from '@context/EventoActionContext'
 import { ReservaActionContext } from '@context/ReservaActionContext'
 import Loading from '@pages/Loading'
+import { useCallback, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useLoaderData } from 'react-router'
 
@@ -24,6 +28,11 @@ export default function EventoDetalle() {
     loading: loadingReservas,
     addReserva
   } = useReservas(RESERVAS_REDUCER.BY_EVENTO, eventoId)
+
+  const [esEventoMio, setEsEventoMio] = useState(false)
+  const onEsEventoMio = useCallback((esMio) => {
+    setEsEventoMio(esMio)
+  }, [])
 
   if (otrosLoading || loadingReservas) return <Loading />
 
@@ -47,17 +56,23 @@ export default function EventoDetalle() {
               onAdd: handleAddReserva
             }}
           >
-            <EventoDetalleCard idEvento={eventoId} />
+            <EventoActionContext.Provider
+              value={{
+                onEsEventoMio: onEsEventoMio
+              }}
+            >
+              <EventoDetalleCard idEvento={eventoId} />
+            </EventoActionContext.Provider>
           </ReservaActionContext.Provider>
 
-          {/*{esEventoMio && (
+          {esEventoMio && (
             <div className="mt-4">
               <GroupDetallesCards
                 items={reservas}
                 type={GROUP_DETALLES_CARDS_TIPOS.RESERVAS}
               />
             </div>
-          )}*/}
+          )}
         </Col>
       </Row>
     </Container>

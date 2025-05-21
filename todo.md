@@ -5,8 +5,6 @@
 
 - En EspacioModal, el minimo de capacidad debería ser el evento con mayor plazas
 
-- Mostrar puntos de interes en EspacioDetalles
-
 # Bugs
 
 - Al crear una reserva desde EventoDetalles no se muestra el toast -> Cuando funcione probar error toast

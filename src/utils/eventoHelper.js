@@ -53,7 +53,7 @@ export const obtenerEventosCancelados = (eventos) => {
 };
 
 export const esEventoMio = (evento, usuario) => {
-  return evento.gestor === usuario._id;
+  return evento?.organizador === usuario.username;
 };
 
 export const formatDateTimeLocal = (date) => {

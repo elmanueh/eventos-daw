@@ -13,9 +13,10 @@ import EspacioModal from '@components/modals/EspacioModal'
 import EventoModal from '@components/modals/EventoModal'
 import MyToast from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
+import { useEspacioActions } from '@context/EspacioActionContext'
 import { useEventoActions } from '@context/EventoActionContext'
 import Loading from '@pages/Loading'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Badge, Card, Col, Row } from 'react-bootstrap'
 
 export default function EspacioDetalleCard({ idEspacio }) {
@@ -29,8 +30,16 @@ export default function EspacioDetalleCard({ idEspacio }) {
     idEspacio
   )
   const { onAdd } = useEventoActions()
+  const { onPuntosInteres } = useEspacioActions()
 
   const espacio = espacios[0]
+
+  useEffect(() => {
+    if (espacio?.puntosInteres) {
+      onPuntosInteres(espacio.puntosInteres)
+    }
+  }, [espacio?.puntosInteres])
+
   if (!espacio) return <Loading />
   const status = statusEspacio(espacio)
   const isUser = user.roles.includes(AUTH_ROLES.GESTOR_EVENTOS)

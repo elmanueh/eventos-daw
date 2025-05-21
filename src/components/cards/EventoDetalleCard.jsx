@@ -14,11 +14,12 @@ import EventoModal from '@components/modals/EventoModal'
 import ReservaModal from '@components/modals/ReservaModal'
 import MyToast from '@components/toast/MyToast'
 import { AuthContext } from '@context/AuthContext'
+import { useEventoActions } from '@context/EventoActionContext'
 import { useReservaActions } from '@context/ReservaActionContext'
 import Loading from '@pages/Loading'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Badge, Card, Col, Row } from 'react-bootstrap'
 
 export default function EventoDetalleCard({ idEvento }) {
@@ -32,8 +33,14 @@ export default function EventoDetalleCard({ idEvento }) {
     idEvento
   )
   const { onAdd } = useReservaActions()
+  const { onEsEventoMio } = useEventoActions()
 
   const evento = eventos[0]
+
+  useEffect(() => {
+    onEsEventoMio(esEventoMio(evento, user))
+  }, [evento])
+
   if (loading) return <Loading />
 
   const status = statusEvento(evento)
@@ -84,7 +91,7 @@ export default function EventoDetalleCard({ idEvento }) {
         onHide={() => setShowEventoModal(false)}
         callback={handleEditEvento}
         evento={evento}
-        espacio={evento.espacioFisico}
+        espacio={evento.espacio}
       />
       <ReservaModal
         show={showReservaModal}
