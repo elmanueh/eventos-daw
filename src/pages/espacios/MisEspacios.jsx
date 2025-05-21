@@ -33,6 +33,7 @@ export default function MisEspacios() {
       setShowEspacioModal(false)
       showToast(TOAST_MESSAGES.SPACE.CREATED)
     } catch {
+      setShowEspacioModal(false)
       showToast(TOAST_MESSAGES.SPACE.CREATED_ERROR)
     }
   }

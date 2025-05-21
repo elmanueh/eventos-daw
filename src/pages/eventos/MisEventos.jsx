@@ -34,6 +34,7 @@ export default function MisEventos() {
       setShowEventoModal(false)
       showToast(TOAST_MESSAGES.EVENT.CREATED)
     } catch {
+      setShowEventoModal(false)
       showToast(TOAST_MESSAGES.EVENT.CREATED_ERROR)
     }
   }

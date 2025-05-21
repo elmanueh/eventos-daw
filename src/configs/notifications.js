@@ -15,6 +15,12 @@ export const TOAST_MESSAGES = {
         'El nuevo espacio ha sido registrado correctamente en el sistema.',
       type: 'success'
     },
+    CREATED_ERROR: {
+      title: 'Error al crear el espacio',
+      message:
+        'No se pudo registrar el nuevo espacio. Por favor, inténtelo de nuevo más tarde.',
+      type: 'danger'
+    },
     UPDATED: {
       title: 'Espacio actualizado',
       message:
