@@ -21,3 +21,21 @@ $form-switch-color: white;
   pointer-events: none;
   filter: brightness(0.7);
 }
+
+.page-link {
+  &:hover {
+    box-shadow: none;
+    background-color: rgba($primary, 0.5);
+    color: rgba($dark, 0.5);
+  }
+
+  &:focus {
+    box-shadow: none;
+    background-color: $primary;
+    color: $dark;
+  }
+
+  &:disabled{
+    pointer-events: none;
+  }
+}

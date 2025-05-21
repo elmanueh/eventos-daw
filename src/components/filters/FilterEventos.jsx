@@ -1,4 +1,4 @@
-import { ESTADOS } from '@/configs/constant'
+import { CATEGORIA_EVENTOS, ESTADOS } from '@/configs/constant'
 import { statusEvento } from '@/utils/eventoHelper'
 import { useEffect, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
@@ -8,6 +8,8 @@ const defaultFiltro = {
   descripcion: '',
   plazasMinimas: '',
   fechaMin: '',
+  categoria: '',
+  nombreEspacio: '',
   mostrarActivo: true,
   mostrarCancelado: false,
   mostrarFinalizado: false,
@@ -26,12 +28,18 @@ export default function FilterEventos({ eventos, callback }) {
         evento.descripcion
           .toLowerCase()
           .includes(filtro.descripcion.toLowerCase()) &&
-        evento.numPlazas >= filtro.plazasMinimas &&
+        evento.categoria.includes(filtro.categoria) &&
+        evento.numPlazasDisponibles >= filtro.plazasMinimas &&
         evento.fechaInicio >= filtro.fechaMin &&
         ((filtro.mostrarCancelado && estado === ESTADOS.CANCELADO) ||
           (filtro.mostrarActivo && estado === ESTADOS.ACTIVO) ||
           (filtro.mostrarFinalizado && estado === ESTADOS.FINALIZADO) ||
-          (filtro.mostrarEnCurso && estado === ESTADOS.EN_CURSO))
+          (filtro.mostrarEnCurso && estado === ESTADOS.EN_CURSO)) &&
+        (!filtro.nombreEspacio ||
+          (!filtro.mostrarCancelado &&
+            evento.espacioFisico.nombre
+              .toLowerCase()
+              .includes(filtro.nombreEspacio.toLowerCase())))
       )
     })
 
@@ -88,7 +96,22 @@ export default function FilterEventos({ eventos, callback }) {
               />
             </Col>
             <Col md={4}>
-              <Form.Label>Número de plazas</Form.Label>
+              <Form.Label>Categoría</Form.Label>
+              <Form.Select
+                name="categoria"
+                value={filtro.categoria}
+                onChange={handleInputChange}
+              >
+                <option value="">Selecciona una categoría</option>
+                {Object.entries(CATEGORIA_EVENTOS).map(([key, value]) => (
+                  <option key={key} value={key}>
+                    {value}
+                  </option>
+                ))}
+              </Form.Select>
+            </Col>
+            <Col md={4}>
+              <Form.Label>Número de plazas disponibles</Form.Label>
               <Form.Control
                 name="plazasMinimas"
                 type="number"
@@ -105,6 +128,16 @@ export default function FilterEventos({ eventos, callback }) {
                 type="datetime-local"
                 value={filtro.fechaMin}
                 onChange={handleInputChange}
+              />
+            </Col>
+            <Col md={4}>
+              <Form.Label>Nombre del espacio</Form.Label>
+              <Form.Control
+                name="nombreEspacio"
+                type="text"
+                value={filtro.nombreEspacio}
+                onChange={handleInputChange}
+                placeholder="Estadio Olímpico"
               />
             </Col>
             <Col xs="auto" className="d-flex align-items-end">
