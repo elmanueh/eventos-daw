@@ -44,7 +44,7 @@ export default function EspacioDetalle() {
     try {
       await addEvento(evento)
       showToast(TOAST_MESSAGES.EVENT.CREATED)
-    } catch (error) {
+    } catch {
       showToast(TOAST_MESSAGES.EVENT.CREATED_ERROR)
     }
   }

@@ -6,7 +6,7 @@ export default function ErrorNotFound() {
       <h1 className="display-1 fw-bold text-danger">404</h1>
 
       <img
-        src="https://media.giphy.com/media/fnDwbHk8HhY0s/giphy.gif" // Homer Simpson desapareciendo en el arbusto
+        src="https://media.giphy.com/media/fnDwbHk8HhY0s/giphy.gif"
         alt="Homer disappearing"
         className="img-fluid my-4"
         style={{ maxHeight: '300px', borderRadius: '20px' }}
