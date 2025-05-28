@@ -14,11 +14,13 @@ Proyecto dedicado a la gestión de eventos para el curso de Desarrollo de Aplica
 - Backend: Node.js, Express
 - Autenticación: JWT, Cookie
 
-## 1.3. Instalación
+## 1.3. Instalación y uso
+
+Para instalar y ejecutar el proyecto en tu máquina local, sigue estos pasos:
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/tuusuario/eventos-daw.git
+git clone https://github.com/elmanueh/eventos-daw.git
 
 # Acceder al directorio
 cd eventos-daw
@@ -27,5 +29,15 @@ cd eventos-daw
 npm install
 
 # Iniciar el servidor
-npm start
+npm run dev
+```
+
+Para ejecutar el backend de Handlebars, seguimos estos pasos:
+
+```bash
+# Acceder al directorio del backend
+cd backend
+
+# Iniciar el servidor
+node server.js
 ```
