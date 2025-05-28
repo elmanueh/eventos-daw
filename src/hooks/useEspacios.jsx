@@ -84,7 +84,7 @@ export function useEspacios(type, value = 0, value2 = 0) {
         return logout()
       }
     }
-  }, [type, user?.username, value, value2])
+  }, [type, user?.username, value, value2, logout])
 
   const addEspacio = async (espacio) => {
     dispatch({ type: 'ACTION_START' })

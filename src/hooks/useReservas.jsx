@@ -57,7 +57,7 @@ export function useReservas(type, value = 0) {
         return logout()
       }
     }
-  }, [type, user?.id, value])
+  }, [logout, type, user.id, value])
 
   const addReserva = async (reserva) => {
     dispatch({ type: 'ACTION_START' })

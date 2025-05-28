@@ -39,7 +39,7 @@ function eventosReducer(state, action) {
 
 export function useEventos(type, value = 0, value2 = 0) {
   const { user, logout } = useContext(AuthContext)
-  
+
   const [state, dispatch] = useReducer(eventosReducer, initialState)
 
   const fetchEventos = useCallback(async () => {
@@ -85,7 +85,7 @@ export function useEventos(type, value = 0, value2 = 0) {
       }
       throw error
     }
-  }, [type, user?.username, value])
+  }, [logout, type, user.username, value, value2])
 
   const addEvento = async (evento) => {
     dispatch({ type: 'ACTION_START' })
