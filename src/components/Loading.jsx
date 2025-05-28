@@ -1,10 +1,10 @@
 export default function Loading() {
   return (
-    <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+    <div className="d-flex flex-column justify-content-center align-items-center">
       <div
         className="spinner-border text-primary"
         role="status"
-        style={{ width: '4rem', height: '4rem' }}
+        style={{ width: '3rem', height: '3rem' }}
       >
         <span className="visually-hidden">Cargando...</span>
       </div>

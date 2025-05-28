@@ -26,8 +26,6 @@ export default function Home() {
   const idGroupEspacios = useId()
   const idGroupEventos = useId()
 
-  if (loadingEspacios || loadingEventos) return <Loading />
-
   return (
     <div className="d-flex flex-lg-col flex-column gap-5">
       <header className="text-end">
@@ -44,34 +42,41 @@ export default function Home() {
         <h2 className="text-primary fw-bold fs-3 mb-2" id={idGroupEspacios}>
           <i className="bi bi-houses-fill" /> Espacios físicos disponibles
         </h2>
-        {espacios.length === 0 ? (
-          <h2 className="text-center text-muted">
-            No se han encontrado espacios disponibles por ahora.
-          </h2>
-        ) : (
-          <>
-            <GroupCards items={espacios} type={TARJETA_TIPOS.ESPACIOS} />
-            <div className="text-end">
-              <Link
-                to={NAV_ROUTES.ESPACIOS}
-                className="btn btn-outline-primary"
-              >
-                Ver todos los espacios
-              </Link>
-            </div>
-          </>
-        )}
+        <>
+          {loadingEspacios && <Loading />}
+          {!loadingEspacios && espacios.length === 0 && (
+            <h2 className="text-center text-muted">
+              No se han encontrado espacios disponibles por ahora.
+            </h2>
+          )}
+
+          {!loadingEspacios && espacios.length > 0 && (
+            <>
+              <GroupCards items={espacios} type={TARJETA_TIPOS.ESPACIOS} />
+              <div className="text-end">
+                <Link
+                  to={NAV_ROUTES.ESPACIOS}
+                  className="btn btn-outline-primary"
+                >
+                  Ver todos los espacios
+                </Link>
+              </div>
+            </>
+          )}
+        </>
       </section>
 
       <section className="d-flex flex-column gap-4 mt-5" id={idGroupEventos}>
         <h2 className="text-primary fw-bold fs-3 mb-2">
           <i className="bi bi-calendar-event-fill" /> Próximos eventos
         </h2>
-        {eventos.length === 0 ? (
+        {loadingEventos && <Loading />}
+        {!loadingEventos && eventos.length === 0 && (
           <h2 className="text-center text-muted">
             Todavía no hay eventos, pero ¡estate atento!
           </h2>
-        ) : (
+        )}
+        {!loadingEventos && eventos.length > 0 && (
           <>
             <GroupCards items={eventos} type={TARJETA_TIPOS.EVENTOS} />
             <div className="text-end">
