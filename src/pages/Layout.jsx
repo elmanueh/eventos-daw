@@ -1,7 +1,7 @@
 import Footer from '@components/layout/Footer'
 import Header from '@components/layout/Header'
+import UserCard from '@components/layout/UserCard'
 import PrivateRoute from '@components/PrivateRoute'
-import UserCard from '@components/UserCard'
 import { Outlet } from 'react-router'
 
 export default function Layout() {

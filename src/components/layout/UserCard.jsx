@@ -1,5 +1,5 @@
 import { AUTH_ROLES, NAV_ROUTES } from '@/configs/constant'
-import UserInfoCard from '@components/UserInfoCard'
+import UserInfoCard from '@components/layout/UserInfoCard'
 import { AuthContext } from '@context/AuthContext'
 import { useContext } from 'react'
 import { Link } from 'react-router'

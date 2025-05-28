@@ -1,5 +1,5 @@
 import { NAV_ROUTES } from '@/configs/constant'
-import UserCard from '@components/UserCard'
+import UserCard from '@components/layout/UserCard'
 import { AuthContext } from '@context/AuthContext'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router'
