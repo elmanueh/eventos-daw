@@ -10,10 +10,10 @@ import {
 } from '@/utils/eventoHelper'
 import FilterEventos from '@components/filters/FilterEventos'
 import GroupCards from '@components/groups/GroupCards'
+import Loading from '@components/Loading'
 import EventoModal from '@components/modals/EventoModal'
 import MyToast from '@components/MyToast'
 import { EventoActionContext } from '@context/EventoActionContext'
-import Loading from '@pages/Loading'
 import { useCallback, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 

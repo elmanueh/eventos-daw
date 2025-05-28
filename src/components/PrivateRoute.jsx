@@ -1,6 +1,6 @@
 import { NAV_ROUTES } from '@/configs/constant'
+import Loading from '@components/Loading'
 import { AuthContext } from '@context/AuthContext'
-import Loading from '@pages/Loading'
 import { useContext } from 'react'
 import { Navigate } from 'react-router'
 

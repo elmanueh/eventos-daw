@@ -6,7 +6,7 @@ import {
   obtenerReservasFinalizadas
 } from '@/utils/reservaHelper'
 import GroupCards from '@components/groups/GroupCards'
-import Loading from '@pages/Loading'
+import Loading from '@components/Loading'
 import { Container } from 'react-bootstrap'
 
 export default function MisReservas() {
