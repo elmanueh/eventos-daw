@@ -1,13 +1,18 @@
 import { NAV_ROUTES } from '@/configs/constant'
 import UserCard from '@components/layout/UserCard'
 import { AuthContext } from '@context/AuthContext'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
+import { Offcanvas } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import logo from '/logo.png'
 
 export default function Header() {
-  const { logout, user } = useContext(AuthContext)
+  const [show, setShow] = useState(false)
+  const { logout } = useContext(AuthContext)
   const navigate = useNavigate()
+
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
 
   const handleLogout = () => {
     logout()
@@ -30,9 +35,7 @@ export default function Header() {
             <button
               className="btn btn-outline-primary"
               type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasWithBothOptions"
-              aria-controls="offcanvasWithBothOptions"
+              onClick={handleShow}
             >
               <i className="bi bi-person-circle fs-4" />
             </button>
@@ -46,37 +49,19 @@ export default function Header() {
         </div>
       </nav>
 
-      <div
-        className="offcanvas offcanvas-end"
-        tabIndex="-1"
-        id="offcanvasWithBothOptions"
-        aria-labelledby="offcanvasWithBothOptionsLabel"
-      >
-        <div className="offcanvas-header">
-          <h5
-            className="offcanvas-title text-primary fw-bold"
-            id="offcanvasWithBothOptionsLabel"
-          >
+      <Offcanvas show={show} onHide={handleClose} placement="end">
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title className="text-primary fw-bold">
             Tu perfil
-          </h5>
-          <button
-            type="button"
-            className="btn-close btn-close-white"
-            data-bs-dismiss="offcanvas"
-            aria-label="Close"
-          />
-        </div>
-        <div className="offcanvas-body">
-          <UserCard />
-          <button
-            className="btn btn-danger mt-4 w-100"
-            data-bs-dismiss="offcanvas"
-            onClick={handleLogout}
-          >
+          </Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <UserCard callbackCloseOffCanvas={handleClose} />
+          <button className="btn btn-danger mt-4 w-100" onClick={handleLogout}>
             Cerrar sesión
           </button>
-        </div>
-      </div>
+        </Offcanvas.Body>
+      </Offcanvas>
     </>
   )
 }

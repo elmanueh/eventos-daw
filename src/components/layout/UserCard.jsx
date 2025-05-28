@@ -4,19 +4,8 @@ import { AuthContext } from '@context/AuthContext'
 import { useContext } from 'react'
 import { Link } from 'react-router'
 
-export default function UserCard() {
+export default function UserCard({ callbackCloseOffCanvas }) {
   const { user } = useContext(AuthContext)
-
-  const handleCloseOffcanvas = () => {
-    const element = document.getElementById('offcanvasWithBothOptions')
-    if (element) {
-      const bsOffcanvas = bootstrap.Offcanvas.getInstance(element)
-      if (bsOffcanvas) {
-        console.log(bsOffcanvas)
-        bsOffcanvas.hide()
-      }
-    }
-  }
 
   return (
     <aside className="bg-dark rounded p-4 d-flex flex-column text-center align-items-center gap-3 border border-secondary align-self-start">
@@ -34,14 +23,14 @@ export default function UserCard() {
             <Link
               to={NAV_ROUTES.MIS_ESPACIOS}
               className="btn btn-primary w-100"
-              onClick={handleCloseOffcanvas}
+              onClick={callbackCloseOffCanvas}
             >
               <i className="bi bi-house-gear-fill" /> Mis espacios
             </Link>
             <Link
               to={NAV_ROUTES.MIS_EVENTOS}
               className="btn btn-outline-secondary w-100"
-              onClick={handleCloseOffcanvas}
+              onClick={callbackCloseOffCanvas}
             >
               <i className="bi bi-calendar-event" /> Mis eventos
             </Link>
@@ -50,7 +39,7 @@ export default function UserCard() {
         <Link
           to={NAV_ROUTES.MIS_RESERVAS}
           className="btn btn-info w-100"
-          onClick={handleCloseOffcanvas}
+          onClick={callbackCloseOffCanvas}
         >
           <i className="bi bi-book-half" /> Mis reservas
         </Link>
