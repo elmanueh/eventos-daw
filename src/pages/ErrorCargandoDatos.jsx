@@ -10,17 +10,14 @@ export default function ErrorCargandoDatos() {
         alt="Error cargando datos"
         style={{ width: '120px', marginBottom: '2rem' }}
       />
-      <h1
-        className="display-4 mb-3"
-        style={{ fontWeight: '700', color: '#ff6f61' }}
-      >
+      <h1 className="display-4 mb-3 text-danger fw-bold">
         ¡Ups! Algo salió mal
       </h1>
-      <p className="lead mb-4" style={{ color: '#555' }}>
+      <p className="lead mb-4 text-dark">
         No hemos podido recuperar los datos correctamente. <br />
         Vuelve a intentarlo más tarde o recarga la página.
       </p>
-      <p className="text-muted mb-4" style={{ fontStyle: 'italic' }}>
+      <p className="mb-4 text-secondary" style={{ fontStyle: 'italic' }}>
         {error?.message ||
           'Parece que algo salió mal, por favor intenta de nuevo más tarde.'}
       </p>
@@ -32,7 +29,7 @@ export default function ErrorCargandoDatos() {
       >
         Volver al inicio
       </a>
-      <p className="mt-4 text-muted" style={{ fontSize: '0.9rem' }}>
+      <p className="mt-4 text-dark" style={{ fontSize: '0.9rem' }}>
         ¿Tienes preguntas? Contacta con nuestro soporte en cualquier momento.
       </p>
     </div>
