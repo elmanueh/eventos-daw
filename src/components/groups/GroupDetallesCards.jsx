@@ -3,7 +3,7 @@ import {
   GROUP_DETALLES_CARDS_TIPOS
 } from '@/configs/constant'
 import EventoCard from '@components/cards/EventoCard'
-import Pagination from '@components/pagination/Pagination'
+import Pagination from '@components/groups/Pagination'
 import { useCallback, useEffect, useState } from 'react'
 import { Card, ListGroup } from 'react-bootstrap'
 

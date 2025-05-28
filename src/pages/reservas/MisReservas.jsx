@@ -5,7 +5,7 @@ import {
   obtenerReservasCanceladas,
   obtenerReservasFinalizadas
 } from '@/utils/reservaHelper'
-import GroupCards from '@components/GroupCards'
+import GroupCards from '@components/groups/GroupCards'
 import Loading from '@pages/Loading'
 import { Container } from 'react-bootstrap'
 

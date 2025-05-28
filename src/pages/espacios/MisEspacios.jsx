@@ -7,9 +7,9 @@ import {
   obtenerEspaciosCerrados
 } from '@/utils/espacioHelper'
 import FilterEspacios from '@components/filters/FilterEspacios'
-import GroupCards from '@components/GroupCards'
+import GroupCards from '@components/groups/GroupCards'
 import EspacioModal from '@components/modals/EspacioModal'
-import MyToast from '@components/toast/MyToast'
+import MyToast from '@components/MyToast'
 import { EspacioActionContext } from '@context/EspacioActionContext'
 import Loading from '@pages/Loading'
 

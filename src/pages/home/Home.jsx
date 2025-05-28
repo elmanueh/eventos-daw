@@ -6,7 +6,7 @@ import {
 } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
 import { useEventos } from '@/hooks/useEventos'
-import GroupCards from '@components/GroupCards'
+import GroupCards from '@components/groups/GroupCards'
 import { AuthContext } from '@context/AuthContext'
 import Loading from '@pages/Loading'
 import { useContext, useId } from 'react'

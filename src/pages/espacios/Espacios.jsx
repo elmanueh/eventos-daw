@@ -1,7 +1,7 @@
 import { ESPACIOS_REDUCER, TARJETA_TIPOS } from '@/configs/constant'
 import { useEspacios } from '@/hooks/useEspacios'
 import FilterEspacios from '@components/filters/FilterEspacios'
-import GroupCards from '@components/GroupCards'
+import GroupCards from '@components/groups/GroupCards'
 import Loading from '@pages/Loading'
 import { useCallback, useState } from 'react'
 

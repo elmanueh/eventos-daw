@@ -1,7 +1,7 @@
 import { API_URLS, NAV_ROUTES } from '@/configs/constant'
 import { TOAST_MESSAGES } from '@/configs/notifications'
 import { useToast } from '@/hooks/useToast'
-import MyToast from '@components/toast/MyToast'
+import MyToast from '@components/MyToast'
 import { AuthContext } from '@context/AuthContext'
 import '@pages/auth/login.css'
 import { useContext, useEffect, useRef, useState } from 'react'

@@ -9,9 +9,9 @@ import {
   obtenerEventosFinalizados
 } from '@/utils/eventoHelper'
 import FilterEventos from '@components/filters/FilterEventos'
-import GroupCards from '@components/GroupCards'
+import GroupCards from '@components/groups/GroupCards'
 import EventoModal from '@components/modals/EventoModal'
-import MyToast from '@components/toast/MyToast'
+import MyToast from '@components/MyToast'
 import { EventoActionContext } from '@context/EventoActionContext'
 import Loading from '@pages/Loading'
 import { useCallback, useState } from 'react'

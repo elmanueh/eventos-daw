@@ -1,7 +1,7 @@
 import { EVENTOS_REDUCER, TARJETA_TIPOS } from '@/configs/constant'
 import { useEventos } from '@/hooks/useEventos'
 import FilterEventos from '@components/filters/FilterEventos'
-import GroupCards from '@components/GroupCards'
+import GroupCards from '@components/groups/GroupCards'
 import Loading from '@pages/Loading'
 import { useCallback, useState } from 'react'
 

@@ -2,7 +2,7 @@ import { GROUP_CARDS_SIZE, TARJETA_TIPOS } from '@/configs/constant'
 import EspacioCard from '@components/cards/EspacioCard'
 import EventoCard from '@components/cards/EventoCard'
 import ReservaCard from '@components/cards/ReservaCard'
-import Pagination from '@components/pagination/Pagination'
+import Pagination from '@components/groups/Pagination'
 import { useCallback, useEffect, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 
