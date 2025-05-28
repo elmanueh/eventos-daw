@@ -12,19 +12,19 @@ export default function ErrorNotFound() {
         style={{ maxHeight: '300px', borderRadius: '20px' }}
       />
 
-      <h2 className="mb-3">¡Ups! ¿Y tú quién eres?</h2>
+      <h2 className="mb-3 text-danger">¡Ups! ¿Y tú quién eres?</h2>
 
-      <p className="lead mb-4">
+      <p className="lead mb-4 text-dark">
         Parece que has entrado en un rincón del universo que ni nosotros
         conocíamos. <br />
         No hay tesoros, ni secretos, ni sentido... solo vacío existencial.
       </p>
 
-      <Link to="/home" className="btn btn-lg btn-outline-dark shadow-sm">
+      <Link to="/home" className="btn btn-lg btn-danger shadow-sm">
         Llévame de vuelta al mundo real
       </Link>
 
-      <p className="mt-4 text-muted" style={{ fontSize: '0.9rem' }}>
+      <p className="mt-4 text-dark" style={{ fontSize: '0.9rem' }}>
         O quédate aquí, reflexionando sobre tus decisiones. Tú sabrás.
       </p>
     </div>

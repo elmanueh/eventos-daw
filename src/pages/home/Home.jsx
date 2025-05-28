@@ -7,8 +7,8 @@ import {
 import { useEspacios } from '@/hooks/useEspacios'
 import { useEventos } from '@/hooks/useEventos'
 import GroupCards from '@components/groups/GroupCards'
+import Loading from '@components/Loading'
 import { AuthContext } from '@context/AuthContext'
-import Loading from '@pages/Loading'
 import { useContext, useId } from 'react'
 import { Link } from 'react-router'
 
